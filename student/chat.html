@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with AISHA - Your Cartoon AI Tutor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Comic Neue', 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
+            background: linear-gradient(135deg, #ffe6f0 0%, #ffe0f5 100%);
+            min-height: 100vh;
+        }
+        
+        /* Cartoon Container */
+        .chat-cartoon-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .cartoon-sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #ff6b9d 0%, #ff85b3 100%);
+            padding: 2rem 1rem;
+            border-radius: 0 30px 30px 0;
+            box-shadow: 10px 0 20px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .aisha-avatar {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .avatar-icon {
+            font-size: 5rem;
+            animation: bounce 2s ease-in-out infinite;
+            display: inline-block;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .aisha-avatar h2 {
+            color: white;
+            font-size: 2rem;
+            text-shadow: 3px 3px 0 #ff4081;
+        }
+        
+        .nav-cartoon-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            margin: 0.5rem 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .nav-cartoon-item:hover, .nav-cartoon-item.active {
+            background: #ffd700;
+            color: #ff6b9d;
+            transform: scale(1.05);
+        }
+        
+        .logout-cartoon {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 2rem;
+            width: 100%;
+            font-family: inherit;
+        }
+        
+        /* Chat Area */
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #fff5f8;
+            margin: 1rem;
+            border-radius: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        /* Chat Header */
+        .chat-header {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 3px solid #ffb3c6;
+        }
+        
+        .chat-header-avatar {
+            font-size: 3rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+        
+        .chat-header-info h3 {
+            color: #ff6b9d;
+            font-size: 1.5rem;
+        }
+        
+        .chat-header-info p {
+            color: #ff85b3;
+            font-size: 0.9rem;
+        }
+        
+        .humor-control {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+        }
+        
+        .humor-control label {
+            color: #ff6b9d;
+            font-weight: bold;
+        }
+        
+        .humor-control input {
+            width: 100px;
+        }
+        
+        /* Chat Messages */
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background: #fffafc;
+        }
+        
+        /* Message Bubbles */
+        .message {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message.user {
+            justify-content: flex-end;
+        }
+        
+        .message.assistant {
+            justify-content: flex-start;
+        }
+        
+        .message-content {
+            max-width: 70%;
+            padding: 1rem 1.5rem;
+            border-radius: 25px;
+            position: relative;
+        }
+        
+        .message.user .message-content {
+            background: linear-gradient(135deg, #ff6b9d, #ff85b3);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .message.assistant .message-content {
+            background: white;
+            color: #333;
+            border: 2px solid #ffd700;
+            border-bottom-left-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .message.assistant .message-content::before {
+            content: "🤖";
+            position: absolute;
+            left: -30px;
+            bottom: 5px;
+            font-size: 1.2rem;
+        }
+        
+        .message.user .message-content::after {
+            content: "👤";
+            position: absolute;
+            right: -30px;
+            bottom: 5px;
+            font-size: 1.2rem;
+        }
+        
+        /* Typing Indicator */
+        .typing-indicator {
+            display: flex;
+            gap: 0.3rem;
+            padding: 1rem 1.5rem;
+        }
+        
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #ff6b9d;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+        
+        /* Chat Input */
+        .chat-input-area {
+            background: white;
+            padding: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            border-top: 2px solid #ffe0e8;
+        }
+        
+        .chat-input-area textarea {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #ffd700;
+            border-radius: 25px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: none;
+            background: #fffafc;
+        }
+        
+        .chat-input-area textarea:focus {
+            outline: none;
+            border-color: #ff6b9d;
+        }
+        
+        .send-btn {
+            background: linear-gradient(135deg, #ff6b9d, #ff85b3);
+            color: white;
+            border: none;
+            padding: 0 2rem;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255,107,157,0.3);
+        }
+        
+        /* Suggestions */
+        .suggestions {
+            padding: 1rem 1.5rem;
+            background: #fff0f5;
+            border-top: 1px solid #ffe0e8;
+        }
+        
+        .suggestions-title {
+            font-size: 0.8rem;
+            color: #ff85b3;
+            margin-bottom: 0.5rem;
+        }
+        
+        .suggestion-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .suggestion-btn {
+            background: white;
+            border: 1px solid #ffd700;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        .suggestion-btn:hover {
+            background: #ffd700;
+            transform: scale(1.05);
+        }
+        
+        /* Scrollbar */
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .chat-messages::-webkit-scrollbar-track {
+            background: #ffe0e8;
+            border-radius: 10px;
+        }
+        
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #ff6b9d;
+            border-radius: 10px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .chat-cartoon-container {
+                flex-direction: column;
+            }
+            
+            .cartoon-sidebar {
+                width: 100%;
+                border-radius: 0 0 30px 30px;
+            }
+            
+            .message-content {
+                max-width: 85%;
+            }
+            
+            .humor-control {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-cartoon-container">
+        <!-- Sidebar -->
+        <aside class="cartoon-sidebar">
+            <div class="aisha-avatar">
+                <div class="avatar-icon">🤖💕</div>
+                <h2>AISHA</h2>
+                <p>Your AI Bestie & Tutor</p>
+            </div>
+            
+            <nav>
+                <a href="/student/dashboard.html" class="nav-cartoon-item">
+                    <span>🏠</span> Home
+                </a>
+                <a href="/student/chat.html" class="nav-cartoon-item active">
+                    <span>💬</span> Chat with AISHA
+                </a>
+                <a href="/student/quizzes.html" class="nav-cartoon-item">
+                    <span>📝</span> Quizzes
+                </a>
+                <a href="/student/progress.html" class="nav-cartoon-item">
+                    <span>📈</span> My Progress
+                </a>
+            </nav>
+            
+            <button class="logout-cartoon" onclick="logout()">
+                🚪 Goodbye for now!
+            </button>
+        </aside>
+        
+        <!-- Chat Area -->
+        <div class="chat-main">
+            <div class="chat-header">
+                <div class="chat-header-avatar">🤖💬</div>
+                <div class="chat-header-info">
+                    <h3>Chat with AISHA</h3>
+                    <p>✨ Your personal AI tutor - Ask me anything about your books!</p>
+                </div>
+                <div class="humor-control">
+                    <label>🎭 AISHA's Humor:</label>
+                    <input type="range" id="humorSlider" min="1" max="10" value="7">
+                    <span id="humorValue">😊</span>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message assistant">
+                    <div class="message-content">
+                        Hello! I'm AISHA! 🤗💕<br><br>
+                        I've read all your books and I'm here to help you learn!<br><br>
+                        You can ask me things like:<br>
+                        📖 "Explain chapter 3"<br>
+                        📝 "Quiz me on algebra"<br>
+                        🤔 "What's the main idea of..."<br><br>
+                        What would you like to learn today? 🌟
+                    </div>
+                </div>
+            </div>
+            
+            <div class="suggestions">
+                <div class="suggestions-title">💡 Try asking AISHA:</div>
+                <div class="suggestion-buttons">
+                    <button class="suggestion-btn" onclick="sendSuggestion('Explain quantum physics simply')">⚛️ Explain quantum physics</button>
+                    <button class="suggestion-btn" onclick="sendSuggestion('Quiz me on algebra')">📐 Quiz me on algebra</button>
+                    <button class="suggestion-btn" onclick="sendSuggestion('What are my weak subjects?')">🎯 What are my weak subjects?</button>
+                    <button class="suggestion-btn" onclick="sendSuggestion('Tell me a fun fact')">✨ Tell me a fun fact</button>
+                </div>
+            </div>
+            
+            <div class="chat-input-area">
+                <textarea id="userInput" placeholder="Ask AISHA anything... 📚✨" rows="2"></textarea>
+                <button class="send-btn" onclick="sendMessage()">Send 💬</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentSessionId = null;
+        
+        // Get current user
+        function getCurrentUser() {
+            const userStr = localStorage.getItem('user');
+            return userStr ? JSON.parse(userStr) : null;
+        }
+        
+        // Update humor emoji
+        const humorSlider = document.getElementById('humorSlider');
+        const humorValue = document.getElementById('humorValue');
+        
+        humorSlider.addEventListener('input', function() {
+            const val = parseInt(this.value);
+            if (val <= 3) humorValue.textContent = '😐';
+            else if (val <= 6) humorValue.textContent = '😊';
+            else if (val <= 8) humorValue.textContent = '😄';
+            else humorValue.textContent = '🤣';
+        });
+        
+        // Send message
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            // Add user message
+            addMessage(message, 'user');
+            input.value = '';
+            
+            // Show typing indicator
+            const typingId = showTypingIndicator();
+            
+            // Simulate AISHA response (replace with real API later)
+            setTimeout(() => {
+                removeTypingIndicator(typingId);
+                
+                // Cute responses based on message
+                let response = getCuteResponse(message);
+                addMessage(response, 'assistant');
+            }, 1500);
+        }
+        
+        function sendSuggestion(text) {
+            document.getElementById('userInput').value = text;
+            sendMessage();
+        }
+        
+        function addMessage(text, role) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+            messageDiv.innerHTML = `<div class="message-content">${text}</div>`;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+        
+        function showTypingIndicator() {
+            const messagesDiv = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message assistant';
+            typingDiv.id = 'typing_' + Date.now();
+            typingDiv.innerHTML = `
+                <div class="message-content">
+                    <div class="typing-indicator">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+            `;
+            messagesDiv.appendChild(typingDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            return typingDiv.id;
+        }
+        
+        function removeTypingIndicator(id) {
+            const element = document.getElementById(id);
+            if (element) element.remove();
+        }
+        
+        function getCuteResponse(message) {
+            const lowerMsg = message.toLowerCase();
+            
+            if (lowerMsg.includes('quantum') || lowerMsg.includes('physics')) {
+                return "Ooh quantum physics! 🌟 Imagine you have a magical coin that can be heads AND tails at the same time until you look at it! That's superposition! Want me to explain more? 🔮";
+            }
+            else if (lowerMsg.includes('algebra') || lowerMsg.includes('math')) {
+                return "Algebra is like a puzzle! 🧩 We use letters to represent mystery numbers. For example: x + 2 = 5 means 'what number plus 2 equals 5?' The answer is 3! Want to solve some together? 📐";
+            }
+            else if (lowerMsg.includes('quiz')) {
+                return "Yay! A quiz! 🎉 Let me think... What's 2 + 2 × 2? (Hint: order of operations matters!) Answer: 6! Want another question? 📝";
+            }
+            else if (lowerMsg.includes('weak') || lowerMsg.includes('progress')) {
+                return "Looking at your progress... 📊 You're doing great with Biology! 🌸 For Math, let's practice a bit more. I believe in you! 💪 Want me to help with some math problems?";
+            }
+            else if (lowerMsg.includes('fun fact')) {
+                return "Fun fact! 🎉 Octopuses have three hearts and blue blood! 🐙 Also, AISHA thinks you're doing amazing today! 💕";
+            }
+            else if (lowerMsg.includes('hello') || lowerMsg.includes('hi')) {
+                return "Hello hello! 👋 So happy to see you! Ready to learn something awesome today? 📚✨";
+            }
+            else {
+                return "That's a great question! 🤔 Let me think... Based on your books, I can help you understand this better. Want me to explain it in a simple way, or would you like a quick practice question? 📖💬";
+            }
+        }
+        
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/login.html';
+        }
+        
+        // Enter key to send
+        document.getElementById('userInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+        
+        // Check login
+        if (!getCurrentUser()) {
+            window.location.href = '/login.html';
+        }
+    </script>
+</body>
+</html>
