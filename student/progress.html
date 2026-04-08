@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AISHA's Achievement Garden - My Progress</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Comic Neue', 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6e0 100%);
+            min-height: 100vh;
+        }
+        
+        /* Cartoon Container */
+        .progress-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .cartoon-sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #2d6a4f 0%, #40916c 100%);
+            padding: 2rem 1rem;
+            border-radius: 0 30px 30px 0;
+            box-shadow: 10px 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .aisha-avatar {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .avatar-icon {
+            font-size: 5rem;
+            animation: bounce 2s ease-in-out infinite;
+            display: inline-block;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .aisha-avatar h2 {
+            color: white;
+            font-size: 2rem;
+            text-shadow: 3px 3px 0 #1b4332;
+        }
+        
+        .nav-cartoon-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            margin: 0.5rem 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .nav-cartoon-item:hover, .nav-cartoon-item.active {
+            background: #ffd700;
+            color: #2d6a4f;
+            transform: scale(1.05);
+        }
+        
+        .logout-cartoon {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 2rem;
+            width: 100%;
+            font-family: inherit;
+        }
+        
+        /* Main Content */
+        .progress-main {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        /* Header */
+        .progress-header {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 30px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .progress-header h1 {
+            color: #2d6a4f;
+            font-size: 2rem;
+        }
+        
+        .progress-header p {
+            color: #40916c;
+        }
+        
+        /* Stats Cards */
+        .stats-garden {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-flower {
+            background: white;
+            border-radius: 25px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 8px 0 #c8e6e0;
+            transition: all 0.3s;
+        }
+        
+        .stat-flower:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-emoji {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2d6a4f;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.85rem;
+        }
+        
+        /* Mastery Section */
+        .mastery-section {
+            background: white;
+            border-radius: 30px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid #ffd700;
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            color: #2d6a4f;
+            border-left: 5px solid #ffd700;
+            padding-left: 1rem;
+        }
+        
+        /* Mastery Tree - Growth Visual */
+        .mastery-tree {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .mastery-branch {
+            background: #f0faf4;
+            border-radius: 20px;
+            padding: 1rem;
+        }
+        
+        .branch-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .branch-name {
+            font-weight: bold;
+            color: #2d6a4f;
+            font-size: 1.1rem;
+        }
+        
+        .branch-level {
+            font-size: 0.85rem;
+            color: #ffd700;
+            font-weight: bold;
+        }
+        
+        /* Growth Bar */
+        .growth-bar {
+            height: 35px;
+            background: #e0e8e4;
+            border-radius: 50px;
+            overflow: hidden;
+            position: relative;
+            margin: 0.5rem 0;
+        }
+        
+        .growth-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2d6a4f, #40916c, #52b788);
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 1rem;
+            color: white;
+            font-weight: bold;
+            transition: width 1s ease;
+        }
+        
+        .leaf-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+        
+        /* Achievements / Badges */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .achievement-card {
+            background: linear-gradient(135deg, #fff9e6, #fff0d4);
+            border-radius: 20px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .achievement-card.locked {
+            opacity: 0.5;
+            filter: grayscale(0.3);
+        }
+        
+        .achievement-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .achievement-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .achievement-name {
+            font-weight: bold;
+            color: #2d6a4f;
+            font-size: 0.85rem;
+        }
+        
+        /* Quiz History Table */
+        .history-table {
+            overflow-x: auto;
+        }
+        
+        .history-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .history-table th, .history-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e8e4;
+        }
+        
+        .history-table th {
+            background: #f0faf4;
+            color: #2d6a4f;
+        }
+        
+        .badge-pass {
+            background: #c8e6e0;
+            color: #2d6a4f;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .badge-fail {
+            background: #ffe0e8;
+            color: #ff6b9d;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+        }
+        
+        /* Encouragement Message */
+        .encouragement-box {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 25px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .encouragement-box::before {
+            content: "🌱🌸🌻";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            font-size: 60px;
+            opacity: 0.2;
+        }
+        
+        .encouragement-text {
+            font-size: 1.2rem;
+            color: #2d6a4f;
+            font-weight: bold;
+        }
+        
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #40916c;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .progress-container {
+                flex-direction: column;
+            }
+            
+            .cartoon-sidebar {
+                width: 100%;
+                border-radius: 0 0 30px 30px;
+            }
+            
+            .stats-garden {
+                grid-template-columns: 1fr;
+            }
+            
+            .achievements-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-container">
+        <!-- Sidebar -->
+        <aside class="cartoon-sidebar">
+            <div class="aisha-avatar">
+                <div class="avatar-icon">🌱🤖💕</div>
+                <h2>AISHA</h2>
+                <p>Your Growth Partner</p>
+            </div>
+            
+            <nav>
+                <a href="/student/dashboard.html" class="nav-cartoon-item">
+                    <span>🏠</span> Home
+                </a>
+                <a href="/student/chat.html" class="nav-cartoon-item">
+                    <span>💬</span> Chat with AISHA
+                </a>
+                <a href="/student/quizzes.html" class="nav-cartoon-item">
+                    <span>📝</span> Quizzes
+                </a>
+                <a href="/student/progress.html" class="nav-cartoon-item active">
+                    <span>📈</span> My Progress
+                </a>
+            </nav>
+            
+            <button class="logout-cartoon" onclick="logout()">
+                🚪 Goodbye for now!
+            </button>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="progress-main">
+            <div class="progress-header">
+                <div>
+                    <h1>🌱 AISHA's Achievement Garden</h1>
+                    <p>Watch your knowledge grow like beautiful flowers! 🌸</p>
+                </div>
+                <div style="font-size: 3rem;">🏆🌻</div>
+            </div>
+            
+            <!-- Stats Flowers -->
+            <div class="stats-garden" id="statsGarden">
+                <div class="stat-flower">
+                    <div class="stat-emoji">📚</div>
+                    <div class="stat-number" id="totalQuizzes">0</div>
+                    <div class="stat-label">Quizzes Planted</div>
+                </div>
+                <div class="stat-flower">
+                    <div class="stat-emoji">⭐</div>
+                    <div class="stat-number" id="avgScore">0%</div>
+                    <div class="stat-label">Average Bloom</div>
+                </div>
+                <div class="stat-flower">
+                    <div class="stat-emoji">🏆</div>
+                    <div class="stat-number" id="bestScore">0%</div>
+                    <div class="stat-label">Best Score</div>
+                </div>
+                <div class="stat-flower">
+                    <div class="stat-emoji">🔥</div>
+                    <div class="stat-number" id="streak">0</div>
+                    <div class="stat-label">Day Streak</div>
+                </div>
+            </div>
+            
+            <!-- Mastery Tree - Subject Growth -->
+            <div class="mastery-section">
+                <div class="section-title">
+                    <span>🌳</span>
+                    <span>Your Knowledge Tree</span>
+                    <span>🌳</span>
+                </div>
+                <div id="masteryTree" class="mastery-tree">
+                    <div class="loading">🌱 AISHA is measuring your growth...</div>
+                </div>
+            </div>
+            
+            <!-- Achievements / Badges -->
+            <div class="mastery-section">
+                <div class="section-title">
+                    <span>🏅</span>
+                    <span>AISHA's Badge Garden</span>
+                    <span>🏅</span>
+                </div>
+                <div id="achievementsGrid" class="achievements-grid">
+                    <div class="loading">🎖️ Collecting your achievements...</div>
+                </div>
+            </div>
+            
+            <!-- Quiz History -->
+            <div class="mastery-section">
+                <div class="section-title">
+                    <span>📜</span>
+                    <span>Your Learning Journey</span>
+                </div>
+                <div id="quizHistory" class="history-table">
+                    <div class="loading">📖 Reading your history...</div>
+                </div>
+            </div>
+            
+            <!-- Encouragement Message -->
+            <div class="encouragement-box">
+                <div class="encouragement-text" id="encouragementMessage">
+                    🌟 Every quiz you take makes you stronger! Keep going! 🌟
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Mock progress data
+        const progressData = {
+            totalQuizzes: 12,
+            avgScore: 74,
+            bestScore: 95,
+            streak: 5,
+            subjects: [
+                { name: "Mathematics", mastery: 65, color: "#ff6b9d", emoji: "📐" },
+                { name: "Physics", mastery: 45, color: "#ffb347", emoji: "⚛️" },
+                { name: "Biology", mastery: 82, color: "#52b788", emoji: "🧬" },
+                { name: "Chemistry", mastery: 38, color: "#a78bfa", emoji: "🧪" },
+                { name: "History", mastery: 71, color: "#60a5fa", emoji: "🌍" },
+                { name: "Literature", mastery: 88, color: "#f472b6", emoji: "📖" }
+            ],
+            achievements: [
+                { name: "First Quiz", icon: "🎯", earned: true, desc: "Complete your first quiz" },
+                { name: "Perfect Score", icon: "💯", earned: true, desc: "Get 100% on any quiz" },
+                { name: "5 Day Streak", icon: "🔥", earned: true, desc: "Practice 5 days in a row" },
+                { name: "Math Master", icon: "📐", earned: false, desc: "Reach 80% in Math" },
+                { name: "Science Star", icon: "🔬", earned: false, desc: "Complete 5 science quizzes" },
+                { name: "Bookworm", icon: "📚", earned: false, desc: "Read 3 books with AISHA" }
+            ],
+            history: [
+                { quiz: "Algebra Adventure", subject: "Math", score: 85, result: "pass", date: "Yesterday" },
+                { quiz: "Physics Fun", subject: "Physics", score: 60, result: "fail", date: "2 days ago" },
+                { quiz: "Biology Blast", subject: "Biology", score: 92, result: "pass", date: "3 days ago" },
+                { quiz: "Chemistry Challenge", subject: "Chemistry", score: 45, result: "fail", date: "5 days ago" },
+                { quiz: "History Heroes", subject: "History", score: 78, result: "pass", date: "1 week ago" }
+            ]
+        };
+        
+        function loadProgress() {
+            // Stats
+            document.getElementById('totalQuizzes').textContent = progressData.totalQuizzes;
+            document.getElementById('avgScore').textContent = progressData.avgScore + '%';
+            document.getElementById('bestScore').textContent = progressData.bestScore + '%';
+            document.getElementById('streak').textContent = progressData.streak;
+            
+            // Mastery Tree
+            const masteryDiv = document.getElementById('masteryTree');
+            masteryDiv.innerHTML = progressData.subjects.map(subject => `
+                <div class="mastery-branch">
+                    <div class="branch-header">
+                        <div class="branch-name">
+                            ${subject.emoji} ${subject.name}
+                        </div>
+                        <div class="branch-level">${subject.mastery}% Mastery</div>
+                    </div>
+                    <div class="growth-bar">
+                        <div class="growth-fill" style="width: ${subject.mastery}%; background: ${subject.color}">
+                            ${subject.mastery >= 70 ? '🌿' : '🌱'}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Achievements
+            const achievementsDiv = document.getElementById('achievementsGrid');
+            achievementsDiv.innerHTML = progressData.achievements.map(ach => `
+                <div class="achievement-card ${ach.earned ? '' : 'locked'}">
+                    <div class="achievement-icon">${ach.icon}</div>
+                    <div class="achievement-name">${ach.name}</div>
+                    <div style="font-size: 0.7rem; color: #999;">${ach.desc}</div>
+                    ${ach.earned ? '<div style="color: #ffd700; font-size: 0.8rem;">✓ Earned!</div>' : '<div style="color: #ccc; font-size: 0.7rem;">🔒 Locked</div>'}
+                </div>
+            `).join('');
+            
+            // Quiz History
+            const historyDiv = document.getElementById('quizHistory');
+            historyDiv.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Quiz Name</th>
+                            <th>Subject</th>
+                            <th>Score</th>
+                            <th>Result</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${progressData.history.map(h => `
+                            <tr>
+                                <td>${h.quiz}</td>
+                                <td>${h.subject}</td>
+                                <td><strong>${h.score}%</strong></td>
+                                <td><span class="badge-${h.result}">${h.result === 'pass' ? '🎉 Passed' : '📚 Keep Going'}</span></td>
+                                <td>${h.date}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            
+            // Encouragement message based on progress
+            const encouragementDiv = document.getElementById('encouragementMessage');
+            if (progressData.avgScore >= 80) {
+                encouragementDiv.innerHTML = "🌟 You're a learning superstar! 🌟 AISHA is so proud of you! Keep watering your knowledge garden! 💐";
+            } else if (progressData.avgScore >= 60) {
+                encouragementDiv.innerHTML = "🌱 You're growing beautifully! Every quiz makes you stronger. Let's reach for the stars together! ⭐";
+            } else {
+                encouragementDiv.innerHTML = "🌸 Don't give up! Every seed takes time to grow. AISHA believes in you! Let's practice together! 🤗💕";
+            }
+        }
+        
+        function getCurrentUser() {
+            const userStr = localStorage.getItem('user');
+            return userStr ? JSON.parse(userStr) : null;
+        }
+        
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/login.html';
+        }
+        
+        // Check login
+        if (!getCurrentUser()) {
+            window.location.href = '/login.html';
+        }
+        
+        // Load progress
+        loadProgress();
+    </script>
+</body>
+</html>
