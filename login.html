@@ -61,7 +61,7 @@
     </div>
     
     <script>
-        const API_URL = '/.netlify/functions/real-auth';
+        const API_URL = '/.netlify/functions/api/real-auth';
         
         function switchTab(tab) {
             const loginForm = document.getElementById('loginForm');
@@ -151,7 +151,6 @@
             }
         }
         
-        // Check if already logged in
         const user = JSON.parse(localStorage.getItem('user') || '{}');
         if (user.id) {
             window.location.href = user.role === 'admin' ? '/admin/dashboard.html' : '/student/dashboard.html';
