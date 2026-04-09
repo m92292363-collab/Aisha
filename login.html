@@ -83,8 +83,8 @@
     </div>
     
     <script>
-        // IMPORTANT: This MUST match your Netlify function path
-        const API_URL = '/.netlify/functions/api/real-auth';
+        // THIS CONNECTS TO YOUR NEON DATABASE VIA NETLIFY FUNCTION
+        const API_URL = '/.netlify/functions/api/auth';
         
         function switchTab(tab) {
             const loginForm = document.getElementById('loginForm');
@@ -127,7 +127,7 @@
             }, 3000);
         }
         
-        // LOGIN HANDLER
+        // LOGIN HANDLER - Checks against Neon database
         async function handleLogin(event) {
             event.preventDefault();
             
@@ -144,7 +144,7 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    localStorage.setItem('user', JSON.stringify(data.user));
+                    localStorage.setItem('aisha_user', JSON.stringify(data.user));
                     showSuccess('Login successful! Redirecting...');
                     setTimeout(() => {
                         if (data.user.role === 'admin') {
@@ -158,11 +158,11 @@
                 }
             } catch (error) {
                 console.error('Login error:', error);
-                showError('Connection error. Please make sure you are online.');
+                showError('Connection error. Please check your internet connection.');
             }
         }
         
-        // REGISTER HANDLER
+        // REGISTER HANDLER - Saves new user to Neon database
         async function handleRegister(event) {
             event.preventDefault();
             
@@ -191,7 +191,7 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    localStorage.setItem('user', JSON.stringify(data.user));
+                    localStorage.setItem('aisha_user', JSON.stringify(data.user));
                     showSuccess('Account created successfully! Redirecting...');
                     setTimeout(() => {
                         window.location.href = '/student/dashboard.html';
@@ -205,8 +205,8 @@
             }
         }
         
-        // Check if already logged in
-        const savedUser = localStorage.getItem('user');
+        // Check if user is already logged in
+        const savedUser = localStorage.getItem('aisha_user');
         if (savedUser) {
             try {
                 const user = JSON.parse(savedUser);
