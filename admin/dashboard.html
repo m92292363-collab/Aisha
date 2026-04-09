@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AISHA Admin - Manage Your AI Tutor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Comic Neue', 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+        }
+        
+        /* Admin Container */
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar - Professional but Fun */
+        .admin-sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #0f3460 0%, #16213e 100%);
+            padding: 2rem 1rem;
+            border-radius: 0 30px 30px 0;
+            box-shadow: 10px 0 20px rgba(0,0,0,0.2);
+        }
+        
+        .admin-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .admin-logo .logo-icon {
+            font-size: 3rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .admin-logo h2 {
+            color: #ffd700;
+            font-size: 1.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .admin-logo p {
+            color: #8899aa;
+            font-size: 0.8rem;
+        }
+        
+        .admin-nav {
+            margin-top: 2rem;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            margin: 0.5rem 0;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50px;
+            color: #ccddee;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: #ffd700;
+            color: #0f3460;
+            transform: translateX(5px);
+        }
+        
+        .logout-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 2rem;
+            width: 100%;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: #ff6b81;
+            transform: scale(1.02);
+        }
+        
+        /* Main Content */
+        .admin-main {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        /* Header */
+        .admin-header {
+            background: rgba(255,255,255,0.05);
+            border-radius: 30px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .admin-header h1 {
+            color: #ffd700;
+            font-size: 1.8rem;
+        }
+        
+        .admin-header p {
+            color: #8899aa;
+            margin-top: 0.5rem;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,215,0,0.2);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: #ffd700;
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .stat-label {
+            color: #8899aa;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .action-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            border: 1px solid rgba(255,215,0,0.2);
+        }
+        
+        .action-card:hover {
+            background: rgba(255,215,0,0.1);
+            transform: translateY(-5px);
+            border-color: #ffd700;
+        }
+        
+        .action-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .action-title {
+            color: #ffd700;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .action-desc {
+            color: #8899aa;
+            font-size: 0.8rem;
+        }
+        
+        /* Recent Activity */
+        .recent-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 25px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .section-title {
+            color: #ffd700;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: 15px;
+            transition: all 0.3s;
+        }
+        
+        .activity-item:hover {
+            background: rgba(255,215,0,0.1);
+        }
+        
+        .activity-icon {
+            font-size: 1.5rem;
+        }
+        
+        .activity-details {
+            flex: 1;
+        }
+        
+        .activity-text {
+            color: #ccddee;
+        }
+        
+        .activity-time {
+            font-size: 0.7rem;
+            color: #8899aa;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-container {
+                flex-direction: column;
+            }
+            
+            .admin-sidebar {
+                width: 100%;
+                border-radius: 0 0 30px 30px;
+            }
+            
+            .stats-grid, .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <div class="logo-icon">🤖📚</div>
+                <h2>AISHA Admin</h2>
+                <p>AI Tutor Management</p>
+            </div>
+            
+            <nav class="admin-nav">
+                <a href="/admin/dashboard.html" class="nav-item active">
+                    <span>📊</span> Dashboard
+                </a>
+                <a href="/admin/books.html" class="nav-item">
+                    <span>📖</span> Manage Books
+                </a>
+                <a href="/admin/quizzes.html" class="nav-item">
+                    <span>📝</span> Manage Quizzes
+                </a>
+                <a href="/admin/users.html" class="nav-item">
+                    <span>👥</span> Manage Students
+                </a>
+                <a href="/admin/analytics.html" class="nav-item">
+                    <span>📈</span> Analytics
+                </a>
+            </nav>
+            
+            <button class="logout-btn" onclick="logout()">
+                🚪 Logout
+            </button>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="admin-header">
+                <h1>Welcome back, <span id="adminName">Admin</span>! 👋</h1>
+                <p>AISHA is ready to help you manage the learning platform</p>
+            </div>
+            
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">👨‍🎓</div>
+                    <div class="stat-number" id="totalStudents">24</div>
+                    <div class="stat-label">Active Students</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📖</div>
+                    <div class="stat-number" id="totalBooks">8</div>
+                    <div class="stat-label">Books in Library</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📝</div>
+                    <div class="stat-number" id="totalQuizzes">15</div>
+                    <div class="stat-label">Quizzes Created</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-number" id="totalAttempts">127</div>
+                    <div class="stat-label">Quiz Attempts</div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <div class="action-card" onclick="location.href='/admin/books.html'">
+                    <div class="action-icon">📖✨</div>
+                    <div class="action-title">Upload New Book</div>
+                    <div class="action-desc">Add a book to AISHA's brain</div>
+                </div>
+                <div class="action-card" onclick="location.href='/admin/quizzes.html'">
+                    <div class="action-icon">📝🎯</div>
+                    <div class="action-title">Create New Quiz</div>
+                    <div class="action-desc">Design engaging quizzes for students</div>
+                </div>
+                <div class="action-card" onclick="location.href='/admin/users.html'">
+                    <div class="action-icon">👥➕</div>
+                    <div class="action-title">Add New Student</div>
+                    <div class="action-desc">Invite learners to AISHA</div>
+                </div>
+                <div class="action-card" onclick="location.href='/admin/analytics.html'">
+                    <div class="action-icon">📊🌟</div>
+                    <div class="action-title">View Analytics</div>
+                    <div class="action-desc">See how students are progressing</div>
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="recent-section">
+                <div class="section-title">
+                    <span>🔄</span>
+                    <span>Recent Activity</span>
+                </div>
+                <div class="activity-list" id="recentActivity">
+                    <div class="activity-item">
+                        <div class="activity-icon">📖</div>
+                        <div class="activity-details">
+                            <div class="activity-text">New book uploaded: "Introduction to Physics"</div>
+                            <div class="activity-time">2 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">📝</div>
+                        <div class="activity-details">
+                            <div class="activity-text">New quiz created: "Algebra Basics"</div>
+                            <div class="activity-time">Yesterday</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">👨‍🎓</div>
+                        <div class="activity-details">
+                            <div class="activity-text">New student registered: Sarah Johnson</div>
+                            <div class="activity-time">2 days ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">✅</div>
+                        <div class="activity-details">
+                            <div class="activity-text">Student completed "Biology Blast" quiz with 92%</div>
+                            <div class="activity-time">3 days ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        function getCurrentUser() {
+            const userStr = localStorage.getItem('user');
+            return userStr ? JSON.parse(userStr) : null;
+        }
+        
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/login.html';
+        }
+        
+        // Check if admin is logged in
+        const user = getCurrentUser();
+        if (!user || user.role !== 'admin') {
+            window.location.href = '/login.html';
+        } else {
+            document.getElementById('adminName').textContent = user.full_name || 'Admin';
+        }
+        
+        // Load stats from localStorage or use defaults
+        function loadStats() {
+            const books = JSON.parse(localStorage.getItem('aisha_books') || '[]');
+            const quizzes = JSON.parse(localStorage.getItem('aisha_quizzes') || '[]');
+            const users = JSON.parse(localStorage.getItem('aisha_users') || '[]');
+            const attempts = JSON.parse(localStorage.getItem('aisha_attempts') || '[]');
+            
+            document.getElementById('totalBooks').textContent = books.length || 8;
+            document.getElementById('totalQuizzes').textContent = quizzes.length || 15;
+            document.getElementById('totalStudents').textContent = users.filter(u => u.role !== 'admin').length || 24;
+            document.getElementById('totalAttempts').textContent = attempts.length || 127;
+        }
+        
+        loadStats();
+    </script>
+</body>
+</html>
