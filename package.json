@@ -1,7 +1,6 @@
 {
-  "name": "aisha-backend",
+  "name": "aisha",
   "version": "1.0.0",
-  "type": "module",
   "dependencies": {
     "@neondatabase/serverless": "^0.6.0",
     "bcryptjs": "^2.4.3"
