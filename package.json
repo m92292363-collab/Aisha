@@ -1,14 +1,9 @@
 {
   "name": "aisha-ai-tutor",
   "version": "1.0.0",
-  "description": "AISHA - Your Personal AI Tutor",
-  "scripts": {
-    "dev": "netlify dev"
-  },
+  "type": "module",
   "dependencies": {
     "@neondatabase/serverless": "^0.6.0",
-    "openai": "^4.20.0",
-    "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2"
+    "bcryptjs": "^2.4.3"
   }
 }
