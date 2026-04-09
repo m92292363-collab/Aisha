@@ -17,7 +17,7 @@ export const handler = async (event) => {
     const url = new URL(event.rawUrl || `http://localhost${event.path}`);
     const pathname = url.pathname;
     
-    // REGISTER - /register
+    // REGISTER
     if (pathname.includes('/register') && event.httpMethod === 'POST') {
         try {
             const { email, password, full_name } = JSON.parse(event.body);
@@ -42,7 +42,7 @@ export const handler = async (event) => {
         }
     }
     
-    // LOGIN - /login
+    // LOGIN
     if (pathname.includes('/login') && event.httpMethod === 'POST') {
         try {
             const { email, password } = JSON.parse(event.body);
