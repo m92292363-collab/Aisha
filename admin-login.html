@@ -5,12 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - AISHA</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
@@ -19,181 +14,70 @@
             align-items: center;
             justify-content: center;
         }
-        
-        .login-container {
-            width: 100%;
-            max-width: 400px;
-            padding: 1rem;
-        }
-        
-        .login-card {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid rgba(255,215,0,0.2);
-        }
-        
-        .logo {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .logo h1 {
-            color: #ffd700;
-            font-size: 1.8rem;
-        }
-        
-        .logo p {
-            color: #8899aa;
-            font-size: 0.9rem;
-            margin-top: 0.3rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #ccddee;
-            font-weight: 500;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1px solid rgba(255,215,0,0.3);
-            border-radius: 12px;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            font-size: 1rem;
-        }
-        
-        .form-group input:focus {
-            outline: none;
-            border-color: #ffd700;
-        }
-        
-        .btn {
-            width: 100%;
-            padding: 0.9rem;
-            background: linear-gradient(135deg, #ffd700, #ffed4e);
-            color: #1a1a2e;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255,215,0,0.3);
-        }
-        
-        .error-message {
-            background: rgba(255,71,87,0.2);
-            color: #ff6b81;
-            padding: 0.8rem;
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            text-align: center;
-            display: none;
-        }
-        
-        .back-link {
-            text-align: center;
-            margin-top: 1.5rem;
-        }
-        
-        .back-link a {
-            color: #8899aa;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-        
-        .back-link a:hover {
-            color: #ffd700;
-        }
+        .login-container { width: 100%; max-width: 400px; padding: 1rem; }
+        .login-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 2rem; border: 1px solid rgba(255,215,0,0.2); }
+        .logo { text-align: center; margin-bottom: 2rem; }
+        .logo h1 { color: #ffd700; font-size: 1.8rem; }
+        .logo p { color: #8899aa; font-size: 0.9rem; margin-top: 0.3rem; }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; color: #ccddee; font-weight: 500; }
+        .form-group input { width: 100%; padding: 0.8rem 1rem; border: 1px solid rgba(255,215,0,0.3); border-radius: 12px; background: rgba(255,255,255,0.1); color: white; font-size: 1rem; }
+        .form-group input:focus { outline: none; border-color: #ffd700; }
+        .btn { width: 100%; padding: 0.9rem; background: linear-gradient(135deg, #ffd700, #ffed4e); color: #1a1a2e; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+        .btn:hover { transform: translateY(-2px); }
+        .error-message { background: rgba(255,71,87,0.2); color: #ff6b81; padding: 0.8rem; border-radius: 12px; margin-bottom: 1rem; display: none; text-align: center; }
+        .back-link { text-align: center; margin-top: 1.5rem; }
+        .back-link a { color: #8899aa; text-decoration: none; font-size: 0.9rem; }
+        .back-link a:hover { color: #ffd700; }
     </style>
 </head>
 <body>
     <div class="login-container">
         <div class="login-card">
-            <div class="logo">
-                <h1>🔒 Admin Portal</h1>
-                <p>AISHA Admin Access</p>
-            </div>
-            
+            <div class="logo"><h1>🔒 Admin Portal</h1><p>AISHA Admin Access</p></div>
             <div id="errorMessage" class="error-message"></div>
-            
             <form onsubmit="handleAdminLogin(event)">
-                <div class="form-group">
-                    <label>Admin Email</label>
-                    <input type="email" id="adminEmail" placeholder="admin@aisha.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="adminPassword" placeholder="••••••••" required>
-                </div>
+                <div class="form-group"><label>Admin Email</label><input type="email" id="adminEmail" required></div>
+                <div class="form-group"><label>Password</label><input type="password" id="adminPassword" required></div>
                 <button type="submit" class="btn">Admin Login →</button>
             </form>
-            
-            <div class="back-link">
-                <a href="/login.html">← Back to Student Login</a>
-            </div>
+            <div class="back-link"><a href="/login.html">← Back to Student Login</a></div>
         </div>
     </div>
-    
     <script>
         function showError(msg) {
             const errorDiv = document.getElementById('errorMessage');
             errorDiv.textContent = msg;
             errorDiv.style.display = 'block';
-            setTimeout(() => {
-                errorDiv.style.display = 'none';
-            }, 3000);
+            setTimeout(() => errorDiv.style.display = 'none', 3000);
         }
         
-        function handleAdminLogin(event) {
+        async function handleAdminLogin(event) {
             event.preventDefault();
-            
             const email = document.getElementById('adminEmail').value;
             const password = document.getElementById('adminPassword').value;
             
-            // Get users from localStorage
-            const users = JSON.parse(localStorage.getItem('aisha_users') || '[]');
-            
-            // Find admin user
-            const admin = users.find(u => u.email === email && u.role === 'admin');
-            
-            // Also check hardcoded demo admin
-            const isDemoAdmin = email === 'admin@aisha.com' && password === 'admin123';
-            
-            if (admin || isDemoAdmin) {
-                const adminUser = admin || {
-                    id: 'admin_demo',
-                    email: 'admin@aisha.com',
-                    full_name: 'System Admin',
-                    role: 'admin'
-                };
+            try {
+                const response = await fetch('/.netlify/functions/api/real-auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
                 
-                localStorage.setItem('token', 'admin-token-' + Date.now());
-                localStorage.setItem('user', JSON.stringify(adminUser));
-                window.location.href = '/admin/dashboard.html';
-            } else {
-                showError('Invalid admin credentials');
+                if (data.success && data.user.role === 'admin') {
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    window.location.href = '/admin/dashboard.html';
+                } else {
+                    showError('Invalid admin credentials');
+                }
+            } catch (error) {
+                showError('Connection error');
             }
         }
         
-        // Check if already logged in as admin
-        const token = localStorage.getItem('token');
         const user = JSON.parse(localStorage.getItem('user') || '{}');
-        if (token && user.role === 'admin') {
+        if (user.id && user.role === 'admin') {
             window.location.href = '/admin/dashboard.html';
         }
     </script>
