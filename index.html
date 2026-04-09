@@ -5,156 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AISHA - Your Personal AI Tutor</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
         }
-        
-        .navbar {
-            background: white;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .logo h1 {
-            color: #667eea;
-            font-size: 1.8rem;
-        }
-        
-        .nav-buttons {
-            display: flex;
-            gap: 1rem;
-        }
-        
-        .btn {
-            padding: 0.5rem 1.5rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-            cursor: pointer;
-            border: none;
-            font-size: 1rem;
-        }
-        
-        .btn-primary {
-            background: #667eea;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: #5a67d8;
-            transform: translateY(-2px);
-        }
-        
-        .btn-outline {
-            border: 2px solid #667eea;
-            color: #667eea;
-            background: transparent;
-        }
-        
-        .hero {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-            display: flex;
-            align-items: center;
-            gap: 4rem;
-            color: white;
-        }
-        
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        
-        .highlight {
-            color: #ffd700;
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-        
-        .features {
-            background: white;
-            padding: 4rem 2rem;
-        }
-        
-        .features h2 {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 3rem;
-            color: #333;
-        }
-        
-        .feature-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-        
-        .feature-card {
-            text-align: center;
-            padding: 2rem;
-            background: #f8f9fa;
-            border-radius: 12px;
-            transition: transform 0.3s;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        
-        footer {
-            background: #2d3748;
-            color: white;
-            text-align: center;
-            padding: 2rem;
-        }
-        
-        @media (max-width: 768px) {
-            .hero {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-        }
+        .navbar { background: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .logo h1 { color: #667eea; font-size: 1.8rem; }
+        .nav-buttons { display: flex; gap: 1rem; }
+        .btn { padding: 0.5rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 500; transition: all 0.3s; cursor: pointer; border: none; font-size: 1rem; }
+        .btn-primary { background: #667eea; color: white; }
+        .btn-primary:hover { background: #5a67d8; transform: translateY(-2px); }
+        .btn-outline { border: 2px solid #667eea; color: #667eea; background: transparent; }
+        .hero { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; display: flex; align-items: center; gap: 4rem; color: white; }
+        .hero h1 { font-size: 3rem; margin-bottom: 1rem; }
+        .highlight { color: #ffd700; }
+        .hero p { font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9; }
+        .features { background: white; padding: 4rem 2rem; }
+        .features h2 { text-align: center; font-size: 2rem; margin-bottom: 3rem; color: #333; }
+        .feature-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .feature-card { text-align: center; padding: 2rem; background: #f8f9fa; border-radius: 12px; transition: transform 0.3s; }
+        .feature-card:hover { transform: translateY(-5px); }
+        .feature-icon { font-size: 3rem; margin-bottom: 1rem; }
+        footer { background: #2d3748; color: white; text-align: center; padding: 2rem; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @media (max-width: 768px) { .hero { flex-direction: column; text-align: center; } .hero h1 { font-size: 2rem; } }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo">
-            <h1>📚 AISHA</h1>
-        </div>
+        <div class="logo"><h1>📚 AISHA</h1></div>
         <div class="nav-buttons">
             <button class="btn btn-outline" onclick="location.href='/login.html'">Login</button>
             <button class="btn btn-primary" onclick="location.href='/login.html'">Sign Up</button>
         </div>
     </nav>
-
     <section class="hero">
         <div class="hero-content">
             <h1>Meet <span class="highlight">AISHA</span></h1>
@@ -162,46 +48,23 @@
             <p>Upload your books, chat with AISHA, take quizzes, and master any subject with personalized learning.</p>
             <button class="btn btn-primary" onclick="location.href='/login.html'">Start Learning →</button>
         </div>
-        <div class="hero-image">
-            <div style="font-size: 8rem; animation: bounce 2s ease-in-out infinite;">🤖</div>
-        </div>
+        <div class="hero-image"><div style="font-size: 8rem; animation: bounce 2s ease-in-out infinite;">🤖</div></div>
     </section>
-
     <section class="features">
         <h2>What AISHA Can Do For You</h2>
         <div class="feature-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🤖</div>
-                <h3>Chat with AISHA</h3>
-                <p>Talk naturally with AISHA like a real tutor</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📝</div>
-                <h3>Smart Quizzes</h3>
-                <p>Personalized quizzes based on your weak areas</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3>Track Progress</h3>
-                <p>See your improvement over time</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📚</div>
-                <h3>Any Book Format</h3>
-                <p>Upload PDF, EPUB, or TXT files</p>
-            </div>
+            <div class="feature-card"><div class="feature-icon">🤖</div><h3>Chat with AISHA</h3><p>Talk naturally with AISHA like a real tutor</p></div>
+            <div class="feature-card"><div class="feature-icon">📝</div><h3>Smart Quizzes</h3><p>Personalized quizzes based on your weak areas</p></div>
+            <div class="feature-card"><div class="feature-icon">📊</div><h3>Track Progress</h3><p>See your improvement over time</p></div>
+            <div class="feature-card"><div class="feature-icon">📚</div><h3>Any Book Format</h3><p>Upload PDF, EPUB, or TXT files</p></div>
         </div>
     </section>
-
-    <footer>
-        <p>AISHA - Your Personal AI Tutor | Learn Smarter with AI</p>
-    </footer>
-
-    <style>
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+    <footer><p>AISHA - Your Personal AI Tutor | Learn Smarter with AI</p></footer>
+    <script>
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        if (user.id) {
+            window.location.href = user.role === 'admin' ? '/admin/dashboard.html' : '/student/dashboard.html';
         }
-    </style>
+    </script>
 </body>
 </html>
