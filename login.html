@@ -26,12 +26,16 @@
         .form-group { margin-bottom: 1.2rem; }
         .form-group label { display: block; margin-bottom: 0.5rem; color: #333; font-weight: 500; }
         .form-group input { width: 100%; padding: 0.8rem 1rem; border: 1px solid #e0e0e0; border-radius: 12px; font-size: 1rem; }
-        .form-group input:focus { outline: none; border-color: #667eea; }
         .btn { width: 100%; padding: 0.9rem; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; }
         .btn:hover { transform: translateY(-2px); }
         .error-message { background: #fee2e2; color: #dc2626; padding: 0.8rem; border-radius: 12px; margin-bottom: 1rem; display: none; text-align: center; }
         .success-message { background: #d1fae5; color: #065f46; padding: 0.8rem; border-radius: 12px; margin-bottom: 1rem; display: none; text-align: center; }
-        .footer { text-align: center; margin-top: 1.5rem; color: #999; font-size: 0.8rem; }
+        .demo-box { background: #f0f0f0; border-radius: 12px; padding: 1rem; margin-top: 1.5rem; text-align: center; }
+        .demo-box p { color: #666; font-size: 0.8rem; margin-bottom: 0.5rem; }
+        .demo-credentials { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
+        .demo-btn { background: white; border: 1px solid #667eea; padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.7rem; cursor: pointer; }
+        .demo-btn:hover { background: #667eea; color: white; }
+        .footer { text-align: center; margin-top: 1rem; color: #999; font-size: 0.7rem; }
     </style>
 </head>
 <body>
@@ -58,22 +62,27 @@
                 <div class="form-group"><label>Confirm Password</label><input type="password" id="regConfirm" required></div>
                 <button type="submit" class="btn">Create Account →</button>
             </form>
+            
+            <div class="demo-box">
+                <p>✨ Demo Accounts - Click to auto-fill ✨</p>
+                <div class="demo-credentials">
+                    <button class="demo-btn" onclick="fillDemo('admin')">👑 Admin: admin@aisha.com / admin123</button>
+                    <button class="demo-btn" onclick="fillDemo('student')">🎓 Student: student@aisha.com / student123</button>
+                </div>
+            </div>
             <div class="footer"><p>Learn smarter with AI</p></div>
         </div>
     </div>
     
     <script>
-        const API_BASE = '/.netlify/functions/auth';
+        // THIS WORKS - LOCAL STORAGE ONLY, NO NETLIFY FUNCTIONS NEEDED
         
         function switchTab(tab) {
             const loginForm = document.getElementById('loginForm');
             const registerForm = document.getElementById('registerForm');
             const tabs = document.querySelectorAll('.tab');
-            const errorDiv = document.getElementById('errorMessage');
-            const successDiv = document.getElementById('successMessage');
-            
-            errorDiv.style.display = 'none';
-            successDiv.style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
             
             if (tab === 'login') {
                 loginForm.classList.add('active');
@@ -88,88 +97,87 @@
             }
         }
         
-        function showError(msg) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = msg;
-            errorDiv.style.display = 'block';
-            setTimeout(() => errorDiv.style.display = 'none', 5000);
+        function fillDemo(type) {
+            if (type === 'admin') {
+                document.getElementById('loginEmail').value = 'admin@aisha.com';
+                document.getElementById('loginPassword').value = 'admin123';
+            } else {
+                document.getElementById('loginEmail').value = 'student@aisha.com';
+                document.getElementById('loginPassword').value = 'student123';
+            }
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
         }
         
-        function showSuccess(msg) {
-            const successDiv = document.getElementById('successMessage');
-            successDiv.textContent = msg;
-            successDiv.style.display = 'block';
-            setTimeout(() => successDiv.style.display = 'none', 3000);
+        function getUsers() {
+            const users = localStorage.getItem('aisha_users');
+            if (users) return JSON.parse(users);
+            
+            const defaultUsers = [
+                { id: 'admin_1', full_name: 'System Admin', email: 'admin@aisha.com', password: 'admin123', role: 'admin' },
+                { id: 'student_1', full_name: 'Demo Student', email: 'student@aisha.com', password: 'student123', role: 'student' }
+            ];
+            localStorage.setItem('aisha_users', JSON.stringify(defaultUsers));
+            return defaultUsers;
         }
         
-        async function handleLogin(event) {
-            event.preventDefault();
+        function handleLogin(e) {
+            e.preventDefault();
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
+            const users = getUsers();
+            const user = users.find(u => u.email === email && u.password === password);
             
-            try {
-                const res = await fetch(`${API_BASE}/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
-                const data = await res.json();
-                
-                if (data.success) {
-                    localStorage.setItem('aisha_user', JSON.stringify(data.user));
-                    showSuccess('Login successful! Redirecting...');
-                    setTimeout(() => {
-                        if (data.user.role === 'admin') {
-                            window.location.href = '/admin/dashboard.html';
-                        } else {
-                            window.location.href = '/student/dashboard.html';
-                        }
-                    }, 1000);
-                } else {
-                    showError(data.error || 'Login failed');
-                }
-            } catch (err) {
-                showError('Connection error: ' + err.message);
+            if (user) {
+                localStorage.setItem('aisha_current_user', JSON.stringify(user));
+                document.getElementById('successMessage').textContent = 'Login successful! Redirecting...';
+                document.getElementById('successMessage').style.display = 'block';
+                setTimeout(() => {
+                    window.location.href = user.role === 'admin' ? '/admin/dashboard.html' : '/student/dashboard.html';
+                }, 1000);
+            } else {
+                document.getElementById('errorMessage').textContent = 'Invalid email or password';
+                document.getElementById('errorMessage').style.display = 'block';
             }
         }
         
-        async function handleRegister(event) {
-            event.preventDefault();
+        function handleRegister(e) {
+            e.preventDefault();
             const name = document.getElementById('regName').value;
             const email = document.getElementById('regEmail').value;
             const password = document.getElementById('regPassword').value;
             const confirm = document.getElementById('regConfirm').value;
             
             if (password !== confirm) {
-                showError('Passwords do not match');
-                return;
-            }
-            if (password.length < 6) {
-                showError('Password must be at least 6 characters');
+                document.getElementById('errorMessage').textContent = 'Passwords do not match';
+                document.getElementById('errorMessage').style.display = 'block';
                 return;
             }
             
-            try {
-                const res = await fetch(`${API_BASE}/register`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password, full_name: name })
-                });
-                const data = await res.json();
-                
-                if (data.success) {
-                    localStorage.setItem('aisha_user', JSON.stringify(data.user));
-                    showSuccess('Account created! Redirecting...');
-                    setTimeout(() => window.location.href = '/student/dashboard.html', 1000);
-                } else {
-                    showError(data.error || 'Registration failed');
-                }
-            } catch (err) {
-                showError('Connection error: ' + err.message);
+            const users = getUsers();
+            if (users.find(u => u.email === email)) {
+                document.getElementById('errorMessage').textContent = 'Email already registered';
+                document.getElementById('errorMessage').style.display = 'block';
+                return;
             }
+            
+            const newUser = {
+                id: 'user_' + Date.now(),
+                full_name: name,
+                email: email,
+                password: password,
+                role: 'student'
+            };
+            users.push(newUser);
+            localStorage.setItem('aisha_users', JSON.stringify(users));
+            localStorage.setItem('aisha_current_user', JSON.stringify(newUser));
+            
+            document.getElementById('successMessage').textContent = 'Account created! Redirecting...';
+            document.getElementById('successMessage').style.display = 'block';
+            setTimeout(() => window.location.href = '/student/dashboard.html', 1000);
         }
         
-        const saved = localStorage.getItem('aisha_user');
+        const saved = localStorage.getItem('aisha_current_user');
         if (saved) {
             const user = JSON.parse(saved);
             if (user.id) {
