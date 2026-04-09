@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AISHA Admin - Manage Books</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Comic Neue', 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+        }
+        
+        /* Admin Container */
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .admin-sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #0f3460 0%, #16213e 100%);
+            padding: 2rem 1rem;
+            border-radius: 0 30px 30px 0;
+            box-shadow: 10px 0 20px rgba(0,0,0,0.2);
+        }
+        
+        .admin-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .admin-logo .logo-icon {
+            font-size: 3rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .admin-logo h2 {
+            color: #ffd700;
+            font-size: 1.5rem;
+        }
+        
+        .admin-nav .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            margin: 0.5rem 0;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50px;
+            color: #ccddee;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .admin-nav .nav-item:hover, .admin-nav .nav-item.active {
+            background: #ffd700;
+            color: #0f3460;
+        }
+        
+        .logout-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 2rem;
+            width: 100%;
+            font-family: inherit;
+        }
+        
+        /* Main Content */
+        .admin-main {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .admin-header h1 {
+            color: #ffd700;
+        }
+        
+        .add-book-btn {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #0f3460;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        
+        .add-book-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Books Grid */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .book-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,215,0,0.2);
+        }
+        
+        .book-card:hover {
+            transform: translateY(-5px);
+            border-color: #ffd700;
+        }
+        
+        .book-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .book-title {
+            color: #ffd700;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .book-author {
+            color: #8899aa;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .book-meta {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .meta-tag {
+            background: rgba(255,215,0,0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: #ffd700;
+        }
+        
+        .book-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .delete-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: #16213e;
+            border-radius: 30px;
+            width: 90%;
+            max-width: 500px;
+            padding: 2rem;
+            animation: modalPop 0.3s ease-out;
+            border: 2px solid #ffd700;
+        }
+        
+        @keyframes modalPop {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-header h2 {
+            color: #ffd700;
+        }
+        
+        .close-modal {
+            font-size: 2rem;
+            cursor: pointer;
+            color: #ffd700;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ccddee;
+            font-weight: bold;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid rgba(255,215,0,0.3);
+            border-radius: 15px;
+            background: rgba(255,255,255,0.05);
+            color: white;
+            font-family: inherit;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #0f3460;
+            border: none;
+            padding: 1rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            font-family: inherit;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #8899aa;
+        }
+        
+        @media (max-width: 768px) {
+            .admin-container {
+                flex-direction: column;
+            }
+            
+            .admin-sidebar {
+                width: 100%;
+                border-radius: 0 0 30px 30px;
+            }
+            
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <div class="logo-icon">🤖📚</div>
+                <h2>AISHA Admin</h2>
+            </div>
+            
+            <nav class="admin-nav">
+                <a href="/admin/dashboard.html" class="nav-item">📊 Dashboard</a>
+                <a href="/admin/books.html" class="nav-item active">📖 Manage Books</a>
+                <a href="/admin/quizzes.html" class="nav-item">📝 Manage Quizzes</a>
+                <a href="/admin/users.html" class="nav-item">👥 Manage Students</a>
+                <a href="/admin/analytics.html" class="nav-item">📈 Analytics</a>
+            </nav>
+            
+            <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="admin-header">
+                <h1>📖 AISHA's Library</h1>
+                <button class="add-book-btn" onclick="showAddBookModal()">➕ Add New Book</button>
+            </div>
+            
+            <div id="booksGrid" class="books-grid">
+                <div class="empty-state">📚 No books yet. Click "Add New Book" to teach AISHA!</div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Add Book Modal -->
+    <div id="addBookModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📖 Add Book to AISHA</h2>
+                <span class="close-modal" onclick="closeAddBookModal()">&times;</span>
+            </div>
+            <form id="addBookForm" onsubmit="addBook(event)">
+                <div class="form-group">
+                    <label>📕 Book Title</label>
+                    <input type="text" id="bookTitle" placeholder="e.g., Introduction to Physics" required>
+                </div>
+                <div class="form-group">
+                    <label>✍️ Author</label>
+                    <input type="text" id="bookAuthor" placeholder="e.g., Dr. Sarah Smith">
+                </div>
+                <div class="form-group">
+                    <label>📚 Subject</label>
+                    <select id="bookSubject" required>
+                        <option value="Mathematics">📐 Mathematics</option>
+                        <option value="Physics">⚛️ Physics</option>
+                        <option value="Chemistry">🧪 Chemistry</option>
+                        <option value="Biology">🧬 Biology</option>
+                        <option value="History">🌍 History</option>
+                        <option value="Literature">📖 Literature</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>⭐ Difficulty Level</label>
+                    <select id="bookDifficulty">
+                        <option value="1">🍭 Easy Peasy</option>
+                        <option value="2">📚 Medium</option>
+                        <option value="3">🔥 Challenge Mode</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>📄 Description</label>
+                    <textarea id="bookDescription" rows="3" placeholder="What is this book about?"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>📁 Book File (PDF, EPUB, TXT)</label>
+                    <input type="file" id="bookFile" accept=".pdf,.epub,.txt">
+                    <small style="color:#8899aa;">📝 For demo, you can add books without file</small>
+                </div>
+                <button type="submit" class="submit-btn">✨ Add to AISHA's Brain ✨</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Load books from localStorage
+        let books = JSON.parse(localStorage.getItem('aisha_books') || '[]');
+        
+        // Demo books if empty
+        if (books.length === 0) {
+            books = [
+                { id: 1, title: "Introduction to Physics", author: "Dr. Sarah Smith", subject: "Physics", difficulty: 2, description: "Learn the basics of physics", addedAt: new Date().toISOString() },
+                { id: 2, title: "Algebra Adventures", author: "Prof. John Doe", subject: "Mathematics", difficulty: 1, description: "Fun with equations", addedAt: new Date().toISOString() },
+                { id: 3, title: "Biology Basics", author: "Dr. Emily Chen", subject: "Biology", difficulty: 1, description: "Explore living things", addedAt: new Date().toISOString() }
+            ];
+            localStorage.setItem('aisha_books', JSON.stringify(books));
+        }
+        
+        function displayBooks() {
+            const grid = document.getElementById('booksGrid');
+            
+            if (books.length === 0) {
+                grid.innerHTML = '<div class="empty-state">📚 No books yet. Click "Add New Book" to teach AISHA!</div>';
+                return;
+            }
+            
+            grid.innerHTML = books.map(book => `
+                <div class="book-card">
+                    <div class="book-icon">${getBookIcon(book.subject)}</div>
+                    <div class="book-title">${book.title}</div>
+                    <div class="book-author">by ${book.author || 'Unknown'}</div>
+                    <div class="book-meta">
+                        <span class="meta-tag">📚 ${book.subject}</span>
+                        <span class="meta-tag">${getDifficultyIcon(book.difficulty)}</span>
+                    </div>
+                    <div class="book-actions">
+                        <button class="delete-btn" onclick="deleteBook(${book.id})">🗑️ Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function getBookIcon(subject) {
+            const icons = {
+                'Mathematics': '📐',
+                'Physics': '⚛️',
+                'Chemistry': '🧪',
+                'Biology': '🧬',
+                'History': '🌍',
+                'Literature': '📖'
+            };
+            return icons[subject] || '📚';
+        }
+        
+        function getDifficultyIcon(level) {
+            if (level === 1) return '🍭 Easy';
+            if (level === 2) return '📚 Medium';
+            return '🔥 Hard';
+        }
+        
+        function addBook(event) {
+            event.preventDefault();
+            
+            const newBook = {
+                id: Date.now(),
+                title: document.getElementById('bookTitle').value,
+                author: document.getElementById('bookAuthor').value,
+                subject: document.getElementById('bookSubject').value,
+                difficulty: parseInt(document.getElementById('bookDifficulty').value),
+                description: document.getElementById('bookDescription').value,
+                addedAt: new Date().toISOString()
+            };
+            
+            books.push(newBook);
+            localStorage.setItem('aisha_books', JSON.stringify(books));
+            
+            closeAddBookModal();
+            document.getElementById('addBookForm').reset();
+            displayBooks();
+            
+            alert(`✨ "${newBook.title}" has been added to AISHA's brain! ✨`);
+        }
+        
+        function deleteBook(id) {
+            if (confirm('Are you sure you want to remove this book from AISHA\'s library?')) {
+                books = books.filter(book => book.id !== id);
+                localStorage.setItem('aisha_books', JSON.stringify(books));
+                displayBooks();
+                alert('📖 Book removed successfully');
+            }
+        }
+        
+        function showAddBookModal() {
+            document.getElementById('addBookModal').style.display = 'flex';
+        }
+        
+        function closeAddBookModal() {
+            document.getElementById('addBookModal').style.display = 'none';
+        }
+        
+        function getCurrentUser() {
+            const userStr = localStorage.getItem('user');
+            return userStr ? JSON.parse(userStr) : null;
+        }
+        
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/login.html';
+        }
+        
+        // Check admin login
+        const user = getCurrentUser();
+        if (!user || user.role !== 'admin') {
+            window.location.href = '/login.html';
+        }
+        
+        // Display books
+        displayBooks();
+        
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('addBookModal');
+            if (event.target === modal) {
+                closeAddBookModal();
+            }
+        }
+    </script>
+</body>
+</html>
