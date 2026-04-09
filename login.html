@@ -5,12 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AISHA - Login</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -19,236 +14,59 @@
             align-items: center;
             justify-content: center;
         }
-        
-        .login-container {
-            width: 100%;
-            max-width: 420px;
-            padding: 1rem;
-        }
-        
-        .login-card {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
-            animation: fadeIn 0.5s ease-out;
-        }
-        
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .logo {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .logo h1 {
-            color: #667eea;
-            font-size: 2rem;
-        }
-        
-        .logo p {
-            color: #666;
-            font-size: 0.9rem;
-            margin-top: 0.3rem;
-        }
-        
-        .tabs {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid #e0e0e0;
-        }
-        
-        .tab {
-            flex: 1;
-            padding: 0.8rem;
-            background: none;
-            border: none;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            color: #666;
-            transition: all 0.3s;
-        }
-        
-        .tab.active {
-            color: #667eea;
-            border-bottom: 2px solid #667eea;
-            margin-bottom: -2px;
-        }
-        
-        .form {
-            display: none;
-        }
-        
-        .form.active {
-            display: block;
-            animation: slideIn 0.3s ease-out;
-        }
-        
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #333;
-            font-weight: 500;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-        
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
-        }
-        
-        .btn {
-            width: 100%;
-            padding: 0.9rem;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102,126,234,0.3);
-        }
-        
-        .error-message {
-            background: #fee2e2;
-            color: #dc2626;
-            padding: 0.8rem;
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            text-align: center;
-            display: none;
-        }
-        
-        .footer {
-            text-align: center;
-            margin-top: 1.5rem;
-            color: #999;
-            font-size: 0.8rem;
-        }
-        
-        .admin-link {
-            text-align: center;
-            margin-top: 1rem;
-            font-size: 0.8rem;
-        }
-        
-        .admin-link a {
-            color: #999;
-            text-decoration: none;
-        }
-        
-        .admin-link a:hover {
-            color: #667eea;
-        }
+        .login-container { width: 100%; max-width: 420px; padding: 1rem; }
+        .login-card { background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
+        .logo { text-align: center; margin-bottom: 2rem; }
+        .logo h1 { color: #667eea; font-size: 2rem; }
+        .tabs { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid #e0e0e0; }
+        .tab { flex: 1; padding: 0.8rem; background: none; border: none; font-size: 1rem; font-weight: 600; cursor: pointer; color: #666; }
+        .tab.active { color: #667eea; border-bottom: 2px solid #667eea; }
+        .form { display: none; }
+        .form.active { display: block; }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; color: #333; font-weight: 500; }
+        .form-group input { width: 100%; padding: 0.8rem 1rem; border: 1px solid #e0e0e0; border-radius: 12px; font-size: 1rem; }
+        .form-group input:focus { outline: none; border-color: #667eea; }
+        .btn { width: 100%; padding: 0.9rem; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+        .btn:hover { transform: translateY(-2px); }
+        .error-message { background: #fee2e2; color: #dc2626; padding: 0.8rem; border-radius: 12px; margin-bottom: 1rem; display: none; text-align: center; }
+        .footer { text-align: center; margin-top: 1.5rem; color: #999; font-size: 0.8rem; }
     </style>
 </head>
 <body>
     <div class="login-container">
         <div class="login-card">
-            <div class="logo">
-                <h1>📚 AISHA</h1>
-                <p>Your Personal AI Tutor</p>
-            </div>
-            
+            <div class="logo"><h1>📚 AISHA</h1></div>
             <div class="tabs">
                 <button class="tab active" onclick="switchTab('login')">Login</button>
                 <button class="tab" onclick="switchTab('register')">Sign Up</button>
             </div>
-            
             <div id="errorMessage" class="error-message"></div>
             
-            <!-- Login Form -->
             <form id="loginForm" class="form active" onsubmit="handleLogin(event)">
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="loginEmail" placeholder="you@example.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="loginPassword" placeholder="••••••••" required>
-                </div>
+                <div class="form-group"><label>Email</label><input type="email" id="loginEmail" required></div>
+                <div class="form-group"><label>Password</label><input type="password" id="loginPassword" required></div>
                 <button type="submit" class="btn">Login →</button>
             </form>
             
-            <!-- Register Form -->
             <form id="registerForm" class="form" onsubmit="handleRegister(event)">
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" id="regName" placeholder="John Doe" required>
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="regEmail" placeholder="you@example.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="regPassword" placeholder="Create password" required>
-                </div>
-                <div class="form-group">
-                    <label>Confirm Password</label>
-                    <input type="password" id="regConfirm" placeholder="Confirm password" required>
-                </div>
+                <div class="form-group"><label>Full Name</label><input type="text" id="regName" required></div>
+                <div class="form-group"><label>Email</label><input type="email" id="regEmail" required></div>
+                <div class="form-group"><label>Password</label><input type="password" id="regPassword" required></div>
+                <div class="form-group"><label>Confirm Password</label><input type="password" id="regConfirm" required></div>
                 <button type="submit" class="btn">Create Account →</button>
             </form>
-            
-            <div class="footer">
-                <p>Learn smarter with AI</p>
-            </div>
-            
-            <div class="admin-link">
-                <a href="/admin-login.html">🔒 Admin Access</a>
-            </div>
+            <div class="footer"><p>Learn smarter with AI</p></div>
         </div>
     </div>
     
     <script>
+        const API_URL = '/.netlify/functions/real-auth';
+        
         function switchTab(tab) {
             const loginForm = document.getElementById('loginForm');
             const registerForm = document.getElementById('registerForm');
             const tabs = document.querySelectorAll('.tab');
-            
             if (tab === 'login') {
                 loginForm.classList.add('active');
                 registerForm.classList.remove('active');
@@ -260,45 +78,46 @@
                 tabs[0].classList.remove('active');
                 tabs[1].classList.add('active');
             }
-            document.getElementById('errorMessage').style.display = 'none';
+            hideError();
         }
         
         function showError(msg) {
             const errorDiv = document.getElementById('errorMessage');
             errorDiv.textContent = msg;
             errorDiv.style.display = 'block';
-            setTimeout(() => {
-                errorDiv.style.display = 'none';
-            }, 3000);
+            setTimeout(() => hideError(), 3000);
+        }
+        
+        function hideError() {
+            document.getElementById('errorMessage').style.display = 'none';
         }
         
         async function handleLogin(event) {
             event.preventDefault();
-            
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             
-            // Try to get users from localStorage (for demo)
-            const users = JSON.parse(localStorage.getItem('aisha_users') || '[]');
-            const user = users.find(u => u.email === email && u.password === password);
-            
-            if (user) {
-                localStorage.setItem('token', 'user-token-' + Date.now());
-                localStorage.setItem('user', JSON.stringify({
-                    id: user.id,
-                    email: user.email,
-                    full_name: user.full_name,
-                    role: user.role || 'student'
-                }));
-                window.location.href = user.role === 'admin' ? '/admin/dashboard.html' : '/student/dashboard.html';
-            } else {
-                showError('Invalid email or password');
+            try {
+                const response = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    window.location.href = data.user.role === 'admin' ? '/admin/dashboard.html' : '/student/dashboard.html';
+                } else {
+                    showError(data.error || 'Login failed');
+                }
+            } catch (error) {
+                showError('Connection error. Please try again.');
             }
         }
         
         async function handleRegister(event) {
             event.preventDefault();
-            
             const name = document.getElementById('regName').value;
             const email = document.getElementById('regEmail').value;
             const password = document.getElementById('regPassword').value;
@@ -308,48 +127,34 @@
                 showError('Passwords do not match');
                 return;
             }
-            
             if (password.length < 6) {
                 showError('Password must be at least 6 characters');
                 return;
             }
             
-            const users = JSON.parse(localStorage.getItem('aisha_users') || '[]');
-            
-            if (users.find(u => u.email === email)) {
-                showError('Email already registered');
-                return;
+            try {
+                const response = await fetch(`${API_URL}/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, full_name: name })
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    window.location.href = '/student/dashboard.html';
+                } else {
+                    showError(data.error || 'Registration failed');
+                }
+            } catch (error) {
+                showError('Connection error. Please try again.');
             }
-            
-            const newUser = {
-                id: 'user_' + Date.now(),
-                full_name: name,
-                email: email,
-                password: password,
-                role: 'student',
-                isActive: true,
-                createdAt: new Date().toISOString()
-            };
-            
-            users.push(newUser);
-            localStorage.setItem('aisha_users', JSON.stringify(users));
-            
-            localStorage.setItem('token', 'user-token-' + Date.now());
-            localStorage.setItem('user', JSON.stringify({
-                id: newUser.id,
-                email: newUser.email,
-                full_name: newUser.full_name,
-                role: 'student'
-            }));
-            
-            window.location.href = '/student/dashboard.html';
         }
         
         // Check if already logged in
-        const token = localStorage.getItem('token');
         const user = JSON.parse(localStorage.getItem('user') || '{}');
-        if (token && user.role === 'student') {
-            window.location.href = '/student/dashboard.html';
+        if (user.id) {
+            window.location.href = user.role === 'admin' ? '/admin/dashboard.html' : '/student/dashboard.html';
         }
     </script>
 </body>
