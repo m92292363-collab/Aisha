@@ -4,11 +4,43 @@
 [functions]
   node_bundler = "esbuild"
 
+# API routes → serverless functions
 [[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
+  from = "/api/auth/*"
+  to = "/.netlify/functions/auth"
   status = 200
 
+[[redirects]]
+  from = "/api/chat"
+  to = "/.netlify/functions/chat"
+  status = 200
+
+[[redirects]]
+  from = "/api/books/*"
+  to = "/.netlify/functions/books"
+  status = 200
+
+[[redirects]]
+  from = "/api/books"
+  to = "/.netlify/functions/books"
+  status = 200
+
+[[redirects]]
+  from = "/api/quizzes/*"
+  to = "/.netlify/functions/quizzes"
+  status = 200
+
+[[redirects]]
+  from = "/api/quizzes"
+  to = "/.netlify/functions/quizzes"
+  status = 200
+
+[[redirects]]
+  from = "/api/db/*"
+  to = "/.netlify/functions/db"
+  status = 200
+
+# SPA fallback - must be last
 [[redirects]]
   from = "/*"
   to = "/index.html"
