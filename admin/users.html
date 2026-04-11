@@ -5,355 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AISHA Admin - Manage Students</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Comic Neue', 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            min-height: 100vh;
-        }
-        
-        .admin-container {
-            display: flex;
-            min-height: 100vh;
-        }
-        
-        .admin-sidebar {
-            width: 280px;
-            background: linear-gradient(180deg, #0f3460 0%, #16213e 100%);
-            padding: 2rem 1rem;
-            border-radius: 0 30px 30px 0;
-            box-shadow: 10px 0 20px rgba(0,0,0,0.2);
-        }
-        
-        .admin-logo {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .admin-logo .logo-icon {
-            font-size: 3rem;
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        .admin-logo h2 {
-            color: #ffd700;
-            font-size: 1.5rem;
-        }
-        
-        .admin-nav .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem 1.5rem;
-            margin: 0.5rem 0;
-            background: rgba(255,255,255,0.05);
-            border-radius: 50px;
-            color: #ccddee;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-        
-        .admin-nav .nav-item:hover, .admin-nav .nav-item.active {
-            background: #ffd700;
-            color: #0f3460;
-        }
-        
-        .logout-btn {
-            background: #ff4757;
-            color: white;
-            border: none;
-            padding: 0.8rem;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 2rem;
-            width: 100%;
-            font-family: inherit;
-        }
-        
-        .admin-main {
-            flex: 1;
-            padding: 2rem;
-            overflow-y: auto;
-        }
-        
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        
-        .admin-header h1 {
-            color: #ffd700;
-        }
-        
-        .add-student-btn {
-            background: linear-gradient(135deg, #ffd700, #ffed4e);
-            color: #0f3460;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            font-family: inherit;
-            transition: all 0.3s;
-        }
-        
-        .add-student-btn:hover {
-            transform: scale(1.05);
-        }
-        
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .stat-card {
-            background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 1.2rem;
-            text-align: center;
-            border: 1px solid rgba(255,215,0,0.2);
-        }
-        
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #ffd700;
-        }
-        
-        .stat-label {
-            color: #8899aa;
-            font-size: 0.85rem;
-            margin-top: 0.3rem;
-        }
-        
-        .search-box {
-            margin-bottom: 1.5rem;
-        }
-        
-        .search-box input {
-            width: 100%;
-            max-width: 300px;
-            padding: 0.8rem;
-            border: 1px solid rgba(255,215,0,0.3);
-            border-radius: 50px;
-            background: rgba(255,255,255,0.05);
-            color: white;
-            font-family: inherit;
-        }
-        
-        .users-table {
-            background: rgba(255,255,255,0.05);
-            border-radius: 25px;
-            overflow-x: auto;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid rgba(255,215,0,0.1);
-        }
-        
-        th {
-            color: #ffd700;
-            font-weight: bold;
-        }
-        
-        td {
-            color: #ccddee;
-        }
-        
-        .status-badge {
-            display: inline-block;
-            padding: 0.3rem 0.8rem;
-            border-radius: 50px;
-            font-size: 0.8rem;
-        }
-        
-        .status-active {
-            background: #4caf50;
-            color: white;
-        }
-        
-        .status-inactive {
-            background: #ff4757;
-            color: white;
-        }
-        
-        .role-badge {
-            background: rgba(255,215,0,0.2);
-            padding: 0.3rem 0.8rem;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            color: #ffd700;
-        }
-        
-        .action-buttons {
-            display: flex;
-            gap: 0.5rem;
-        }
-        
-        .action-buttons button {
-            padding: 0.4rem 0.8rem;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.8rem;
-        }
-        
-        .toggle-status {
-            background: #4caf50;
-            color: white;
-        }
-        
-        .delete-user {
-            background: #ff4757;
-            color: white;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            color: #8899aa;
-        }
-        
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .modal-content {
-            background: #16213e;
-            border-radius: 30px;
-            width: 90%;
-            max-width: 450px;
-            padding: 2rem;
-            animation: modalPop 0.3s ease-out;
-            border: 2px solid #ffd700;
-        }
-        
-        @keyframes modalPop {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .modal-header h2 {
-            color: #ffd700;
-        }
-        
-        .close-modal {
-            font-size: 2rem;
-            cursor: pointer;
-            color: #ffd700;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #ccddee;
-            font-weight: bold;
-        }
-        
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid rgba(255,215,0,0.3);
-            border-radius: 15px;
-            background: rgba(255,255,255,0.05);
-            color: white;
-            font-family: inherit;
-        }
-        
-        .submit-btn {
-            background: linear-gradient(135deg, #ffd700, #ffed4e);
-            color: #0f3460;
-            border: none;
-            padding: 1rem;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            font-family: inherit;
-        }
-        
-        @media (max-width: 768px) {
-            .admin-container {
-                flex-direction: column;
-            }
-            
-            .admin-sidebar {
-                width: 100%;
-                border-radius: 0 0 30px 30px;
-            }
-            
-            th, td {
-                padding: 0.5rem;
-                font-size: 0.8rem;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Neue', 'Comic Sans MS', cursive, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); min-height: 100vh; }
+        .admin-container { display: flex; min-height: 100vh; }
+        .admin-sidebar { width: 280px; background: linear-gradient(180deg, #0f3460 0%, #16213e 100%); padding: 2rem 1rem; border-radius: 0 30px 30px 0; box-shadow: 10px 0 20px rgba(0,0,0,0.2); }
+        .admin-logo { text-align: center; margin-bottom: 2rem; }
+        .admin-logo .logo-icon { font-size: 3rem; animation: pulse 2s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .admin-logo h2 { color: #ffd700; font-size: 1.5rem; }
+        .admin-nav .nav-item { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; margin: 0.5rem 0; background: rgba(255,255,255,0.05); border-radius: 50px; color: #ccddee; text-decoration: none; font-weight: bold; transition: all 0.3s; }
+        .admin-nav .nav-item:hover, .admin-nav .nav-item.active { background: #ffd700; color: #0f3460; }
+        .logout-btn { background: #ff4757; color: white; border: none; padding: 0.8rem; border-radius: 50px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 2rem; width: 100%; font-family: inherit; }
+        .admin-main { flex: 1; padding: 2rem; overflow-y: auto; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+        .admin-header h1 { color: #ffd700; }
+        .add-student-btn { background: linear-gradient(135deg, #ffd700, #ffed4e); color: #0f3460; border: none; padding: 0.8rem 1.5rem; border-radius: 50px; font-size: 1rem; font-weight: bold; cursor: pointer; font-family: inherit; transition: all 0.3s; }
+        .add-student-btn:hover { transform: scale(1.05); }
+        .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-card { background: rgba(255,255,255,0.08); backdrop-filter: blur(10px); border-radius: 20px; padding: 1.2rem; text-align: center; border: 1px solid rgba(255,215,0,0.2); }
+        .stat-number { font-size: 2rem; font-weight: bold; color: #ffd700; }
+        .stat-label { color: #8899aa; font-size: 0.85rem; margin-top: 0.3rem; }
+        .search-box { margin-bottom: 1.5rem; }
+        .search-box input { width: 100%; max-width: 300px; padding: 0.8rem; border: 1px solid rgba(255,215,0,0.3); border-radius: 50px; background: rgba(255,255,255,0.05); color: white; font-family: inherit; outline: none; }
+        .users-table { background: rgba(255,255,255,0.05); border-radius: 25px; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid rgba(255,215,0,0.1); }
+        th { color: #ffd700; font-weight: bold; }
+        td { color: #ccddee; }
+        .status-badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.8rem; }
+        .status-active { background: #4caf50; color: white; }
+        .status-inactive { background: #ff4757; color: white; }
+        .action-buttons { display: flex; gap: 0.5rem; }
+        .action-buttons button { padding: 0.4rem 0.8rem; border: none; border-radius: 50px; cursor: pointer; font-family: inherit; font-size: 0.8rem; }
+        .toggle-status { background: #4caf50; color: white; }
+        .delete-user { background: #ff4757; color: white; }
+        .empty-state { text-align: center; padding: 3rem; color: #8899aa; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; }
+        .modal-content { background: #16213e; border-radius: 30px; width: 90%; max-width: 450px; padding: 2rem; animation: modalPop 0.3s ease-out; border: 2px solid #ffd700; }
+        @keyframes modalPop { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .modal-header h2 { color: #ffd700; }
+        .close-modal { font-size: 2rem; cursor: pointer; color: #ffd700; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; color: #ccddee; font-weight: bold; }
+        .form-group input, .form-group select { width: 100%; padding: 0.8rem; border: 1px solid rgba(255,215,0,0.3); border-radius: 15px; background: rgba(255,255,255,0.05); color: white; font-family: inherit; outline: none; }
+        .submit-btn { background: linear-gradient(135deg, #ffd700, #ffed4e); color: #0f3460; border: none; padding: 1rem; border-radius: 50px; font-size: 1rem; font-weight: bold; cursor: pointer; width: 100%; font-family: inherit; }
+        .toast { position: fixed; bottom: 2rem; right: 2rem; background: #4caf50; color: white; padding: 1rem 1.5rem; border-radius: 15px; display: none; z-index: 9999; font-family: inherit; }
+        @media (max-width: 768px) { .admin-container { flex-direction: column; } .admin-sidebar { width: 100%; border-radius: 0 0 30px 30px; } th, td { padding: 0.5rem; font-size: 0.8rem; } }
     </style>
 </head>
 <body>
     <div class="admin-container">
         <aside class="admin-sidebar">
-            <div class="admin-logo">
-                <div class="logo-icon">🤖📚</div>
-                <h2>AISHA Admin</h2>
-            </div>
-            
+            <div class="admin-logo"><div class="logo-icon">🤖📚</div><h2>AISHA Admin</h2></div>
             <nav class="admin-nav">
                 <a href="/admin/dashboard.html" class="nav-item">📊 Dashboard</a>
                 <a href="/admin/books.html" class="nav-item">📖 Manage Books</a>
@@ -361,44 +65,24 @@
                 <a href="/admin/users.html" class="nav-item active">👥 Manage Students</a>
                 <a href="/admin/analytics.html" class="nav-item">📈 Analytics</a>
             </nav>
-            
             <button class="logout-btn" onclick="logout()">🚪 Logout</button>
         </aside>
-        
+
         <main class="admin-main">
             <div class="admin-header">
                 <h1>👥 AISHA's Students</h1>
                 <button class="add-student-btn" onclick="showAddStudentModal()">➕ Add New Student</button>
             </div>
-            
             <div class="stats-row">
-                <div class="stat-card">
-                    <div class="stat-number" id="totalStudents">0</div>
-                    <div class="stat-label">Total Students</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="activeStudents">0</div>
-                    <div class="stat-label">Active Learners</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="totalQuizzesTaken">0</div>
-                    <div class="stat-label">Quizzes Taken</div>
-                </div>
+                <div class="stat-card"><div class="stat-number" id="totalStudents">-</div><div class="stat-label">Total Students</div></div>
+                <div class="stat-card"><div class="stat-number" id="activeStudents">-</div><div class="stat-label">Active Learners</div></div>
+                <div class="stat-card"><div class="stat-number" id="totalAttempts">-</div><div class="stat-label">Quizzes Taken</div></div>
             </div>
-            
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="🔍 Search by name or email...">
-            </div>
-            
-            <div class="users-table">
-                <div id="usersList">
-                    <div class="empty-state">👥 Loading students...</div>
-                </div>
-            </div>
+            <div class="search-box"><input type="text" id="searchInput" placeholder="🔍 Search by name or email..." oninput="filterUsers()"></div>
+            <div class="users-table"><div id="usersList"><div class="empty-state">👥 Loading students...</div></div></div>
         </main>
     </div>
-    
-    <!-- Add Student Modal -->
+
     <div id="addStudentModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -406,195 +90,118 @@
                 <span class="close-modal" onclick="closeAddStudentModal()">&times;</span>
             </div>
             <form id="addStudentForm" onsubmit="addStudent(event)">
-                <div class="form-group">
-                    <label>👤 Full Name</label>
-                    <input type="text" id="studentName" placeholder="e.g., Sarah Johnson" required>
-                </div>
-                <div class="form-group">
-                    <label>📧 Email</label>
-                    <input type="email" id="studentEmail" placeholder="student@example.com" required>
-                </div>
-                <div class="form-group">
-                    <label>🔒 Password</label>
-                    <input type="password" id="studentPassword" placeholder="Create a password" required>
-                </div>
-                <div class="form-group">
-                    <label>👑 Role</label>
-                    <select id="studentRole">
-                        <option value="student">Student</option>
-                        <option value="admin">Admin</option>
-                    </select>
-                </div>
-                <button type="submit" class="submit-btn">🌟 Add to AISHA's Family 🌟</button>
+                <div class="form-group"><label>👤 Full Name</label><input type="text" id="studentName" placeholder="e.g., Sarah Johnson" required></div>
+                <div class="form-group"><label>📧 Email</label><input type="email" id="studentEmail" placeholder="student@example.com" required></div>
+                <div class="form-group"><label>🔒 Password</label><input type="password" id="studentPassword" placeholder="Min 6 characters" required></div>
+                <button type="submit" class="submit-btn" id="addStudentBtn">🌟 Add to AISHA's Family 🌟</button>
             </form>
         </div>
     </div>
-    
+
+    <div id="toast" class="toast"></div>
+
     <script>
-        let users = JSON.parse(localStorage.getItem('aisha_users') || '[]');
-        
-        // Demo users if empty
-        if (users.length === 0) {
-            users = [
-                { id: 'user_1', full_name: 'Sarah Johnson', email: 'sarah@example.com', password: '123456', role: 'student', isActive: true, createdAt: new Date().toISOString() },
-                { id: 'user_2', full_name: 'Mike Chen', email: 'mike@example.com', password: '123456', role: 'student', isActive: true, createdAt: new Date().toISOString() },
-                { id: 'user_3', full_name: 'Emma Wilson', email: 'emma@example.com', password: '123456', role: 'student', isActive: false, createdAt: new Date().toISOString() }
-            ];
-            localStorage.setItem('aisha_users', JSON.stringify(users));
+        let allUsers = [];
+        let allAttempts = [];
+
+        function getCurrentUser() { return JSON.parse(localStorage.getItem('user') || 'null'); }
+        function logout() { localStorage.removeItem('user'); window.location.href = '/login.html'; }
+        const adminUser = getCurrentUser();
+        if (!adminUser || adminUser.role !== 'admin') window.location.href = '/login.html';
+
+        function showToast(msg, color = '#4caf50') {
+            const t = document.getElementById('toast');
+            t.textContent = msg; t.style.background = color; t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 3000);
         }
-        
-        // Quiz attempts tracking
-        let quizAttempts = JSON.parse(localStorage.getItem('aisha_attempts') || '[]');
-        
-        function displayUsers() {
-            const container = document.getElementById('usersList');
-            const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
-            
-            const filteredUsers = users.filter(user => 
-                user.role !== 'admin' && (
-                    user.full_name?.toLowerCase().includes(searchTerm) ||
-                    user.email?.toLowerCase().includes(searchTerm)
-                )
-            );
-            
-            const totalStudents = filteredUsers.length;
-            const activeStudents = filteredUsers.filter(u => u.isActive).length;
-            const userAttempts = quizAttempts.filter(a => filteredUsers.some(u => u.id === a.userId));
-            
-            document.getElementById('totalStudents').textContent = totalStudents;
-            document.getElementById('activeStudents').textContent = activeStudents;
-            document.getElementById('totalQuizzesTaken').textContent = userAttempts.length;
-            
-            if (filteredUsers.length === 0) {
-                container.innerHTML = '<div class="empty-state">👥 No students found. Click "Add New Student" to get started!</div>';
+
+        async function loadData() {
+            try {
+                const res = await fetch('/api/db/users');
+                const data = await res.json();
+                if (data.success) {
+                    allUsers = data.users;
+                    allAttempts = data.attempts || [];
+                    renderUsers(allUsers);
+                }
+            } catch {
+                document.getElementById('usersList').innerHTML = '<div class="empty-state">⚠️ Could not load students.</div>';
+            }
+        }
+
+        function renderUsers(users) {
+            document.getElementById('totalStudents').textContent = users.length;
+            document.getElementById('activeStudents').textContent = users.filter(u => u.is_active).length;
+            document.getElementById('totalAttempts').textContent = allAttempts.filter(a => users.some(u => u.id == a.user_id)).length;
+
+            if (!users.length) {
+                document.getElementById('usersList').innerHTML = '<div class="empty-state">👥 No students found.</div>';
                 return;
             }
-            
-            container.innerHTML = `
+            document.getElementById('usersList').innerHTML = `
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Student</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Quizzes Taken</th>
-                            <th>Joined</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>Student</th><th>Email</th><th>Status</th><th>Quizzes Taken</th><th>Joined</th><th>Actions</th></tr></thead>
                     <tbody>
-                        ${filteredUsers.map(user => {
-                            const userQuizCount = quizAttempts.filter(a => a.userId === user.id).length;
-                            return `
-                                <tr>
-                                    <td>👤 ${user.full_name || 'N/A'}</td>
-                                    <td>📧 ${user.email}</td>
-                                    <td>
-                                        <span class="status-badge ${user.isActive ? 'status-active' : 'status-inactive'}">
-                                            ${user.isActive ? 'Active' : 'Inactive'}
-                                        </span>
-                                    </td>
-                                    <td>📝 ${userQuizCount}</td>
-                                    <td>${new Date(user.createdAt).toLocaleDateString()}</td>
-                                    <td class="action-buttons">
-                                        <button class="toggle-status" onclick="toggleUserStatus('${user.id}')">
-                                            ${user.isActive ? 'Deactivate' : 'Activate'}
-                                        </button>
-                                        <button class="delete-user" onclick="deleteUser('${user.id}')">Delete</button>
-                                    </td>
-                                </tr>
-                            `;
+                        ${users.map(u => {
+                            const count = allAttempts.filter(a => a.user_id == u.id).length;
+                            return `<tr>
+                                <td>👤 ${u.full_name || 'N/A'}</td>
+                                <td>📧 ${u.email}</td>
+                                <td><span class="status-badge ${u.is_active ? 'status-active' : 'status-inactive'}">${u.is_active ? 'Active' : 'Inactive'}</span></td>
+                                <td>📝 ${count}</td>
+                                <td>${new Date(u.created_at).toLocaleDateString()}</td>
+                                <td class="action-buttons">
+                                    <button class="toggle-status" onclick="toggleStatus(${u.id}, ${!u.is_active})">${u.is_active ? 'Deactivate' : 'Activate'}</button>
+                                    <button class="delete-user" onclick="deleteUser(${u.id})">Delete</button>
+                                </td>
+                            </tr>`;
                         }).join('')}
                     </tbody>
-                </table>
-            `;
+                </table>`;
         }
-        
-        function addStudent(event) {
-            event.preventDefault();
-            
-            const name = document.getElementById('studentName').value;
-            const email = document.getElementById('studentEmail').value;
-            const password = document.getElementById('studentPassword').value;
-            const role = document.getElementById('studentRole').value;
-            
-            if (users.find(u => u.email === email)) {
-                alert('❌ A student with this email already exists!');
-                return;
-            }
-            
-            const newUser = {
-                id: 'user_' + Date.now(),
-                full_name: name,
-                email: email,
-                password: password,
-                role: role,
-                isActive: true,
-                createdAt: new Date().toISOString()
-            };
-            
-            users.push(newUser);
-            localStorage.setItem('aisha_users', JSON.stringify(users));
-            
-            closeAddStudentModal();
-            document.getElementById('addStudentForm').reset();
-            displayUsers();
-            
-            alert(`✨ Welcome ${name} to AISHA's learning family! ✨`);
+
+        function filterUsers() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allUsers.filter(u => u.full_name?.toLowerCase().includes(term) || u.email?.toLowerCase().includes(term));
+            renderUsers(filtered);
         }
-        
-        function toggleUserStatus(userId) {
-            const user = users.find(u => u.id === userId);
-            if (user) {
-                user.isActive = !user.isActive;
-                localStorage.setItem('aisha_users', JSON.stringify(users));
-                displayUsers();
-            }
+
+        async function addStudent(e) {
+            e.preventDefault();
+            const btn = document.getElementById('addStudentBtn');
+            btn.disabled = true; btn.textContent = 'Adding...';
+            try {
+                const res = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: document.getElementById('studentEmail').value, password: document.getElementById('studentPassword').value, full_name: document.getElementById('studentName').value })
+                });
+                const data = await res.json();
+                if (data.success) { closeAddStudentModal(); document.getElementById('addStudentForm').reset(); showToast('✨ Student added!'); loadData(); }
+                else showToast('❌ ' + (data.error || 'Failed'), '#ff4757');
+            } catch { showToast('❌ Connection error', '#ff4757'); }
+            finally { btn.disabled = false; btn.textContent = '🌟 Add to AISHA\'s Family 🌟'; }
         }
-        
-        function deleteUser(userId) {
-            if (confirm('Are you sure you want to remove this student?')) {
-                users = users.filter(user => user.id !== userId);
-                localStorage.setItem('aisha_users', JSON.stringify(users));
-                displayUsers();
-                alert('Student removed successfully');
-            }
+
+        async function toggleStatus(id, isActive) {
+            try {
+                await fetch(`/api/db/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ is_active: isActive }) });
+                loadData();
+            } catch { showToast('❌ Failed', '#ff4757'); }
         }
-        
-        function showAddStudentModal() {
-            document.getElementById('addStudentModal').style.display = 'flex';
+
+        async function deleteUser(id) {
+            if (!confirm('Remove this student?')) return;
+            try {
+                await fetch(`/api/db/${id}`, { method: 'DELETE' });
+                showToast('Student removed'); loadData();
+            } catch { showToast('❌ Connection error', '#ff4757'); }
         }
-        
-        function closeAddStudentModal() {
-            document.getElementById('addStudentModal').style.display = 'none';
-        }
-        
-        function getCurrentUser() {
-            const userStr = localStorage.getItem('user');
-            return userStr ? JSON.parse(userStr) : null;
-        }
-        
-        function logout() {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            window.location.href = '/login.html';
-        }
-        
-        const currentUser = getCurrentUser();
-        if (!currentUser || currentUser.role !== 'admin') {
-            window.location.href = '/login.html';
-        }
-        
-        displayUsers();
-        
-        document.getElementById('searchInput')?.addEventListener('input', () => displayUsers());
-        
-        window.onclick = function(event) {
-            const modal = document.getElementById('addStudentModal');
-            if (event.target === modal) {
-                closeAddStudentModal();
-            }
-        }
+
+        function showAddStudentModal() { document.getElementById('addStudentModal').style.display = 'flex'; }
+        function closeAddStudentModal() { document.getElementById('addStudentModal').style.display = 'none'; }
+        window.onclick = e => { if (e.target === document.getElementById('addStudentModal')) closeAddStudentModal(); };
+        loadData();
     </script>
 </body>
 </html>
