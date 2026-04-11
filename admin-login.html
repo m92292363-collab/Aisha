@@ -21,11 +21,13 @@
         .logo p { color: #8899aa; font-size: 0.9rem; margin-top: 0.3rem; }
         .form-group { margin-bottom: 1.2rem; }
         .form-group label { display: block; margin-bottom: 0.5rem; color: #ccddee; font-weight: 500; }
-        .form-group input { width: 100%; padding: 0.8rem 1rem; border: 1px solid rgba(255,215,0,0.3); border-radius: 12px; background: rgba(255,255,255,0.1); color: white; font-size: 1rem; }
-        .form-group input:focus { outline: none; border-color: #ffd700; }
-        .btn { width: 100%; padding: 0.9rem; background: linear-gradient(135deg, #ffd700, #ffed4e); color: #1a1a2e; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; }
-        .btn:hover { transform: translateY(-2px); }
-        .error-message { background: rgba(255,71,87,0.2); color: #ff6b81; padding: 0.8rem; border-radius: 12px; margin-bottom: 1rem; display: none; text-align: center; }
+        .form-group input { width: 100%; padding: 0.8rem 1rem; border: 1px solid rgba(255,215,0,0.3); border-radius: 12px; background: rgba(255,255,255,0.1); color: white; font-size: 1rem; outline: none; transition: border-color 0.2s; }
+        .form-group input:focus { border-color: #ffd700; }
+        .form-group input::placeholder { color: #8899aa; }
+        .btn { width: 100%; padding: 0.9rem; background: linear-gradient(135deg, #ffd700, #ffed4e); color: #1a1a2e; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
+        .btn:hover { opacity: 0.9; }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .error-message { background: rgba(255,71,87,0.2); color: #ff6b81; padding: 0.8rem; border-radius: 12px; margin-bottom: 1rem; display: none; text-align: center; font-size: 0.9rem; }
         .back-link { text-align: center; margin-top: 1.5rem; }
         .back-link a { color: #8899aa; text-decoration: none; font-size: 0.9rem; }
         .back-link a:hover { color: #ffd700; }
@@ -37,47 +39,57 @@
             <div class="logo"><h1>🔒 Admin Portal</h1><p>AISHA Admin Access</p></div>
             <div id="errorMessage" class="error-message"></div>
             <form onsubmit="handleAdminLogin(event)">
-                <div class="form-group"><label>Admin Email</label><input type="email" id="adminEmail" required></div>
-                <div class="form-group"><label>Password</label><input type="password" id="adminPassword" required></div>
-                <button type="submit" class="btn">Admin Login →</button>
+                <div class="form-group"><label>Admin Email</label><input type="email" id="adminEmail" required placeholder="admin@aisha.com"></div>
+                <div class="form-group"><label>Password</label><input type="password" id="adminPassword" required placeholder="••••••••"></div>
+                <button type="submit" class="btn" id="loginBtn">Admin Login →</button>
             </form>
             <div class="back-link"><a href="/login.html">← Back to Student Login</a></div>
         </div>
     </div>
     <script>
         function showError(msg) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = msg;
-            errorDiv.style.display = 'block';
-            setTimeout(() => errorDiv.style.display = 'none', 3000);
+            const el = document.getElementById('errorMessage');
+            el.textContent = msg;
+            el.style.display = 'block';
         }
-        
+
         async function handleAdminLogin(event) {
             event.preventDefault();
-            const email = document.getElementById('adminEmail').value;
+            const btn = document.getElementById('loginBtn');
+            btn.disabled = true;
+            btn.textContent = 'Logging in...';
+            document.getElementById('errorMessage').style.display = 'none';
+
+            const email = document.getElementById('adminEmail').value.trim();
             const password = document.getElementById('adminPassword').value;
-            
+
             try {
-                const response = await fetch('/.netlify/functions/api/real-auth/login', {
+                const res = await fetch('/api/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
                 });
-                const data = await response.json();
-                
-                if (data.success && data.user.role === 'admin') {
+                const data = await res.json();
+
+                if (data.success && data.user && data.user.role === 'admin') {
                     localStorage.setItem('user', JSON.stringify(data.user));
                     window.location.href = '/admin/dashboard.html';
+                } else if (data.success && data.user.role !== 'admin') {
+                    showError('This account does not have admin access');
                 } else {
-                    showError('Invalid admin credentials');
+                    showError(data.error || 'Invalid admin credentials');
                 }
-            } catch (error) {
-                showError('Connection error');
+            } catch (err) {
+                showError('Connection error. Please try again.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Admin Login →';
             }
         }
-        
-        const user = JSON.parse(localStorage.getItem('user') || '{}');
-        if (user.id && user.role === 'admin') {
+
+        // Already logged in as admin?
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (user && user.role === 'admin') {
             window.location.href = '/admin/dashboard.html';
         }
     </script>
