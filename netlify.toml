@@ -4,7 +4,6 @@
 [functions]
   node_bundler = "esbuild"
 
-# API routes → serverless functions
 [[redirects]]
   from = "/api/auth/*"
   to = "/.netlify/functions/auth"
@@ -38,6 +37,11 @@
 [[redirects]]
   from = "/api/db/*"
   to = "/.netlify/functions/db"
+  status = 200
+
+[[redirects]]
+  from = "/api/reset-admin"
+  to = "/.netlify/functions/reset"
   status = 200
 
 # SPA fallback - must be last
