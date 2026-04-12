@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AISHA Admin - Manage Books</title>
+    <title>AISHA Admin - Manage Quizzes</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Comic Neue', 'Comic Sans MS', cursive, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); min-height: 100vh; }
@@ -19,32 +19,35 @@
         .admin-main { flex: 1; padding: 2rem; overflow-y: auto; }
         .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
         .admin-header h1 { color: #ffd700; }
-        .add-book-btn { background: linear-gradient(135deg, #ffd700, #ffed4e); color: #0f3460; border: none; padding: 0.8rem 1.5rem; border-radius: 50px; font-size: 1rem; font-weight: bold; cursor: pointer; font-family: inherit; transition: all 0.3s; }
-        .add-book-btn:hover { transform: scale(1.05); }
-        .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
-        .book-card { background: rgba(255,255,255,0.08); backdrop-filter: blur(10px); border-radius: 25px; padding: 1.5rem; transition: all 0.3s; border: 1px solid rgba(255,215,0,0.2); }
-        .book-card:hover { transform: translateY(-5px); border-color: #ffd700; }
-        .book-icon { font-size: 3rem; margin-bottom: 0.5rem; }
-        .book-title { color: #ffd700; font-size: 1.2rem; margin-bottom: 0.5rem; }
-        .book-author { color: #8899aa; font-size: 0.9rem; margin-bottom: 0.5rem; }
-        .book-meta { display: flex; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
+        .create-quiz-btn { background: linear-gradient(135deg, #ffd700, #ffed4e); color: #0f3460; border: none; padding: 0.8rem 1.5rem; border-radius: 50px; font-size: 1rem; font-weight: bold; cursor: pointer; font-family: inherit; transition: all 0.3s; }
+        .create-quiz-btn:hover { transform: scale(1.05); }
+        .quizzes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem; }
+        .quiz-card { background: rgba(255,255,255,0.08); backdrop-filter: blur(10px); border-radius: 25px; padding: 1.5rem; transition: all 0.3s; border: 1px solid rgba(255,215,0,0.2); }
+        .quiz-card:hover { transform: translateY(-5px); border-color: #ffd700; }
+        .quiz-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .quiz-title { color: #ffd700; font-size: 1.2rem; margin-bottom: 0.5rem; }
+        .quiz-meta { display: flex; gap: 0.8rem; margin: 1rem 0; flex-wrap: wrap; }
         .meta-tag { background: rgba(255,215,0,0.2); padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.8rem; color: #ffd700; }
-        .book-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
+        .quiz-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
         .delete-btn { background: #ff4757; color: white; border: none; padding: 0.5rem 1rem; border-radius: 50px; cursor: pointer; font-family: inherit; }
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; }
-        .modal-content { background: #16213e; border-radius: 30px; width: 90%; max-width: 500px; padding: 2rem; animation: modalPop 0.3s ease-out; border: 2px solid #ffd700; }
+        .toggle-btn { color: white; border: none; padding: 0.5rem 1rem; border-radius: 50px; cursor: pointer; font-family: inherit; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; }
+        .modal-content { background: #16213e; border-radius: 30px; width: 90%; max-width: 700px; max-height: 85vh; overflow-y: auto; padding: 2rem; animation: modalPop 0.3s ease-out; border: 2px solid #ffd700; }
         @keyframes modalPop { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
         .modal-header h2 { color: #ffd700; }
         .close-modal { font-size: 2rem; cursor: pointer; color: #ffd700; }
         .form-group { margin-bottom: 1.5rem; }
         .form-group label { display: block; margin-bottom: 0.5rem; color: #ccddee; font-weight: bold; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.8rem; border: 1px solid rgba(255,215,0,0.3); border-radius: 15px; background: rgba(255,255,255,0.05); color: white; font-family: inherit; outline: none; }
-        .form-group input:focus, .form-group select:focus { border-color: #ffd700; }
-        .submit-btn { background: linear-gradient(135deg, #ffd700, #ffed4e); color: #0f3460; border: none; padding: 1rem; border-radius: 50px; font-size: 1rem; font-weight: bold; cursor: pointer; width: 100%; font-family: inherit; }
+        .form-group input, .form-group select { width: 100%; padding: 0.8rem; border: 1px solid rgba(255,215,0,0.3); border-radius: 15px; background: rgba(255,255,255,0.05); color: white; font-family: inherit; outline: none; }
+        .question-item { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 1rem; margin-bottom: 1rem; }
+        .question-header { display: flex; justify-content: space-between; margin-bottom: 1rem; color: #ffd700; font-weight: bold; }
+        .remove-question { background: #ff4757; color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 50px; cursor: pointer; }
+        .add-question-btn { background: #4caf50; color: white; border: none; padding: 0.5rem 1rem; border-radius: 50px; cursor: pointer; margin-bottom: 1rem; font-family: inherit; }
+        .submit-btn { background: linear-gradient(135deg, #ffd700, #ffed4e); color: #0f3460; border: none; padding: 1rem; border-radius: 50px; font-size: 1rem; font-weight: bold; cursor: pointer; width: 100%; font-family: inherit; margin-top: 1rem; }
         .empty-state { text-align: center; padding: 3rem; color: #8899aa; }
         .toast { position: fixed; bottom: 2rem; right: 2rem; background: #4caf50; color: white; padding: 1rem 1.5rem; border-radius: 15px; display: none; z-index: 9999; font-family: inherit; }
-        @media (max-width: 768px) { .admin-container { flex-direction: column; } .admin-sidebar { width: 100%; border-radius: 0 0 30px 30px; } .books-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .admin-container { flex-direction: column; } .admin-sidebar { width: 100%; border-radius: 0 0 30px 30px; } .quizzes-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -53,8 +56,8 @@
             <div class="admin-logo"><div class="logo-icon">🤖📚</div><h2>AISHA Admin</h2></div>
             <nav class="admin-nav">
                 <a href="/admin/dashboard.html" class="nav-item">📊 Dashboard</a>
-                <a href="/admin/books.html" class="nav-item active">📖 Manage Books</a>
-                <a href="/admin/quizzes.html" class="nav-item">📝 Manage Quizzes</a>
+                <a href="/admin/books.html" class="nav-item">📖 Manage Books</a>
+                <a href="/admin/quizzes.html" class="nav-item active">📝 Manage Quizzes</a>
                 <a href="/admin/users.html" class="nav-item">👥 Manage Students</a>
                 <a href="/admin/analytics.html" class="nav-item">📈 Analytics</a>
             </nav>
@@ -63,38 +66,40 @@
 
         <main class="admin-main">
             <div class="admin-header">
-                <h1>📖 AISHA's Library</h1>
-                <button class="add-book-btn" onclick="showAddBookModal()">➕ Add New Book</button>
+                <h1>📝 AISHA's Quiz Collection</h1>
+                <button class="create-quiz-btn" onclick="showCreateQuizModal()">✨ Create New Quiz</button>
             </div>
-            <div id="booksGrid" class="books-grid">
-                <div class="empty-state">📚 Loading books...</div>
+            <div id="quizzesGrid" class="quizzes-grid">
+                <div class="empty-state">📝 Loading quizzes...</div>
             </div>
         </main>
     </div>
 
-    <div id="addBookModal" class="modal">
+    <div id="createQuizModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>📖 Add Book to AISHA</h2>
-                <span class="close-modal" onclick="closeAddBookModal()">&times;</span>
+                <h2>✨ Create New Quiz</h2>
+                <span class="close-modal" onclick="closeCreateQuizModal()">&times;</span>
             </div>
-            <form id="addBookForm" onsubmit="addBook(event)">
-                <div class="form-group"><label>📕 Book Title</label><input type="text" id="bookTitle" placeholder="e.g., Introduction to Physics" required></div>
-                <div class="form-group"><label>✍️ Author</label><input type="text" id="bookAuthor" placeholder="e.g., Dr. Sarah Smith"></div>
+            <form id="createQuizForm" onsubmit="createQuiz(event)">
+                <div class="form-group"><label>📝 Quiz Title</label><input type="text" id="quizTitle" placeholder="e.g., Algebra Basics" required></div>
                 <div class="form-group">
                     <label>📚 Subject / Category</label>
-                    <input type="text" id="bookSubject" placeholder="e.g., Islamic Studies, French, Coding..." required>
+                    <input type="text" id="quizSubject" placeholder="e.g., Islamic Studies, French, Coding..." required>
                 </div>
                 <div class="form-group">
                     <label>⭐ Difficulty</label>
-                    <select id="bookDifficulty">
+                    <select id="quizDifficulty">
                         <option value="1">🍭 Easy Peasy</option>
                         <option value="2">📚 Medium</option>
                         <option value="3">🔥 Challenge Mode</option>
                     </select>
                 </div>
-                <div class="form-group"><label>📄 Description</label><textarea id="bookDescription" rows="3" placeholder="What is this book about?"></textarea></div>
-                <button type="submit" class="submit-btn" id="addBookBtn">✨ Add to AISHA's Brain ✨</button>
+                <div class="form-group"><label>⏱️ Time Limit (minutes)</label><input type="number" id="quizTimeLimit" value="15" min="5" max="60"></div>
+                <h3 style="color:#ffd700; margin-bottom:1rem;">📋 Questions</h3>
+                <div id="questionsContainer"></div>
+                <button type="button" class="add-question-btn" onclick="addQuestion()">➕ Add Question</button>
+                <button type="submit" class="submit-btn" id="createQuizBtn">🚀 Create Quiz</button>
             </form>
         </div>
     </div>
@@ -102,9 +107,9 @@
     <div id="toast" class="toast"></div>
 
     <script>
+        let questionCount = 0;
         function getCurrentUser() { return JSON.parse(localStorage.getItem('user') || 'null'); }
         function logout() { localStorage.removeItem('user'); window.location.href = '/login.html'; }
-
         const user = getCurrentUser();
         if (!user || user.role !== 'admin') window.location.href = '/login.html';
 
@@ -116,100 +121,142 @@
             setTimeout(() => t.style.display = 'none', 3000);
         }
 
-        function getBookIcon(subject) {
-            const icons = { Mathematics: '📐', Physics: '⚛️', Chemistry: '🧪', Biology: '🧬', History: '🌍', Literature: '📖', Science: '🔬', Geography: '🗺️', Religion: '🕌', Islamic: '🕌', French: '🇫🇷', Arabic: '📜', English: '📝', Computer: '💻', Coding: '💻', Art: '🎨', Music: '🎵', Sports: '⚽' };
-            if (!subject) return '📚';
-            // Try exact match first, then partial match
-            if (icons[subject]) return icons[subject];
-            const key = Object.keys(icons).find(k => subject.toLowerCase().includes(k.toLowerCase()));
-            return key ? icons[key] : '📚';
+        function getQuizIcon(subject) {
+            return { Mathematics: '📐', Physics: '⚛️', Chemistry: '🧪', Biology: '🧬', History: '🌍', Literature: '📖' }[subject] || '📝';
         }
 
         function getDifficultyIcon(level) {
             return level == 1 ? '🍭 Easy' : level == 2 ? '📚 Medium' : '🔥 Hard';
         }
 
-        async function loadBooks() {
+        async function loadQuizzes() {
             try {
-                const res = await fetch('/api/books');
+                const res = await fetch('/api/quizzes');
                 const data = await res.json();
-                if (data.success) displayBooks(data.books);
-                else document.getElementById('booksGrid').innerHTML = '<div class="empty-state">📚 No books yet.</div>';
+                if (data.success) displayQuizzes(data.quizzes);
+                else document.getElementById('quizzesGrid').innerHTML = '<div class="empty-state">📝 No quizzes yet.</div>';
             } catch {
-                document.getElementById('booksGrid').innerHTML = '<div class="empty-state">⚠️ Could not load books.</div>';
+                document.getElementById('quizzesGrid').innerHTML = '<div class="empty-state">⚠️ Could not load quizzes.</div>';
             }
         }
 
-        function displayBooks(books) {
-            const grid = document.getElementById('booksGrid');
-            if (!books.length) { grid.innerHTML = '<div class="empty-state">📚 No books yet. Click "Add New Book" to teach AISHA!</div>'; return; }
-            grid.innerHTML = books.map(book => `
-                <div class="book-card">
-                    <div class="book-icon">${getBookIcon(book.subject)}</div>
-                    <div class="book-title">${book.title}</div>
-                    <div class="book-author">by ${book.author || 'Unknown'}</div>
-                    <div class="book-meta">
-                        <span class="meta-tag">📚 ${book.subject}</span>
-                        <span class="meta-tag">${getDifficultyIcon(book.difficulty)}</span>
+        function displayQuizzes(quizzes) {
+            const grid = document.getElementById('quizzesGrid');
+            if (!quizzes.length) { grid.innerHTML = '<div class="empty-state">📝 No quizzes yet. Click "Create New Quiz" to get started!</div>'; return; }
+            grid.innerHTML = quizzes.map(quiz => {
+                const questions = typeof quiz.questions === 'string' ? JSON.parse(quiz.questions) : (quiz.questions || []);
+                return `
+                <div class="quiz-card">
+                    <div class="quiz-icon">${getQuizIcon(quiz.subject)}</div>
+                    <div class="quiz-title">${quiz.title}</div>
+                    <div class="quiz-meta">
+                        <span class="meta-tag">📚 ${quiz.subject}</span>
+                        <span class="meta-tag">${getDifficultyIcon(quiz.difficulty)}</span>
+                        <span class="meta-tag">⏱️ ${quiz.time_limit} min</span>
+                        <span class="meta-tag">📝 ${questions.length} questions</span>
                     </div>
-                    <div class="book-actions">
-                        <button class="delete-btn" onclick="deleteBook(${book.id})">🗑️ Delete</button>
+                    <div class="quiz-actions">
+                        <button class="toggle-btn" style="background:${quiz.is_active ? '#4caf50' : '#999'}" onclick="toggleQuiz(${quiz.id}, ${!quiz.is_active})">${quiz.is_active ? '✅ Active' : '❌ Inactive'}</button>
+                        <button class="delete-btn" onclick="deleteQuiz(${quiz.id})">🗑️ Delete</button>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
-        async function addBook(e) {
+        function addQuestion() {
+            const container = document.getElementById('questionsContainer');
+            const div = document.createElement('div');
+            div.className = 'question-item';
+            div.id = `question_${questionCount}`;
+            div.innerHTML = `
+                <div class="question-header">
+                    <span>Question ${questionCount + 1}</span>
+                    <button type="button" class="remove-question" onclick="this.closest('.question-item').remove()">Remove</button>
+                </div>
+                <div class="form-group"><label>Question Text</label><input type="text" class="question-text" placeholder="e.g., What is 2 + 2?" required></div>
+                <div class="form-group">
+                    <label>Options</label>
+                    <input type="text" class="option" placeholder="Option A" style="margin-bottom:5px;">
+                    <input type="text" class="option" placeholder="Option B" style="margin-bottom:5px;">
+                    <input type="text" class="option" placeholder="Option C" style="margin-bottom:5px;">
+                    <input type="text" class="option" placeholder="Option D" style="margin-bottom:5px;">
+                </div>
+                <div class="form-group"><label>Correct Answer (must match one option exactly)</label><input type="text" class="correct-answer" placeholder="e.g., 4" required></div>
+            `;
+            container.appendChild(div);
+            questionCount++;
+        }
+
+        async function createQuiz(e) {
             e.preventDefault();
-            const btn = document.getElementById('addBookBtn');
+            const btn = document.getElementById('createQuizBtn');
             btn.disabled = true;
-            btn.textContent = 'Adding...';
+            btn.textContent = 'Creating...';
+
+            const questions = [];
+            document.querySelectorAll('.question-item').forEach(item => {
+                const text = item.querySelector('.question-text').value;
+                const options = Array.from(item.querySelectorAll('.option')).map(o => o.value).filter(Boolean);
+                const correct = item.querySelector('.correct-answer').value;
+                if (text && options.length >= 2 && correct) questions.push({ text, options, correct });
+            });
+
+            if (!questions.length) { showToast('⚠️ Add at least one question!', '#ff9800'); btn.disabled = false; btn.textContent = '🚀 Create Quiz'; return; }
+
             try {
-                const res = await fetch('/api/books', {
+                const res = await fetch('/api/quizzes', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        title: document.getElementById('bookTitle').value,
-                        author: document.getElementById('bookAuthor').value,
-                        subject: document.getElementById('bookSubject').value,
-                        difficulty: parseInt(document.getElementById('bookDifficulty').value),
-                        description: document.getElementById('bookDescription').value
+                        title: document.getElementById('quizTitle').value,
+                        subject: document.getElementById('quizSubject').value,
+                        difficulty: parseInt(document.getElementById('quizDifficulty').value),
+                        time_limit: parseInt(document.getElementById('quizTimeLimit').value),
+                        questions
                     })
                 });
                 const data = await res.json();
                 if (data.success) {
-                    closeAddBookModal();
-                    document.getElementById('addBookForm').reset();
-                    showToast('✨ Book added to AISHA\'s brain!');
-                    loadBooks();
+                    closeCreateQuizModal();
+                    showToast('✨ Quiz created!');
+                    loadQuizzes();
                 } else {
-                    showToast('❌ ' + (data.error || 'Failed to add book'), '#ff4757');
+                    showToast('❌ ' + (data.error || 'Failed'), '#ff4757');
                 }
             } catch {
                 showToast('❌ Connection error', '#ff4757');
             } finally {
                 btn.disabled = false;
-                btn.textContent = '✨ Add to AISHA\'s Brain ✨';
+                btn.textContent = '🚀 Create Quiz';
             }
         }
 
-        async function deleteBook(id) {
-            if (!confirm('Remove this book from AISHA\'s library?')) return;
+        async function toggleQuiz(id, isActive) {
             try {
-                const res = await fetch(`/api/books/${id}`, { method: 'DELETE' });
-                const data = await res.json();
-                if (data.success) { showToast('📖 Book removed'); loadBooks(); }
-                else showToast('❌ Failed to delete', '#ff4757');
-            } catch {
-                showToast('❌ Connection error', '#ff4757');
-            }
+                await fetch(`/api/quizzes/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ is_active: isActive }) });
+                loadQuizzes();
+            } catch { showToast('❌ Failed to update', '#ff4757'); }
         }
 
-        function showAddBookModal() { document.getElementById('addBookModal').style.display = 'flex'; }
-        function closeAddBookModal() { document.getElementById('addBookModal').style.display = 'none'; }
-        window.onclick = e => { if (e.target === document.getElementById('addBookModal')) closeAddBookModal(); };
+        async function deleteQuiz(id) {
+            if (!confirm('Delete this quiz?')) return;
+            try {
+                const res = await fetch(`/api/quizzes/${id}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.success) { showToast('Quiz deleted'); loadQuizzes(); }
+                else showToast('❌ Failed', '#ff4757');
+            } catch { showToast('❌ Connection error', '#ff4757'); }
+        }
 
-        loadBooks();
+        function showCreateQuizModal() { document.getElementById('createQuizModal').style.display = 'flex'; addQuestion(); }
+        function closeCreateQuizModal() {
+            document.getElementById('createQuizModal').style.display = 'none';
+            document.getElementById('createQuizForm').reset();
+            document.getElementById('questionsContainer').innerHTML = '';
+            questionCount = 0;
+        }
+        window.onclick = e => { if (e.target === document.getElementById('createQuizModal')) closeCreateQuizModal(); };
+        loadQuizzes();
     </script>
 </body>
 </html>
