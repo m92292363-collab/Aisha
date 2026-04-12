@@ -5,596 +5,268 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AISHA's Achievement Garden - My Progress</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Comic Neue', 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
-            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6e0 100%);
-            min-height: 100vh;
-        }
-        
-        /* Cartoon Container */
-        .progress-container {
-            display: flex;
-            min-height: 100vh;
-        }
-        
-        /* Sidebar */
-        .cartoon-sidebar {
-            width: 280px;
-            background: linear-gradient(180deg, #2d6a4f 0%, #40916c 100%);
-            padding: 2rem 1rem;
-            border-radius: 0 30px 30px 0;
-            box-shadow: 10px 0 20px rgba(0,0,0,0.1);
-        }
-        
-        .aisha-avatar {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .avatar-icon {
-            font-size: 5rem;
-            animation: bounce 2s ease-in-out infinite;
-            display: inline-block;
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .aisha-avatar h2 {
-            color: white;
-            font-size: 2rem;
-            text-shadow: 3px 3px 0 #1b4332;
-        }
-        
-        .nav-cartoon-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem 1.5rem;
-            margin: 0.5rem 0;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50px;
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-        
-        .nav-cartoon-item:hover, .nav-cartoon-item.active {
-            background: #ffd700;
-            color: #2d6a4f;
-            transform: scale(1.05);
-        }
-        
-        .logout-cartoon {
-            background: #ff4757;
-            color: white;
-            border: none;
-            padding: 0.8rem;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 2rem;
-            width: 100%;
-            font-family: inherit;
-        }
-        
-        /* Main Content */
-        .progress-main {
-            flex: 1;
-            padding: 2rem;
-            overflow-y: auto;
-        }
-        
-        /* Header */
-        .progress-header {
-            background: linear-gradient(135deg, #ffd700, #ffed4e);
-            border-radius: 30px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .progress-header h1 {
-            color: #2d6a4f;
-            font-size: 2rem;
-        }
-        
-        .progress-header p {
-            color: #40916c;
-        }
-        
-        /* Stats Cards */
-        .stats-garden {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .stat-flower {
-            background: white;
-            border-radius: 25px;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 8px 0 #c8e6e0;
-            transition: all 0.3s;
-        }
-        
-        .stat-flower:hover {
-            transform: translateY(-5px);
-        }
-        
-        .stat-emoji {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #2d6a4f;
-        }
-        
-        .stat-label {
-            color: #666;
-            font-size: 0.85rem;
-        }
-        
-        /* Mastery Section */
-        .mastery-section {
-            background: white;
-            border-radius: 30px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            border: 2px solid #ffd700;
-        }
-        
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            font-size: 1.3rem;
-            color: #2d6a4f;
-            border-left: 5px solid #ffd700;
-            padding-left: 1rem;
-        }
-        
-        /* Mastery Tree - Growth Visual */
-        .mastery-tree {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .mastery-branch {
-            background: #f0faf4;
-            border-radius: 20px;
-            padding: 1rem;
-        }
-        
-        .branch-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-        
-        .branch-name {
-            font-weight: bold;
-            color: #2d6a4f;
-            font-size: 1.1rem;
-        }
-        
-        .branch-level {
-            font-size: 0.85rem;
-            color: #ffd700;
-            font-weight: bold;
-        }
-        
-        /* Growth Bar */
-        .growth-bar {
-            height: 35px;
-            background: #e0e8e4;
-            border-radius: 50px;
-            overflow: hidden;
-            position: relative;
-            margin: 0.5rem 0;
-        }
-        
-        .growth-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #2d6a4f, #40916c, #52b788);
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 1rem;
-            color: white;
-            font-weight: bold;
-            transition: width 1s ease;
-        }
-        
-        .leaf-icon {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.2rem;
-        }
-        
-        /* Achievements / Badges */
-        .achievements-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        
-        .achievement-card {
-            background: linear-gradient(135deg, #fff9e6, #fff0d4);
-            border-radius: 20px;
-            padding: 1rem;
-            text-align: center;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-        
-        .achievement-card.locked {
-            opacity: 0.5;
-            filter: grayscale(0.3);
-        }
-        
-        .achievement-card:hover {
-            transform: scale(1.05);
-        }
-        
-        .achievement-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .achievement-name {
-            font-weight: bold;
-            color: #2d6a4f;
-            font-size: 0.85rem;
-        }
-        
-        /* Quiz History Table */
-        .history-table {
-            overflow-x: auto;
-        }
-        
-        .history-table table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .history-table th, .history-table td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #e0e8e4;
-        }
-        
-        .history-table th {
-            background: #f0faf4;
-            color: #2d6a4f;
-        }
-        
-        .badge-pass {
-            background: #c8e6e0;
-            color: #2d6a4f;
-            padding: 0.3rem 0.8rem;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-        
-        .badge-fail {
-            background: #ffe0e8;
-            color: #ff6b9d;
-            padding: 0.3rem 0.8rem;
-            border-radius: 50px;
-            font-size: 0.8rem;
-        }
-        
-        /* Encouragement Message */
-        .encouragement-box {
-            background: linear-gradient(135deg, #ffd700, #ffed4e);
-            border-radius: 25px;
-            padding: 1.5rem;
-            margin-top: 1.5rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .encouragement-box::before {
-            content: "🌱🌸🌻";
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            font-size: 60px;
-            opacity: 0.2;
-        }
-        
-        .encouragement-text {
-            font-size: 1.2rem;
-            color: #2d6a4f;
-            font-weight: bold;
-        }
-        
-        /* Loading */
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: #40916c;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .progress-container {
-                flex-direction: column;
-            }
-            
-            .cartoon-sidebar {
-                width: 100%;
-                border-radius: 0 0 30px 30px;
-            }
-            
-            .stats-garden {
-                grid-template-columns: 1fr;
-            }
-            
-            .achievements-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Neue', 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6e0 100%); min-height: 100vh; }
+        .progress-container { display: flex; min-height: 100vh; }
+        .cartoon-sidebar { width: 280px; background: linear-gradient(180deg, #2d6a4f 0%, #40916c 100%); padding: 2rem 1rem; border-radius: 0 30px 30px 0; box-shadow: 10px 0 20px rgba(0,0,0,0.1); }
+        .aisha-avatar { text-align: center; margin-bottom: 2rem; }
+        .avatar-icon { font-size: 5rem; animation: bounce 2s ease-in-out infinite; display: inline-block; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .aisha-avatar h2 { color: white; font-size: 2rem; text-shadow: 3px 3px 0 #1b4332; }
+        .aisha-avatar p { color: #d8f3dc; font-size: 0.9rem; }
+        .nav-cartoon-item { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; margin: 0.5rem 0; background: rgba(255,255,255,0.2); border-radius: 50px; color: white; text-decoration: none; font-weight: bold; transition: all 0.3s; }
+        .nav-cartoon-item:hover, .nav-cartoon-item.active { background: #ffd700; color: #2d6a4f; transform: scale(1.05); }
+        .logout-cartoon { background: #ff4757; color: white; border: none; padding: 0.8rem; border-radius: 50px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 2rem; width: 100%; font-family: inherit; }
+        .progress-main { flex: 1; padding: 2rem; overflow-y: auto; }
+        .progress-header { background: linear-gradient(135deg, #ffd700, #ffed4e); border-radius: 30px; padding: 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .progress-header h1 { color: #2d6a4f; font-size: 2rem; }
+        .progress-header p { color: #40916c; }
+        .stats-garden { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-flower { background: white; border-radius: 25px; padding: 1.5rem; text-align: center; box-shadow: 0 8px 0 #c8e6e0; transition: all 0.3s; }
+        .stat-flower:hover { transform: translateY(-5px); }
+        .stat-emoji { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .stat-number { font-size: 2rem; font-weight: bold; color: #2d6a4f; }
+        .stat-label { color: #666; font-size: 0.85rem; }
+        .mastery-section { background: white; border-radius: 30px; padding: 1.5rem; margin-bottom: 1.5rem; border: 2px solid #ffd700; }
+        .section-title { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 1.3rem; color: #2d6a4f; border-left: 5px solid #ffd700; padding-left: 1rem; }
+        .mastery-tree { display: flex; flex-direction: column; gap: 1rem; }
+        .mastery-branch { background: #f0faf4; border-radius: 20px; padding: 1rem; }
+        .branch-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+        .branch-name { font-weight: bold; color: #2d6a4f; font-size: 1.1rem; }
+        .branch-level { font-size: 0.85rem; color: #ffd700; font-weight: bold; }
+        .growth-bar { height: 35px; background: #e0e8e4; border-radius: 50px; overflow: hidden; margin: 0.5rem 0; }
+        .growth-fill { height: 100%; background: linear-gradient(90deg, #2d6a4f, #40916c, #52b788); border-radius: 50px; display: flex; align-items: center; justify-content: flex-end; padding-right: 1rem; color: white; font-weight: bold; transition: width 1s ease; min-width: 40px; }
+        .achievements-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
+        .achievement-card { background: linear-gradient(135deg, #fff9e6, #fff0d4); border-radius: 20px; padding: 1rem; text-align: center; transition: all 0.3s; cursor: pointer; border: 2px solid transparent; }
+        .achievement-card.earned { border-color: #ffd700; }
+        .achievement-card.locked { opacity: 0.5; filter: grayscale(0.5); }
+        .achievement-card:hover { transform: scale(1.05); }
+        .achievement-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .achievement-name { font-weight: bold; color: #2d6a4f; font-size: 0.85rem; }
+        .history-table { overflow-x: auto; }
+        .history-table table { width: 100%; border-collapse: collapse; }
+        .history-table th, .history-table td { padding: 1rem; text-align: left; border-bottom: 1px solid #e0e8e4; }
+        .history-table th { background: #f0faf4; color: #2d6a4f; }
+        .badge-pass { background: #c8e6e0; color: #2d6a4f; padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.8rem; font-weight: bold; }
+        .badge-fail { background: #ffe0e8; color: #ff6b9d; padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.8rem; }
+        .encouragement-box { background: linear-gradient(135deg, #ffd700, #ffed4e); border-radius: 25px; padding: 1.5rem; margin-top: 1.5rem; text-align: center; }
+        .encouragement-text { font-size: 1.2rem; color: #2d6a4f; font-weight: bold; }
+        .loading { text-align: center; padding: 2rem; color: #40916c; font-size: 1.1rem; }
+        .empty-state { text-align: center; padding: 2rem; color: #999; }
+        @media (max-width: 768px) { .progress-container { flex-direction: column; } .cartoon-sidebar { width: 100%; border-radius: 0 0 30px 30px; } .stats-garden { grid-template-columns: 1fr 1fr; } .achievements-grid { grid-template-columns: repeat(2, 1fr); } }
     </style>
 </head>
 <body>
     <div class="progress-container">
-        <!-- Sidebar -->
         <aside class="cartoon-sidebar">
             <div class="aisha-avatar">
                 <div class="avatar-icon">🌱🤖💕</div>
                 <h2>AISHA</h2>
                 <p>Your Growth Partner</p>
             </div>
-            
             <nav>
-                <a href="/student/dashboard.html" class="nav-cartoon-item">
-                    <span>🏠</span> Home
-                </a>
-                <a href="/student/chat.html" class="nav-cartoon-item">
-                    <span>💬</span> Chat with AISHA
-                </a>
-                <a href="/student/quizzes.html" class="nav-cartoon-item">
-                    <span>📝</span> Quizzes
-                </a>
-                <a href="/student/progress.html" class="nav-cartoon-item active">
-                    <span>📈</span> My Progress
-                </a>
+                <a href="/student/dashboard.html" class="nav-cartoon-item">🏠 Home</a>
+                <a href="/student/chat.html" class="nav-cartoon-item">💬 Chat with AISHA</a>
+                <a href="/student/quizzes.html" class="nav-cartoon-item">📝 Quizzes</a>
+                <a href="/student/progress.html" class="nav-cartoon-item active">📈 My Progress</a>
             </nav>
-            
-            <button class="logout-cartoon" onclick="logout()">
-                🚪 Goodbye for now!
-            </button>
+            <button class="logout-cartoon" onclick="logout()">🚪 Goodbye for now!</button>
         </aside>
-        
-        <!-- Main Content -->
+
         <main class="progress-main">
             <div class="progress-header">
                 <div>
                     <h1>🌱 AISHA's Achievement Garden</h1>
                     <p>Watch your knowledge grow like beautiful flowers! 🌸</p>
                 </div>
-                <div style="font-size: 3rem;">🏆🌻</div>
+                <div style="font-size:3rem;">🏆🌻</div>
             </div>
-            
-            <!-- Stats Flowers -->
-            <div class="stats-garden" id="statsGarden">
-                <div class="stat-flower">
-                    <div class="stat-emoji">📚</div>
-                    <div class="stat-number" id="totalQuizzes">0</div>
-                    <div class="stat-label">Quizzes Planted</div>
-                </div>
-                <div class="stat-flower">
-                    <div class="stat-emoji">⭐</div>
-                    <div class="stat-number" id="avgScore">0%</div>
-                    <div class="stat-label">Average Bloom</div>
-                </div>
-                <div class="stat-flower">
-                    <div class="stat-emoji">🏆</div>
-                    <div class="stat-number" id="bestScore">0%</div>
-                    <div class="stat-label">Best Score</div>
-                </div>
-                <div class="stat-flower">
-                    <div class="stat-emoji">🔥</div>
-                    <div class="stat-number" id="streak">0</div>
-                    <div class="stat-label">Day Streak</div>
-                </div>
+
+            <div class="stats-garden">
+                <div class="stat-flower"><div class="stat-emoji">📚</div><div class="stat-number" id="totalQuizzes">-</div><div class="stat-label">Quizzes Taken</div></div>
+                <div class="stat-flower"><div class="stat-emoji">⭐</div><div class="stat-number" id="avgScore">-</div><div class="stat-label">Average Score</div></div>
+                <div class="stat-flower"><div class="stat-emoji">🏆</div><div class="stat-number" id="bestScore">-</div><div class="stat-label">Best Score</div></div>
+                <div class="stat-flower"><div class="stat-emoji">✅</div><div class="stat-number" id="passRate">-</div><div class="stat-label">Pass Rate</div></div>
             </div>
-            
-            <!-- Mastery Tree - Subject Growth -->
+
+            <!-- Knowledge Tree -->
             <div class="mastery-section">
-                <div class="section-title">
-                    <span>🌳</span>
-                    <span>Your Knowledge Tree</span>
-                    <span>🌳</span>
-                </div>
-                <div id="masteryTree" class="mastery-tree">
-                    <div class="loading">🌱 AISHA is measuring your growth...</div>
-                </div>
+                <div class="section-title"><span>🌳</span><span>Your Knowledge Tree</span><span>🌳</span></div>
+                <div id="masteryTree" class="mastery-tree"><div class="loading">🌱 AISHA is measuring your growth...</div></div>
             </div>
-            
-            <!-- Achievements / Badges -->
+
+            <!-- Achievements -->
             <div class="mastery-section">
-                <div class="section-title">
-                    <span>🏅</span>
-                    <span>AISHA's Badge Garden</span>
-                    <span>🏅</span>
-                </div>
-                <div id="achievementsGrid" class="achievements-grid">
-                    <div class="loading">🎖️ Collecting your achievements...</div>
-                </div>
+                <div class="section-title"><span>🏅</span><span>AISHA's Badge Garden</span><span>🏅</span></div>
+                <div id="achievementsGrid" class="achievements-grid"><div class="loading">🎖️ Collecting your achievements...</div></div>
             </div>
-            
+
             <!-- Quiz History -->
             <div class="mastery-section">
-                <div class="section-title">
-                    <span>📜</span>
-                    <span>Your Learning Journey</span>
-                </div>
-                <div id="quizHistory" class="history-table">
-                    <div class="loading">📖 Reading your history...</div>
-                </div>
+                <div class="section-title"><span>📜</span><span>Your Learning Journey</span></div>
+                <div id="quizHistory" class="history-table"><div class="loading">📖 Loading your history...</div></div>
             </div>
-            
-            <!-- Encouragement Message -->
+
             <div class="encouragement-box">
-                <div class="encouragement-text" id="encouragementMessage">
-                    🌟 Every quiz you take makes you stronger! Keep going! 🌟
-                </div>
+                <div class="encouragement-text" id="encouragementMessage">🌟 Loading your progress...</div>
             </div>
         </main>
     </div>
-    
+
     <script>
-        // Mock progress data
-        const progressData = {
-            totalQuizzes: 12,
-            avgScore: 74,
-            bestScore: 95,
-            streak: 5,
-            subjects: [
-                { name: "Mathematics", mastery: 65, color: "#ff6b9d", emoji: "📐" },
-                { name: "Physics", mastery: 45, color: "#ffb347", emoji: "⚛️" },
-                { name: "Biology", mastery: 82, color: "#52b788", emoji: "🧬" },
-                { name: "Chemistry", mastery: 38, color: "#a78bfa", emoji: "🧪" },
-                { name: "History", mastery: 71, color: "#60a5fa", emoji: "🌍" },
-                { name: "Literature", mastery: 88, color: "#f472b6", emoji: "📖" }
-            ],
-            achievements: [
-                { name: "First Quiz", icon: "🎯", earned: true, desc: "Complete your first quiz" },
-                { name: "Perfect Score", icon: "💯", earned: true, desc: "Get 100% on any quiz" },
-                { name: "5 Day Streak", icon: "🔥", earned: true, desc: "Practice 5 days in a row" },
-                { name: "Math Master", icon: "📐", earned: false, desc: "Reach 80% in Math" },
-                { name: "Science Star", icon: "🔬", earned: false, desc: "Complete 5 science quizzes" },
-                { name: "Bookworm", icon: "📚", earned: false, desc: "Read 3 books with AISHA" }
-            ],
-            history: [
-                { quiz: "Algebra Adventure", subject: "Math", score: 85, result: "pass", date: "Yesterday" },
-                { quiz: "Physics Fun", subject: "Physics", score: 60, result: "fail", date: "2 days ago" },
-                { quiz: "Biology Blast", subject: "Biology", score: 92, result: "pass", date: "3 days ago" },
-                { quiz: "Chemistry Challenge", subject: "Chemistry", score: 45, result: "fail", date: "5 days ago" },
-                { quiz: "History Heroes", subject: "History", score: 78, result: "pass", date: "1 week ago" }
-            ]
-        };
-        
-        function loadProgress() {
-            // Stats
-            document.getElementById('totalQuizzes').textContent = progressData.totalQuizzes;
-            document.getElementById('avgScore').textContent = progressData.avgScore + '%';
-            document.getElementById('bestScore').textContent = progressData.bestScore + '%';
-            document.getElementById('streak').textContent = progressData.streak;
-            
-            // Mastery Tree
-            const masteryDiv = document.getElementById('masteryTree');
-            masteryDiv.innerHTML = progressData.subjects.map(subject => `
+        const currentUser = JSON.parse(localStorage.getItem('user') || 'null');
+        if (!currentUser) window.location.href = '/login.html';
+
+        const SUBJECTS = ['Mathematics', 'Physics', 'Chemistry', 'Biology', 'History', 'Literature'];
+        const SUBJECT_ICONS = { Mathematics: '📐', Physics: '⚛️', Chemistry: '🧪', Biology: '🧬', History: '🌍', Literature: '📖' };
+
+        async function loadProgress() {
+            try {
+                // Load attempts from DB
+                const res = await fetch(`/api/quizzes/attempts?userId=${currentUser.id}`);
+                const data = await res.json();
+                const attempts = data.success ? data.attempts : [];
+
+                // Load subject mastery from user_progress if available
+                let masteryData = {};
+                try {
+                    const progressRes = await fetch(`/api/db/progress?userId=${currentUser.id}`);
+                    const progressData = await progressRes.json();
+                    if (progressData.success) {
+                        progressData.progress.forEach(p => { masteryData[p.subject] = p.mastery; });
+                    }
+                } catch { /* fallback: calculate from attempts */ }
+
+                renderStats(attempts);
+                renderMasteryTree(attempts, masteryData);
+                renderAchievements(attempts);
+                renderHistory(attempts);
+                renderEncouragement(attempts);
+
+            } catch (err) {
+                console.error(err);
+                // Show empty state
+                renderStats([]);
+                renderMasteryTree([], {});
+                renderAchievements([]);
+                renderHistory([]);
+            }
+        }
+
+        function renderStats(attempts) {
+            const total = attempts.length;
+            const avgScore = total > 0 ? Math.round(attempts.reduce((s, a) => s + a.percentage, 0) / total) : 0;
+            const bestScore = total > 0 ? Math.max(...attempts.map(a => a.percentage)) : 0;
+            const passRate = total > 0 ? Math.round((attempts.filter(a => a.is_passed).length / total) * 100) : 0;
+
+            document.getElementById('totalQuizzes').textContent = total;
+            document.getElementById('avgScore').textContent = avgScore + '%';
+            document.getElementById('bestScore').textContent = bestScore + '%';
+            document.getElementById('passRate').textContent = passRate + '%';
+        }
+
+        function renderMasteryTree(attempts, masteryData) {
+            const div = document.getElementById('masteryTree');
+
+            // Calculate mastery per subject from attempts if not in DB
+            const subjectMastery = SUBJECTS.map(subject => {
+                let mastery = masteryData[subject] || 0;
+                if (!mastery) {
+                    const subAttempts = attempts.filter(a => a.subject === subject);
+                    mastery = subAttempts.length > 0
+                        ? Math.round(subAttempts.reduce((s, a) => s + a.percentage, 0) / subAttempts.length)
+                        : 0;
+                }
+                return { subject, mastery };
+            });
+
+            if (subjectMastery.every(s => s.mastery === 0)) {
+                div.innerHTML = '<div class="empty-state">🌱 No quiz data yet. Take some quizzes to grow your tree!</div>';
+                return;
+            }
+
+            div.innerHTML = subjectMastery.map(({ subject, mastery }) => `
                 <div class="mastery-branch">
                     <div class="branch-header">
-                        <div class="branch-name">
-                            ${subject.emoji} ${subject.name}
-                        </div>
-                        <div class="branch-level">${subject.mastery}% Mastery</div>
+                        <div class="branch-name">${SUBJECT_ICONS[subject] || '📚'} ${subject}</div>
+                        <div class="branch-level">${mastery}% Mastery</div>
                     </div>
                     <div class="growth-bar">
-                        <div class="growth-fill" style="width: ${subject.mastery}%; background: ${subject.color}">
-                            ${subject.mastery >= 70 ? '🌿' : '🌱'}
+                        <div class="growth-fill" style="width: ${Math.max(mastery, 5)}%">
+                            ${mastery >= 70 ? '🌿' : '🌱'}
                         </div>
                     </div>
                 </div>
             `).join('');
-            
-            // Achievements
-            const achievementsDiv = document.getElementById('achievementsGrid');
-            achievementsDiv.innerHTML = progressData.achievements.map(ach => `
-                <div class="achievement-card ${ach.earned ? '' : 'locked'}">
-                    <div class="achievement-icon">${ach.icon}</div>
-                    <div class="achievement-name">${ach.name}</div>
-                    <div style="font-size: 0.7rem; color: #999;">${ach.desc}</div>
-                    ${ach.earned ? '<div style="color: #ffd700; font-size: 0.8rem;">✓ Earned!</div>' : '<div style="color: #ccc; font-size: 0.7rem;">🔒 Locked</div>'}
+        }
+
+        function renderAchievements(attempts) {
+            const total = attempts.length;
+            const bestScore = total > 0 ? Math.max(...attempts.map(a => a.percentage)) : 0;
+            const passed = attempts.filter(a => a.is_passed).length;
+            const subjects = [...new Set(attempts.map(a => a.subject))];
+
+            const achievements = [
+                { name: 'First Quiz', icon: '🎯', earned: total >= 1, desc: 'Complete your first quiz' },
+                { name: 'Perfect Score', icon: '💯', earned: bestScore === 100, desc: 'Get 100% on any quiz' },
+                { name: 'On a Roll', icon: '🔥', earned: passed >= 3, desc: 'Pass 3 quizzes' },
+                { name: 'Quiz Master', icon: '🧠', earned: total >= 10, desc: 'Take 10 quizzes' },
+                { name: 'Multi-Subject', icon: '🌍', earned: subjects.length >= 3, desc: 'Try 3 different subjects' },
+                { name: 'High Achiever', icon: '⭐', earned: bestScore >= 90, desc: 'Score 90%+ on a quiz' },
+                { name: 'Bookworm', icon: '📚', earned: total >= 5, desc: 'Take 5 quizzes' },
+                { name: 'Science Star', icon: '🔬', earned: subjects.some(s => ['Physics','Chemistry','Biology'].includes(s)), desc: 'Complete a science quiz' },
+            ];
+
+            document.getElementById('achievementsGrid').innerHTML = achievements.map(a => `
+                <div class="achievement-card ${a.earned ? 'earned' : 'locked'}">
+                    <div class="achievement-icon">${a.icon}</div>
+                    <div class="achievement-name">${a.name}</div>
+                    <div style="font-size:0.7rem; color:#999; margin-top:0.3rem;">${a.desc}</div>
+                    ${a.earned ? '<div style="color:#ffd700; font-size:0.8rem; margin-top:0.3rem;">✓ Earned!</div>' : '<div style="color:#ccc; font-size:0.7rem;">🔒 Locked</div>'}
                 </div>
             `).join('');
-            
-            // Quiz History
-            const historyDiv = document.getElementById('quizHistory');
-            historyDiv.innerHTML = `
+        }
+
+        function renderHistory(attempts) {
+            const div = document.getElementById('quizHistory');
+            if (!attempts.length) {
+                div.innerHTML = '<div class="empty-state">📝 No quiz history yet. Take a quiz to get started!</div>';
+                return;
+            }
+            div.innerHTML = `
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Quiz Name</th>
-                            <th>Subject</th>
-                            <th>Score</th>
-                            <th>Result</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>Subject</th><th>Score</th><th>Result</th><th>Date</th></tr></thead>
                     <tbody>
-                        ${progressData.history.map(h => `
+                        ${attempts.slice(0, 20).map(a => `
                             <tr>
-                                <td>${h.quiz}</td>
-                                <td>${h.subject}</td>
-                                <td><strong>${h.score}%</strong></td>
-                                <td><span class="badge-${h.result}">${h.result === 'pass' ? '🎉 Passed' : '📚 Keep Going'}</span></td>
-                                <td>${h.date}</td>
+                                <td>${SUBJECT_ICONS[a.subject] || '📚'} ${a.subject || 'Unknown'}</td>
+                                <td><strong>${a.percentage}%</strong> (${a.score}/${a.total})</td>
+                                <td><span class="${a.is_passed ? 'badge-pass' : 'badge-fail'}">${a.is_passed ? '🎉 Passed' : '📚 Keep Going'}</span></td>
+                                <td>${new Date(a.completed_at).toLocaleDateString()}</td>
                             </tr>
                         `).join('')}
                     </tbody>
                 </table>
             `;
-            
-            // Encouragement message based on progress
-            const encouragementDiv = document.getElementById('encouragementMessage');
-            if (progressData.avgScore >= 80) {
-                encouragementDiv.innerHTML = "🌟 You're a learning superstar! 🌟 AISHA is so proud of you! Keep watering your knowledge garden! 💐";
-            } else if (progressData.avgScore >= 60) {
-                encouragementDiv.innerHTML = "🌱 You're growing beautifully! Every quiz makes you stronger. Let's reach for the stars together! ⭐";
-            } else {
-                encouragementDiv.innerHTML = "🌸 Don't give up! Every seed takes time to grow. AISHA believes in you! Let's practice together! 🤗💕";
-            }
         }
-        
-        function getCurrentUser() {
-            const userStr = localStorage.getItem('user');
-            return userStr ? JSON.parse(userStr) : null;
+
+        function renderEncouragement(attempts) {
+            const avg = attempts.length > 0 ? Math.round(attempts.reduce((s, a) => s + a.percentage, 0) / attempts.length) : 0;
+            const msg = attempts.length === 0
+                ? "🌱 Start your first quiz to grow your knowledge garden! AISHA believes in you! 💕"
+                : avg >= 80
+                ? "🌟 You're a learning superstar! AISHA is so proud of you! Keep going! 💐"
+                : avg >= 60
+                ? "🌱 You're growing beautifully! Every quiz makes you stronger. Let's reach for the stars! ⭐"
+                : "🌸 Don't give up! Every seed takes time to grow. AISHA believes in you! 🤗💕";
+            document.getElementById('encouragementMessage').innerHTML = msg;
         }
-        
+
         function logout() {
-            localStorage.removeItem('token');
             localStorage.removeItem('user');
             window.location.href = '/login.html';
         }
-        
-        // Check login
-        if (!getCurrentUser()) {
-            window.location.href = '/login.html';
-        }
-        
-        // Load progress
+
         loadProgress();
     </script>
 </body>
