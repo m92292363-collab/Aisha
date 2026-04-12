@@ -193,8 +193,8 @@
                 return;
             }
             grid.innerHTML = books.map(book => {
-                const hasFile = book.content && book.content.startsWith('http');
-                return `
+                    const hasFile = book.content && book.content.startsWith('http');
+                    return `
                 <div class="book-card">
                     <div class="book-icon">${getBookIcon(book.subject)}</div>
                     <div class="book-title">${book.title}</div>
@@ -207,7 +207,7 @@
                     </div>
                     <div class="book-actions">
                         ${hasFile ? `<a href="${book.content}" target="_blank" class="view-btn">👁️ View File</a>` : ''}
-                        <button class="delete-btn" onclick="deleteBook('${book.id}')">🗑️ Delete</button>
+                        <button class="delete-btn" onclick="deleteBook(${book.id})">🗑️ Delete</button>
                     </div>
                 </div>`;
             }).join('');
@@ -318,7 +318,6 @@
                 else showToast('❌ Failed to delete', '#ff4757');
             } catch { showToast('❌ Connection error', '#ff4757'); }
         }
-
         function showAddBookModal() {
             selectedFile = null;
             document.getElementById('selectedFileName').textContent = '';
