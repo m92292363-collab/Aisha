@@ -5,647 +5,272 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AISHA - Your Cartoon AI Tutor</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Comic Neue', 'Comic Neue', 'Segoe UI', 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
+            font-family: 'Comic Neue', 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
             background: linear-gradient(135deg, #ffe6f0 0%, #ffe0f5 50%, #ffd9e8 100%);
             min-height: 100vh;
         }
-        
-        /* Cute Cartoon Container */
-        .cartoon-container {
-            display: flex;
-            min-height: 100vh;
-        }
-        
-        /* Sidebar - Cartoon Style */
+        .cartoon-container { display: flex; min-height: 100vh; }
         .cartoon-sidebar {
             width: 280px;
-            background: #ff6b9d;
             background: linear-gradient(180deg, #ff6b9d 0%, #ff85b3 100%);
             padding: 2rem 1rem;
             border-radius: 0 30px 30px 0;
             box-shadow: 10px 0 20px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
         }
-        
-        .cartoon-sidebar::before {
-            content: "⭐";
-            position: absolute;
-            top: 50px;
-            right: 20px;
-            font-size: 60px;
-            opacity: 0.2;
-            animation: spin 10s linear infinite;
-        }
-        
-        .cartoon-sidebar::after {
-            content: "🎈";
-            position: absolute;
-            bottom: 50px;
-            left: 20px;
-            font-size: 50px;
-            opacity: 0.2;
-        }
-        
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        /* AISHA Avatar in Sidebar */
-        .aisha-avatar {
-            text-align: center;
-            margin-bottom: 2rem;
-            position: relative;
-        }
-        
-        .aisha-avatar .avatar-icon {
-            font-size: 5rem;
-            animation: bounce 2s ease-in-out infinite;
-            display: inline-block;
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .aisha-avatar h2 {
-            color: white;
-            font-size: 2rem;
-            margin-top: 0.5rem;
-            text-shadow: 3px 3px 0 #ff4081;
-        }
-        
-        .aisha-avatar p {
-            color: #fff0f5;
-            font-size: 0.9rem;
-        }
-        
-        /* Navigation - Cartoon Buttons */
-        .cartoon-nav {
-            margin-top: 2rem;
-        }
-        
-        .nav-cartoon-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem 1.5rem;
-            margin: 0.5rem 0;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50px;
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
-            font-size: 1.1rem;
-        }
-        
-        .nav-cartoon-item:hover {
-            background: rgba(255,255,255,0.4);
-            transform: scale(1.05);
-        }
-        
-        .nav-cartoon-item.active {
-            background: #ffd700;
-            color: #ff6b9d;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        /* Main Content */
-        .cartoon-main {
-            flex: 1;
-            padding: 2rem;
-            overflow-y: auto;
-        }
-        
-        /* Welcome Banner */
-        .welcome-banner {
-            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-            border-radius: 30px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .welcome-banner::before {
-            content: "🌸";
-            position: absolute;
-            bottom: -20px;
-            right: -20px;
-            font-size: 100px;
-            opacity: 0.2;
-        }
-        
-        .welcome-text h1 {
-            font-size: 2rem;
-            color: #ff6b9d;
-            margin-bottom: 0.5rem;
-        }
-        
-        .welcome-text p {
-            color: #cc5500;
-            font-size: 1.1rem;
-        }
-        
-        .welcome-emoji {
-            font-size: 4rem;
-            animation: wave 2s ease-in-out infinite;
-        }
-        
-        @keyframes wave {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(20deg); }
-            75% { transform: rotate(-10deg); }
-        }
-        
-        /* Stats Cards - Cartoon Style */
-        .stats-cartoon {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .stat-cartoon-card {
-            background: white;
-            border-radius: 20px;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 8px 0 #ffb3c6;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-        
-        .stat-cartoon-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 13px 0 #ffb3c6;
-        }
-        
-        .stat-emoji {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #ff6b9d;
-        }
-        
-        .stat-label {
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        /* Section Cards */
-        .cartoon-section {
-            background: white;
-            border-radius: 30px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            border: 2px solid #ffe0e8;
-        }
-        
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-            color: #ff6b9d;
-            border-left: 5px solid #ffd700;
-            padding-left: 1rem;
-        }
-        
-        /* Subject Items */
-        .subject-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .subject-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.8rem;
-            background: #fff5f8;
-            border-radius: 15px;
-            transition: all 0.3s;
-        }
-        
-        .subject-item:hover {
-            transform: translateX(10px);
-            background: #ffe0e8;
-        }
-        
-        .subject-name {
-            font-weight: bold;
-            color: #ff6b9d;
-        }
-        
-        .subject-badge {
-            background: #ffd700;
-            padding: 0.3rem 0.8rem;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            color: #ff6b9d;
-        }
-        
-        /* Progress Bar */
-        .progress-cartoon {
-            height: 30px;
-            background: #ffe0e8;
-            border-radius: 50px;
-            overflow: hidden;
-            margin-top: 0.5rem;
-            position: relative;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ff6b9d, #ffb3c6);
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 1rem;
-            color: white;
-            font-weight: bold;
-            transition: width 1s ease;
-        }
-        
-        /* Quiz Items */
-        .quiz-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1rem;
-        }
-        
-        .quiz-cartoon-item {
-            background: linear-gradient(135deg, #fff5f8, #ffe0e8);
-            border-radius: 20px;
-            padding: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid #ffd700;
-        }
-        
-        .quiz-cartoon-item:hover {
-            transform: scale(1.02);
-            box-shadow: 0 8px 15px rgba(255,107,157,0.2);
-        }
-        
-        .quiz-title {
-            font-weight: bold;
-            color: #ff6b9d;
-            margin-bottom: 0.5rem;
-        }
-        
-        .quiz-meta {
-            display: flex;
-            gap: 1rem;
-            font-size: 0.8rem;
-            color: #999;
-            margin-top: 0.5rem;
-        }
-        
-        /* Activity Items */
-        .activity-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-        
-        .activity-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.8rem;
-            background: #fff5f8;
-            border-radius: 15px;
-        }
-        
-        .activity-emoji {
-            font-size: 2rem;
-        }
-        
-        .activity-details {
-            flex: 1;
-        }
-        
-        .activity-details strong {
-            color: #ff6b9d;
-        }
-        
-        .activity-score {
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        
-        .score-pass {
-            color: #4caf50;
-        }
-        
-        .score-fail {
-            color: #ff6b9d;
-        }
-        
-        /* Logout Button */
-        .logout-cartoon {
-            background: #ff4757;
-            color: white;
-            border: none;
-            padding: 0.8rem;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 2rem;
-            width: 100%;
-            transition: all 0.3s;
-            font-family: inherit;
-        }
-        
-        .logout-cartoon:hover {
-            background: #ff6b81;
-            transform: scale(1.05);
-        }
-        
-        /* Loading Animation */
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            font-size: 1.2rem;
-            color: #ff6b9d;
-        }
-        
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 2rem;
-            color: #999;
-        }
-        
-        /* Responsive */
+        .aisha-avatar { text-align: center; margin-bottom: 2rem; }
+        .avatar-icon { font-size: 5rem; animation: bounce 2s ease-in-out infinite; display: inline-block; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .aisha-avatar h2 { color: white; font-size: 2rem; text-shadow: 3px 3px 0 #ff4081; }
+        .aisha-avatar p { color: #fff0f5; font-size: 0.9rem; }
+        .nav-cartoon-item { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; margin: 0.5rem 0; background: rgba(255,255,255,0.2); border-radius: 50px; color: white; text-decoration: none; font-weight: bold; transition: all 0.3s; font-size: 1.1rem; }
+        .nav-cartoon-item:hover { background: rgba(255,255,255,0.4); transform: scale(1.05); }
+        .nav-cartoon-item.active { background: #ffd700; color: #ff6b9d; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .logout-cartoon { background: #ff4757; color: white; border: none; padding: 0.8rem; border-radius: 50px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 2rem; width: 100%; transition: all 0.3s; font-family: inherit; }
+        .logout-cartoon:hover { background: #ff6b81; transform: scale(1.05); }
+        .cartoon-main { flex: 1; padding: 2rem; overflow-y: auto; }
+        .welcome-banner { background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); border-radius: 30px; padding: 2rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .welcome-text h1 { font-size: 2rem; color: #ff6b9d; margin-bottom: 0.5rem; }
+        .welcome-text p { color: #cc5500; font-size: 1.1rem; }
+        .welcome-emoji { font-size: 4rem; animation: wave 2s ease-in-out infinite; }
+        @keyframes wave { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(20deg); } 75% { transform: rotate(-10deg); } }
+        .stats-cartoon { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-cartoon-card { background: white; border-radius: 20px; padding: 1.5rem; text-align: center; box-shadow: 0 8px 0 #ffb3c6; transition: all 0.3s; cursor: pointer; }
+        .stat-cartoon-card:hover { transform: translateY(-5px); box-shadow: 0 13px 0 #ffb3c6; }
+        .stat-emoji { font-size: 3rem; margin-bottom: 0.5rem; }
+        .stat-number { font-size: 2.5rem; font-weight: bold; color: #ff6b9d; }
+        .stat-label { color: #666; font-size: 0.9rem; }
+        .cartoon-section { background: white; border-radius: 30px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 5px 15px rgba(0,0,0,0.08); border: 2px solid #ffe0e8; }
+        .section-title { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; font-size: 1.3rem; color: #ff6b9d; border-left: 5px solid #ffd700; padding-left: 1rem; }
+
+        /* Books grid */
+        .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
+        .book-card { background: linear-gradient(135deg, #fff5f8, #ffe0e8); border-radius: 20px; padding: 1.2rem; border: 2px solid #ffd700; transition: all 0.3s; cursor: pointer; }
+        .book-card:hover { transform: scale(1.02); box-shadow: 0 8px 15px rgba(255,107,157,0.2); }
+        .book-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .book-title { font-weight: bold; color: #ff6b9d; font-size: 1rem; margin-bottom: 0.3rem; }
+        .book-author { color: #999; font-size: 0.8rem; margin-bottom: 0.5rem; }
+        .book-subject { display: inline-block; background: white; padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.75rem; color: #ff6b9d; border: 1px solid #ffd700; }
+
+        /* Quiz cards */
+        .quiz-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+        .quiz-cartoon-item { background: linear-gradient(135deg, #fff5f8, #ffe0e8); border-radius: 20px; padding: 1rem; cursor: pointer; transition: all 0.3s; border: 2px solid #ffd700; }
+        .quiz-cartoon-item:hover { transform: scale(1.02); box-shadow: 0 8px 15px rgba(255,107,157,0.2); }
+        .quiz-title { font-weight: bold; color: #ff6b9d; margin-bottom: 0.5rem; font-size: 1rem; }
+        .quiz-info { font-size: 0.85rem; color: #666; margin-bottom: 0.5rem; }
+        .quiz-meta { display: flex; gap: 1rem; font-size: 0.8rem; color: #999; }
+        .diff-badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.75rem; font-weight: bold; }
+        .diff-1 { background: #c8e6e0; color: #2d6a4f; }
+        .diff-2 { background: #ffe0b5; color: #e67e22; }
+        .diff-3 { background: #ffcccc; color: #c0392b; }
+
+        /* Activity */
+        .activity-list { display: flex; flex-direction: column; gap: 0.8rem; }
+        .activity-item { display: flex; align-items: center; gap: 1rem; padding: 0.8rem; background: #fff5f8; border-radius: 15px; }
+        .activity-emoji { font-size: 2rem; }
+        .activity-details { flex: 1; }
+        .activity-details strong { color: #ff6b9d; }
+        .activity-score { font-weight: bold; font-size: 1.2rem; }
+        .score-pass { color: #4caf50; }
+        .score-fail { color: #ff6b9d; }
+
+        .empty-state { text-align: center; padding: 2rem; color: #999; font-size: 1rem; }
+        .loading { text-align: center; padding: 2rem; color: #ff85b3; }
+
         @media (max-width: 768px) {
-            .cartoon-container {
-                flex-direction: column;
-            }
-            
-            .cartoon-sidebar {
-                width: 100%;
-                border-radius: 0 0 30px 30px;
-            }
-            
-            .stats-cartoon {
-                grid-template-columns: 1fr;
-            }
+            .cartoon-container { flex-direction: column; }
+            .cartoon-sidebar { width: 100%; border-radius: 0 0 30px 30px; }
+            .stats-cartoon { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
 <body>
     <div class="cartoon-container">
-        <!-- Sidebar with AISHA -->
         <aside class="cartoon-sidebar">
             <div class="aisha-avatar">
                 <div class="avatar-icon">🤖💕</div>
                 <h2>AISHA</h2>
                 <p>Your AI Bestie & Tutor</p>
             </div>
-            
             <nav class="cartoon-nav">
-                <a href="/student/dashboard.html" class="nav-cartoon-item active">
-                    <span>🏠</span> Home
-                </a>
-                <a href="/student/chat.html" class="nav-cartoon-item">
-                    <span>💬</span> Chat with AISHA
-                </a>
-                <a href="/student/quizzes.html" class="nav-cartoon-item">
-                    <span>📝</span> Quizzes
-                </a>
-                <a href="/student/progress.html" class="nav-cartoon-item">
-                    <span>📈</span> My Progress
-                </a>
+                <a href="/student/dashboard.html" class="nav-cartoon-item active"><span>🏠</span> Home</a>
+                <a href="/student/chat.html" class="nav-cartoon-item"><span>💬</span> Chat with AISHA</a>
+                <a href="/student/quizzes.html" class="nav-cartoon-item"><span>📝</span> Quizzes</a>
+                <a href="/student/progress.html" class="nav-cartoon-item"><span>📈</span> My Progress</a>
             </nav>
-            
-            <button class="logout-cartoon" onclick="logout()">
-                🚪 Goodbye for now!
-            </button>
+            <button class="logout-cartoon" onclick="logout()">🚪 Goodbye for now!</button>
         </aside>
-        
-        <!-- Main Content -->
+
         <main class="cartoon-main">
-            <!-- Welcome Banner -->
             <div class="welcome-banner">
                 <div class="welcome-text">
                     <h1>Hey there, <span id="studentName">Star Student</span>! 🌟</h1>
                     <p>AISHA is ready to help you learn today! What shall we explore? 📚</p>
                 </div>
-                <div class="welcome-emoji">
-                    🎓✨
-                </div>
+                <div class="welcome-emoji">🎓✨</div>
             </div>
-            
+
             <!-- Stats -->
-            <div class="stats-cartoon" id="statsContainer">
-                <div class="stat-cartoon-card">
-                    <div class="stat-emoji">📚</div>
-                    <div class="stat-number" id="totalQuizzes">0</div>
-                    <div class="stat-label">Quizzes Taken</div>
-                </div>
-                <div class="stat-cartoon-card">
-                    <div class="stat-emoji">⭐</div>
-                    <div class="stat-number" id="avgScore">0%</div>
-                    <div class="stat-label">Average Score</div>
-                </div>
-                <div class="stat-cartoon-card">
-                    <div class="stat-emoji">🎯</div>
-                    <div class="stat-number" id="passRate">0%</div>
-                    <div class="stat-label">Pass Rate</div>
-                </div>
-                <div class="stat-cartoon-card">
-                    <div class="stat-emoji">⏱️</div>
-                    <div class="stat-number" id="studyTime">0</div>
-                    <div class="stat-label">Minutes Studied</div>
-                </div>
+            <div class="stats-cartoon">
+                <div class="stat-cartoon-card"><div class="stat-emoji">📚</div><div class="stat-number" id="totalQuizzes">-</div><div class="stat-label">Quizzes Taken</div></div>
+                <div class="stat-cartoon-card"><div class="stat-emoji">⭐</div><div class="stat-number" id="avgScore">-</div><div class="stat-label">Average Score</div></div>
+                <div class="stat-cartoon-card"><div class="stat-emoji">🎯</div><div class="stat-number" id="passRate">-</div><div class="stat-label">Pass Rate</div></div>
+                <div class="stat-cartoon-card"><div class="stat-emoji">🏆</div><div class="stat-number" id="bestScore">-</div><div class="stat-label">Best Score</div></div>
             </div>
-            
-            <!-- Subjects to Practice -->
+
+            <!-- Books from admin -->
             <div class="cartoon-section">
-                <div class="section-title">
-                    <span>🎯</span>
-                    <span>Subjects AISHA Thinks You Should Practice</span>
-                </div>
-                <div id="weakSubjects" class="subject-list">
-                    <div class="loading">⏳ AISHA is analyzing your progress...</div>
+                <div class="section-title"><span>📚</span><span>AISHA's Library — Your Books</span></div>
+                <div id="booksGrid" class="books-grid">
+                    <div class="loading">📖 Loading your books...</div>
                 </div>
             </div>
-            
-            <!-- Recommended Quizzes -->
+
+            <!-- Available Quizzes -->
             <div class="cartoon-section">
-                <div class="section-title">
-                    <span>✨</span>
-                    <span>AISHA's Recommendations For You</span>
-                </div>
-                <div id="recommendedQuizzes" class="quiz-list">
-                    <div class="loading">🎲 Finding the perfect quizzes for you...</div>
+                <div class="section-title"><span>✨</span><span>Available Quizzes For You</span></div>
+                <div id="quizzesList" class="quiz-list">
+                    <div class="loading">🎲 Loading quizzes...</div>
                 </div>
             </div>
-            
+
             <!-- Recent Activity -->
             <div class="cartoon-section">
-                <div class="section-title">
-                    <span>📅</span>
-                    <span>Your Recent Adventures with AISHA</span>
-                </div>
+                <div class="section-title"><span>📅</span><span>Your Recent Activity</span></div>
                 <div id="recentActivity" class="activity-list">
-                    <div class="loading">📖 Loading your learning journey...</div>
+                    <div class="loading">📖 Loading your activity...</div>
                 </div>
             </div>
         </main>
     </div>
-    
+
     <script>
-        // Get current user from localStorage
-        function getCurrentUser() {
-            const userStr = localStorage.getItem('user');
-            if (userStr) {
-                return JSON.parse(userStr);
+        const currentUser = JSON.parse(localStorage.getItem('user') || 'null');
+        if (!currentUser) window.location.href = '/login.html';
+
+        // Show name
+        if (currentUser?.full_name) {
+            document.getElementById('studentName').textContent = currentUser.full_name.split(' ')[0];
+        }
+
+        function getSubjectIcon(subject) {
+            return { Mathematics: '📐', Physics: '⚛️', Chemistry: '🧪', Biology: '🧬', History: '🌍', Literature: '📖' }[subject] || '📚';
+        }
+
+        function getDiffLabel(d) {
+            return d == 1 ? '🍭 Easy' : d == 2 ? '📚 Medium' : '🔥 Hard';
+        }
+
+        async function loadDashboard() {
+            try {
+                // Load all data in parallel
+                const [booksRes, quizzesRes, attemptsRes] = await Promise.all([
+                    fetch('/api/books'),
+                    fetch('/api/quizzes'),
+                    fetch(`/api/quizzes/attempts?userId=${currentUser.id}`)
+                ]);
+
+                const [booksData, quizzesData, attemptsData] = await Promise.all([
+                    booksRes.json(), quizzesRes.json(), attemptsRes.json()
+                ]);
+
+                const books = booksData.success ? booksData.books : [];
+                const quizzes = quizzesData.success ? quizzesData.quizzes : [];
+                const attempts = attemptsData.success ? attemptsData.attempts : [];
+
+                renderStats(attempts);
+                renderBooks(books);
+                renderQuizzes(quizzes);
+                renderActivity(attempts);
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById('booksGrid').innerHTML = '<div class="empty-state">⚠️ Could not load data. Check your connection.</div>';
             }
-            return null;
         }
-        
-        // Show student name
-        const user = getCurrentUser();
-        if (user && user.full_name) {
-            document.getElementById('studentName').textContent = user.full_name.split(' ')[0];
-        } else {
-            document.getElementById('studentName').textContent = 'Star Student';
+
+        function renderStats(attempts) {
+            const total = attempts.length;
+            const avg = total > 0 ? Math.round(attempts.reduce((s, a) => s + a.percentage, 0) / total) : 0;
+            const passRate = total > 0 ? Math.round((attempts.filter(a => a.is_passed).length / total) * 100) : 0;
+            const best = total > 0 ? Math.max(...attempts.map(a => a.percentage)) : 0;
+
+            document.getElementById('totalQuizzes').textContent = total;
+            document.getElementById('avgScore').textContent = avg + '%';
+            document.getElementById('passRate').textContent = passRate + '%';
+            document.getElementById('bestScore').textContent = best + '%';
         }
-        
-        // Mock data for demo (replace with real API later)
-        function loadMockData() {
-            // Stats
-            document.getElementById('totalQuizzes').textContent = '8';
-            document.getElementById('avgScore').textContent = '74%';
-            document.getElementById('passRate').textContent = '63%';
-            document.getElementById('studyTime').textContent = '156';
-            
-            // Weak Subjects
-            const weakDiv = document.getElementById('weakSubjects');
-            weakDiv.innerHTML = `
-                <div class="subject-item">
-                    <span class="subject-name">📐 Mathematics</span>
-                    <span class="subject-badge">Need Practice 🎯</span>
+
+        function renderBooks(books) {
+            const div = document.getElementById('booksGrid');
+            if (!books.length) {
+                div.innerHTML = '<div class="empty-state">📚 No books yet. Your admin will add books soon!</div>';
+                return;
+            }
+            div.innerHTML = books.map(book => `
+                <div class="book-card" onclick="chatAboutBook('${book.title}')">
+                    <div class="book-icon">${getSubjectIcon(book.subject)}</div>
+                    <div class="book-title">${book.title}</div>
+                    <div class="book-author">${book.author ? 'by ' + book.author : ''}</div>
+                    <span class="book-subject">${book.subject}</span>
+                    <div style="margin-top:0.5rem; font-size:0.75rem; color:#ff85b3;">💬 Click to ask AISHA about this book</div>
                 </div>
-                <div class="subject-item">
-                    <span class="subject-name">⚛️ Physics</span>
-                    <span class="subject-badge">Getting Better 📈</span>
-                </div>
-                <div class="subject-item">
-                    <div style="flex:1">
-                        <span class="subject-name">🧪 Chemistry</span>
-                        <div class="progress-cartoon">
-                            <div class="progress-fill" style="width: 45%">45%</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            // Recommended Quizzes
-            const quizDiv = document.getElementById('recommendedQuizzes');
-            quizDiv.innerHTML = `
-                <div class="quiz-cartoon-item" onclick="startQuiz(1)">
-                    <div class="quiz-title">🧮 Algebra Basics</div>
-                    <div>10 questions • 20 minutes</div>
+            `).join('');
+        }
+
+        function renderQuizzes(quizzes) {
+            const div = document.getElementById('quizzesList');
+            if (!quizzes.length) {
+                div.innerHTML = '<div class="empty-state">📝 No quizzes available yet. Check back soon!</div>';
+                return;
+            }
+            div.innerHTML = quizzes.slice(0, 6).map(quiz => {
+                const questions = typeof quiz.questions === 'string' ? JSON.parse(quiz.questions) : (quiz.questions || []);
+                return `
+                <div class="quiz-cartoon-item" onclick="location.href='/student/quizzes.html'">
+                    <div class="quiz-title">${getSubjectIcon(quiz.subject)} ${quiz.title}</div>
+                    <div class="quiz-info">📝 ${questions.length} questions · ⏱️ ${quiz.time_limit} min</div>
                     <div class="quiz-meta">
-                        <span>⭐ Difficulty: Easy</span>
-                        <span>🎯 AISHA recommends this!</span>
+                        <span class="diff-badge diff-${quiz.difficulty}">${getDiffLabel(quiz.difficulty)}</span>
+                        <span>📚 ${quiz.subject}</span>
                     </div>
                 </div>
-                <div class="quiz-cartoon-item" onclick="startQuiz(2)">
-                    <div class="quiz-title">⚡ Newton's Laws</div>
-                    <div>8 questions • 15 minutes</div>
-                    <div class="quiz-meta">
-                        <span>⭐ Difficulty: Medium</span>
-                        <span>📖 From your Physics book</span>
-                    </div>
-                </div>
-                <div class="quiz-cartoon-item" onclick="startQuiz(3)">
-                    <div class="quiz-title">🧬 Cell Structure</div>
-                    <div>12 questions • 25 minutes</div>
-                    <div class="quiz-meta">
-                        <span>⭐ Difficulty: Medium</span>
-                        <span>🌸 You'll love this!</span>
-                    </div>
-                </div>
-            `;
-            
-            // Recent Activity
-            const activityDiv = document.getElementById('recentActivity');
-            activityDiv.innerHTML = `
+            `}).join('');
+        }
+
+        function renderActivity(attempts) {
+            const div = document.getElementById('recentActivity');
+            if (!attempts.length) {
+                div.innerHTML = '<div class="empty-state">🌱 No activity yet. Take a quiz to get started!</div>';
+                return;
+            }
+            div.innerHTML = attempts.slice(0, 5).map(a => `
                 <div class="activity-item">
                     <div class="activity-emoji">📝</div>
                     <div class="activity-details">
-                        <strong>Algebra Quiz</strong>
-                        <div>Yesterday at 3:30 PM</div>
+                        <strong>${a.subject || 'Quiz'}</strong>
+                        <div style="font-size:0.8rem; color:#999;">${new Date(a.completed_at).toLocaleString()}</div>
                     </div>
-                    <div class="activity-score score-pass">85% 🎉</div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-emoji">💬</div>
-                    <div class="activity-details">
-                        <strong>Chatted with AISHA</strong>
-                        <div>Yesterday at 2:00 PM</div>
-                        <div>Asked about: "Explain quantum physics"</div>
+                    <div class="activity-score ${a.is_passed ? 'score-pass' : 'score-fail'}">
+                        ${a.percentage}% ${a.is_passed ? '🎉' : '📚'}
                     </div>
-                    <div class="activity-score">🤖✨</div>
                 </div>
-                <div class="activity-item">
-                    <div class="activity-emoji">📖</div>
-                    <div class="activity-details">
-                        <strong>Physics Quiz</strong>
-                        <div>2 days ago</div>
-                    </div>
-                    <div class="activity-score score-fail">60% 📚</div>
-                </div>
-            `;
+            `).join('');
         }
-        
-        function startQuiz(quizId) {
-            alert(`✨ AISHA is preparing your quiz! (Quiz #${quizId})\n\nFull quiz system coming soon!`);
+
+        function chatAboutBook(title) {
+            // Store the book title and redirect to chat
+            localStorage.setItem('chatPrompt', `Tell me about the book "${title}" and help me understand it`);
+            window.location.href = '/student/chat.html';
         }
-        
+
         function logout() {
-            localStorage.removeItem('token');
             localStorage.removeItem('user');
             window.location.href = '/login.html';
         }
-        
-        // Check if user is logged in
-        if (!getCurrentUser()) {
-            window.location.href = '/login.html';
-        }
-        
-        // Load the data
-        loadMockData();
+
+        loadDashboard();
     </script>
 </body>
 </html>
