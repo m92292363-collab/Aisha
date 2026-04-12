@@ -84,15 +84,8 @@
             <form id="createQuizForm" onsubmit="createQuiz(event)">
                 <div class="form-group"><label>📝 Quiz Title</label><input type="text" id="quizTitle" placeholder="e.g., Algebra Basics" required></div>
                 <div class="form-group">
-                    <label>📚 Subject</label>
-                    <select id="quizSubject" required>
-                        <option value="Mathematics">📐 Mathematics</option>
-                        <option value="Physics">⚛️ Physics</option>
-                        <option value="Chemistry">🧪 Chemistry</option>
-                        <option value="Biology">🧬 Biology</option>
-                        <option value="History">🌍 History</option>
-                        <option value="Literature">📖 Literature</option>
-                    </select>
+                    <label>📚 Subject / Category</label>
+                    <input type="text" id="quizSubject" placeholder="e.g., Islamic Studies, French, Coding..." required>
                 </div>
                 <div class="form-group">
                     <label>⭐ Difficulty</label>
