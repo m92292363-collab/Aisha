@@ -25,6 +25,16 @@
   status = 200
 
 [[redirects]]
+  from = "/api/quizzes/attempts"
+  to = "/.netlify/functions/quizzes"
+  status = 200
+
+[[redirects]]
+  from = "/api/quizzes/attempt"
+  to = "/.netlify/functions/quizzes"
+  status = 200
+
+[[redirects]]
   from = "/api/quizzes/*"
   to = "/.netlify/functions/quizzes"
   status = 200
@@ -44,7 +54,6 @@
   to = "/.netlify/functions/reset"
   status = 200
 
-# SPA fallback - must be last
 [[redirects]]
   from = "/*"
   to = "/index.html"
