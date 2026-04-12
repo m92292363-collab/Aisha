@@ -6,288 +6,53 @@
     <title>AISHA Admin - Learning Analytics</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Comic Neue', 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            min-height: 100vh;
-        }
-        
-        .admin-container {
-            display: flex;
-            min-height: 100vh;
-        }
-        
-        .admin-sidebar {
-            width: 280px;
-            background: linear-gradient(180deg, #0f3460 0%, #16213e 100%);
-            padding: 2rem 1rem;
-            border-radius: 0 30px 30px 0;
-            box-shadow: 10px 0 20px rgba(0,0,0,0.2);
-        }
-        
-        .admin-logo {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .admin-logo .logo-icon {
-            font-size: 3rem;
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        .admin-logo h2 {
-            color: #ffd700;
-            font-size: 1.5rem;
-        }
-        
-        .admin-nav .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem 1.5rem;
-            margin: 0.5rem 0;
-            background: rgba(255,255,255,0.05);
-            border-radius: 50px;
-            color: #ccddee;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-        
-        .admin-nav .nav-item:hover, .admin-nav .nav-item.active {
-            background: #ffd700;
-            color: #0f3460;
-        }
-        
-        .logout-btn {
-            background: #ff4757;
-            color: white;
-            border: none;
-            padding: 0.8rem;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 2rem;
-            width: 100%;
-            font-family: inherit;
-        }
-        
-        .admin-main {
-            flex: 1;
-            padding: 2rem;
-            overflow-y: auto;
-        }
-        
-        .admin-header {
-            margin-bottom: 2rem;
-        }
-        
-        .admin-header h1 {
-            color: #ffd700;
-        }
-        
-        .admin-header p {
-            color: #8899aa;
-            margin-top: 0.5rem;
-        }
-        
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .stat-card {
-            background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
-            padding: 1.5rem;
-            text-align: center;
-            border: 1px solid rgba(255,215,0,0.2);
-            transition: all 0.3s;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: #ffd700;
-        }
-        
-        .stat-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #ffd700;
-        }
-        
-        .stat-label {
-            color: #8899aa;
-            font-size: 0.85rem;
-            margin-top: 0.3rem;
-        }
-        
-        /* Charts Grid */
-        .charts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .chart-card {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
-            padding: 1.5rem;
-            border: 1px solid rgba(255,215,0,0.2);
-        }
-        
-        .chart-card h3 {
-            color: #ffd700;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        canvas {
-            max-height: 300px;
-        }
-        
-        /* Top Students */
-        .top-students-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-        
-        .top-student-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.8rem;
-            background: rgba(255,255,255,0.03);
-            border-radius: 15px;
-            transition: all 0.3s;
-        }
-        
-        .top-student-item:hover {
-            background: rgba(255,215,0,0.1);
-        }
-        
-        .student-rank {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #ffd700;
-            width: 50px;
-        }
-        
-        .student-info {
-            flex: 1;
-        }
-        
-        .student-name {
-            color: white;
-            font-weight: bold;
-        }
-        
-        .student-email {
-            color: #8899aa;
-            font-size: 0.8rem;
-        }
-        
-        .student-score {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #4caf50;
-        }
-        
-        /* Subject Breakdown */
-        .subject-breakdown {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .subject-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .subject-name {
-            width: 100px;
-            color: #ffd700;
-        }
-        
-        .subject-bar {
-            flex: 1;
-            height: 30px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 15px;
-            overflow: hidden;
-        }
-        
-        .subject-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ffd700, #ffed4e);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 10px;
-            color: #0f3460;
-            font-weight: bold;
-            font-size: 0.8rem;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 2rem;
-            color: #8899aa;
-        }
-        
-        @media (max-width: 768px) {
-            .admin-container {
-                flex-direction: column;
-            }
-            
-            .admin-sidebar {
-                width: 100%;
-                border-radius: 0 0 30px 30px;
-            }
-            
-            .charts-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Neue', 'Comic Sans MS', cursive, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); min-height: 100vh; }
+        .admin-container { display: flex; min-height: 100vh; }
+        .admin-sidebar { width: 280px; background: linear-gradient(180deg, #0f3460 0%, #16213e 100%); padding: 2rem 1rem; border-radius: 0 30px 30px 0; box-shadow: 10px 0 20px rgba(0,0,0,0.2); }
+        .admin-logo { text-align: center; margin-bottom: 2rem; }
+        .admin-logo .logo-icon { font-size: 3rem; animation: pulse 2s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .admin-logo h2 { color: #ffd700; font-size: 1.5rem; }
+        .admin-nav .nav-item { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; margin: 0.5rem 0; background: rgba(255,255,255,0.05); border-radius: 50px; color: #ccddee; text-decoration: none; font-weight: bold; transition: all 0.3s; }
+        .admin-nav .nav-item:hover, .admin-nav .nav-item.active { background: #ffd700; color: #0f3460; }
+        .logout-btn { background: #ff4757; color: white; border: none; padding: 0.8rem; border-radius: 50px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 2rem; width: 100%; font-family: inherit; }
+        .admin-main { flex: 1; padding: 2rem; overflow-y: auto; }
+        .admin-header { margin-bottom: 2rem; }
+        .admin-header h1 { color: #ffd700; }
+        .admin-header p { color: #8899aa; margin-top: 0.5rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-card { background: rgba(255,255,255,0.08); backdrop-filter: blur(10px); border-radius: 25px; padding: 1.5rem; text-align: center; border: 1px solid rgba(255,215,0,0.2); transition: all 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); border-color: #ffd700; }
+        .stat-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .stat-number { font-size: 2rem; font-weight: bold; color: #ffd700; }
+        .stat-label { color: #8899aa; font-size: 0.85rem; margin-top: 0.3rem; }
+        .charts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .chart-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: 25px; padding: 1.5rem; border: 1px solid rgba(255,215,0,0.2); }
+        .chart-card h3 { color: #ffd700; margin-bottom: 1rem; }
+        canvas { max-height: 300px; }
+        .top-students-list { display: flex; flex-direction: column; gap: 0.8rem; }
+        .top-student-item { display: flex; align-items: center; gap: 1rem; padding: 0.8rem; background: rgba(255,255,255,0.03); border-radius: 15px; transition: all 0.3s; }
+        .top-student-item:hover { background: rgba(255,215,0,0.1); }
+        .student-rank { font-size: 1.5rem; font-weight: bold; color: #ffd700; width: 50px; }
+        .student-info { flex: 1; }
+        .student-name { color: white; font-weight: bold; }
+        .student-email { color: #8899aa; font-size: 0.8rem; }
+        .student-score { font-size: 1.2rem; font-weight: bold; color: #4caf50; }
+        .subject-breakdown { display: flex; flex-direction: column; gap: 1rem; }
+        .subject-item { display: flex; align-items: center; gap: 1rem; }
+        .subject-name { width: 120px; color: #ffd700; font-size: 0.9rem; }
+        .subject-bar { flex: 1; height: 30px; background: rgba(255,255,255,0.1); border-radius: 15px; overflow: hidden; }
+        .subject-fill { height: 100%; background: linear-gradient(90deg, #ffd700, #ffed4e); border-radius: 15px; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; color: #0f3460; font-weight: bold; font-size: 0.8rem; transition: width 1s ease; }
+        .subject-count { color: #8899aa; width: 80px; font-size: 0.8rem; }
+        .empty-state { text-align: center; padding: 2rem; color: #8899aa; }
+        @media (max-width: 768px) { .admin-container { flex-direction: column; } .admin-sidebar { width: 100%; border-radius: 0 0 30px 30px; } .charts-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
     <div class="admin-container">
         <aside class="admin-sidebar">
-            <div class="admin-logo">
-                <div class="logo-icon">🤖📚</div>
-                <h2>AISHA Admin</h2>
-            </div>
-            
+            <div class="admin-logo"><div class="logo-icon">🤖📚</div><h2>AISHA Admin</h2></div>
             <nav class="admin-nav">
                 <a href="/admin/dashboard.html" class="nav-item">📊 Dashboard</a>
                 <a href="/admin/books.html" class="nav-item">📖 Manage Books</a>
@@ -295,242 +60,171 @@
                 <a href="/admin/users.html" class="nav-item">👥 Manage Students</a>
                 <a href="/admin/analytics.html" class="nav-item active">📈 Analytics</a>
             </nav>
-            
             <button class="logout-btn" onclick="logout()">🚪 Logout</button>
         </aside>
-        
+
         <main class="admin-main">
             <div class="admin-header">
                 <h1>📈 AISHA's Learning Analytics</h1>
                 <p>See how your students are growing and learning!</p>
             </div>
-            
-            <div class="stats-grid" id="statsGrid">
-                <div class="stat-card">
-                    <div class="stat-icon">👨‍🎓</div>
-                    <div class="stat-number" id="totalStudents">0</div>
-                    <div class="stat-label">Total Students</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">📝</div>
-                    <div class="stat-number" id="totalQuizzes">0</div>
-                    <div class="stat-label">Quizzes Taken</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">⭐</div>
-                    <div class="stat-number" id="avgScore">0%</div>
-                    <div class="stat-label">Average Score</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">📚</div>
-                    <div class="stat-number" id="passRate">0%</div>
-                    <div class="stat-label">Pass Rate</div>
-                </div>
+
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-icon">👨‍🎓</div><div class="stat-number" id="totalStudents">-</div><div class="stat-label">Total Students</div></div>
+                <div class="stat-card"><div class="stat-icon">📝</div><div class="stat-number" id="totalQuizzes">-</div><div class="stat-label">Quizzes Taken</div></div>
+                <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-number" id="avgScore">-</div><div class="stat-label">Average Score</div></div>
+                <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-number" id="passRate">-</div><div class="stat-label">Pass Rate</div></div>
             </div>
-            
+
             <div class="charts-grid">
                 <div class="chart-card">
-                    <h3>📊 Quiz Attempts Over Time</h3>
+                    <h3>📊 Quiz Attempts — Last 7 Days</h3>
                     <canvas id="attemptsChart"></canvas>
                 </div>
-                
                 <div class="chart-card">
-                    <h3>📈 Performance by Subject</h3>
+                    <h3>📈 Average Score by Subject</h3>
                     <canvas id="subjectsChart"></canvas>
                 </div>
             </div>
-            
+
             <div class="charts-grid">
                 <div class="chart-card">
                     <h3>🏆 Top Performing Students</h3>
-                    <div id="topStudents" class="top-students-list">
-                        <div class="empty-state">Loading...</div>
-                    </div>
+                    <div id="topStudents" class="top-students-list"><div class="empty-state">Loading...</div></div>
                 </div>
-                
                 <div class="chart-card">
-                    <h3>📚 Subject Mastery Breakdown</h3>
-                    <div id="subjectBreakdown" class="subject-breakdown">
-                        <div class="empty-state">Loading...</div>
-                    </div>
+                    <h3>📚 Subject Activity Breakdown</h3>
+                    <div id="subjectBreakdown" class="subject-breakdown"><div class="empty-state">Loading...</div></div>
                 </div>
             </div>
         </main>
     </div>
-    
+
     <script>
         let attemptsChart = null;
         let subjectsChart = null;
-        
-        // Get data from localStorage
-        function getAnalyticsData() {
-            const users = JSON.parse(localStorage.getItem('aisha_users') || '[]');
-            const students = users.filter(u => u.role !== 'admin');
-            const quizzes = JSON.parse(localStorage.getItem('aisha_quizzes') || '[]');
-            const attempts = JSON.parse(localStorage.getItem('aisha_attempts') || '[]');
-            
-            // Calculate stats
-            const totalStudents = students.length;
-            const totalQuizzes = attempts.length;
-            const avgScore = attempts.length > 0 
-                ? Math.round(attempts.reduce((sum, a) => sum + a.percentage, 0) / attempts.length) 
-                : 0;
-            const passRate = attempts.length > 0 
-                ? Math.round((attempts.filter(a => a.isPassed).length / attempts.length) * 100) 
-                : 0;
-            
-            document.getElementById('totalStudents').textContent = totalStudents;
-            document.getElementById('totalQuizzes').textContent = totalQuizzes;
-            document.getElementById('avgScore').textContent = avgScore + '%';
+        const SUBJECTS = ['Mathematics', 'Physics', 'Chemistry', 'Biology', 'History', 'Literature'];
+        const SUBJECT_ICONS = { Mathematics: '📐', Physics: '⚛️', Chemistry: '🧪', Biology: '🧬', History: '🌍', Literature: '📖' };
+
+        function getCurrentUser() { return JSON.parse(localStorage.getItem('user') || 'null'); }
+        function logout() { localStorage.removeItem('user'); window.location.href = '/login.html'; }
+
+        const user = getCurrentUser();
+        if (!user || user.role !== 'admin') window.location.href = '/login.html';
+
+        async function loadAnalytics() {
+            try {
+                const [usersRes, attemptsRes] = await Promise.all([
+                    fetch('/api/db/users'),
+                    fetch('/api/quizzes/attempts')
+                ]);
+                const [usersData, attemptsData] = await Promise.all([usersRes.json(), attemptsRes.json()]);
+
+                const students = usersData.success ? usersData.users : [];
+                const attempts = attemptsData.success ? attemptsData.attempts : [];
+
+                renderStats(students, attempts);
+                renderAttemptsChart(attempts);
+                renderSubjectsChart(attempts);
+                renderTopStudents(students, attempts);
+                renderSubjectBreakdown(attempts);
+            } catch (err) {
+                console.error('Analytics error:', err);
+            }
+        }
+
+        function renderStats(students, attempts) {
+            const total = attempts.length;
+            const avg = total > 0 ? Math.round(attempts.reduce((s, a) => s + a.percentage, 0) / total) : 0;
+            const passRate = total > 0 ? Math.round((attempts.filter(a => a.is_passed).length / total) * 100) : 0;
+
+            document.getElementById('totalStudents').textContent = students.length;
+            document.getElementById('totalQuizzes').textContent = total;
+            document.getElementById('avgScore').textContent = avg + '%';
             document.getElementById('passRate').textContent = passRate + '%';
-            
-            // Attempts over time (last 7 days)
-            const last7Days = [];
+        }
+
+        function renderAttemptsChart(attempts) {
+            const labels = [];
+            const counts = [];
             for (let i = 6; i >= 0; i--) {
                 const date = new Date();
                 date.setDate(date.getDate() - i);
-                last7Days.push(date.toLocaleDateString());
+                const dateStr = date.toLocaleDateString();
+                labels.push(dateStr);
+                counts.push(attempts.filter(a => new Date(a.completed_at).toLocaleDateString() === dateStr).length);
             }
-            
-            const attemptsByDay = last7Days.map(day => {
-                return attempts.filter(a => new Date(a.completedAt).toLocaleDateString() === day).length;
-            });
-            
             if (attemptsChart) attemptsChart.destroy();
-            const ctx1 = document.getElementById('attemptsChart').getContext('2d');
-            attemptsChart = new Chart(ctx1, {
+            attemptsChart = new Chart(document.getElementById('attemptsChart').getContext('2d'), {
                 type: 'line',
                 data: {
-                    labels: last7Days,
-                    datasets: [{
-                        label: 'Quiz Attempts',
-                        data: attemptsByDay,
-                        borderColor: '#ffd700',
-                        backgroundColor: 'rgba(255,215,0,0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }]
+                    labels,
+                    datasets: [{ label: 'Quiz Attempts', data: counts, borderColor: '#ffd700', backgroundColor: 'rgba(255,215,0,0.1)', tension: 0.4, fill: true }]
                 },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { labels: { color: '#ccddee' } }
-                    }
-                }
+                options: { responsive: true, plugins: { legend: { labels: { color: '#ccddee' } } }, scales: { x: { ticks: { color: '#8899aa' } }, y: { ticks: { color: '#8899aa', stepSize: 1 }, beginAtZero: true } } }
             });
-            
-            // Performance by subject
-            const subjects = ['Mathematics', 'Physics', 'Chemistry', 'Biology', 'History', 'Literature'];
-            const subjectScores = subjects.map(subject => {
-                const subjectAttempts = attempts.filter(a => a.subject === subject);
-                if (subjectAttempts.length === 0) return 0;
-                return Math.round(subjectAttempts.reduce((sum, a) => sum + a.percentage, 0) / subjectAttempts.length);
+        }
+
+        function renderSubjectsChart(attempts) {
+            const scores = SUBJECTS.map(subject => {
+                const sub = attempts.filter(a => a.subject === subject);
+                return sub.length > 0 ? Math.round(sub.reduce((s, a) => s + a.percentage, 0) / sub.length) : 0;
             });
-            
             if (subjectsChart) subjectsChart.destroy();
-            const ctx2 = document.getElementById('subjectsChart').getContext('2d');
-            subjectsChart = new Chart(ctx2, {
+            subjectsChart = new Chart(document.getElementById('subjectsChart').getContext('2d'), {
                 type: 'bar',
                 data: {
-                    labels: subjects,
-                    datasets: [{
-                        label: 'Average Score (%)',
-                        data: subjectScores,
-                        backgroundColor: '#ffd700',
-                        borderRadius: 10
-                    }]
+                    labels: SUBJECTS,
+                    datasets: [{ label: 'Average Score (%)', data: scores, backgroundColor: '#ffd700', borderRadius: 10 }]
                 },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { labels: { color: '#ccddee' } }
-                    }
-                }
+                options: { responsive: true, plugins: { legend: { labels: { color: '#ccddee' } } }, scales: { x: { ticks: { color: '#8899aa' } }, y: { ticks: { color: '#8899aa' }, beginAtZero: true, max: 100 } } }
             });
-            
-            // Top students
-            const studentScores = students.map(student => {
-                const studentAttempts = attempts.filter(a => a.userId === student.id);
-                const avgScore = studentAttempts.length > 0 
-                    ? Math.round(studentAttempts.reduce((sum, a) => sum + a.percentage, 0) / studentAttempts.length) 
+        }
+
+        function renderTopStudents(students, attempts) {
+            const div = document.getElementById('topStudents');
+            const ranked = students.map(s => {
+                const studentAttempts = attempts.filter(a => a.user_id === s.id);
+                const avg = studentAttempts.length > 0
+                    ? Math.round(studentAttempts.reduce((sum, a) => sum + a.percentage, 0) / studentAttempts.length)
                     : 0;
-                return { ...student, avgScore, attemptCount: studentAttempts.length };
-            });
-            
-            const topStudents = studentScores.sort((a, b) => b.avgScore - a.avgScore).slice(0, 5);
-            
-            const topStudentsDiv = document.getElementById('topStudents');
-            if (topStudents.length > 0 && topStudents[0].avgScore > 0) {
-                topStudentsDiv.innerHTML = topStudents.map((student, idx) => `
-                    <div class="top-student-item">
-                        <div class="student-rank">#${idx + 1}</div>
-                        <div class="student-info">
-                            <div class="student-name">${student.full_name || 'Student'}</div>
-                            <div class="student-email">${student.email}</div>
-                        </div>
-                        <div class="student-score">${student.avgScore}%</div>
+                return { ...s, avg, count: studentAttempts.length };
+            }).filter(s => s.count > 0).sort((a, b) => b.avg - a.avg).slice(0, 5);
+
+            if (!ranked.length) { div.innerHTML = '<div class="empty-state">📝 No quiz data yet!</div>'; return; }
+            div.innerHTML = ranked.map((s, i) => `
+                <div class="top-student-item">
+                    <div class="student-rank">#${i + 1}</div>
+                    <div class="student-info">
+                        <div class="student-name">${s.full_name || 'Student'}</div>
+                        <div class="student-email">${s.email} · ${s.count} quiz${s.count > 1 ? 'zes' : ''}</div>
                     </div>
-                `).join('');
-            } else {
-                topStudentsDiv.innerHTML = '<div class="empty-state">📝 No quiz data yet. Students need to take quizzes!</div>';
-            }
-            
-            // Subject mastery breakdown
-            const subjectMastery = subjects.map(subject => {
-                const subjectAttempts = attempts.filter(a => a.subject === subject);
-                const avgScore = subjectAttempts.length > 0 
-                    ? Math.round(subjectAttempts.reduce((sum, a) => sum + a.percentage, 0) / subjectAttempts.length) 
-                    : 0;
-                return { subject, avgScore, count: subjectAttempts.length };
-            });
-            
-            const breakdownDiv = document.getElementById('subjectBreakdown');
-            if (subjectMastery.some(s => s.count > 0)) {
-                breakdownDiv.innerHTML = subjectMastery.map(subject => `
-                    <div class="subject-item">
-                        <div class="subject-name">${getSubjectIcon(subject.subject)} ${subject.subject}</div>
-                        <div class="subject-bar">
-                            <div class="subject-fill" style="width: ${subject.avgScore}%">
-                                ${subject.avgScore > 0 ? subject.avgScore + '%' : ''}
-                            </div>
-                        </div>
-                        <div style="color:#8899aa; width:80px;">${subject.count} quizzes</div>
+                    <div class="student-score">${s.avg}%</div>
+                </div>
+            `).join('');
+        }
+
+        function renderSubjectBreakdown(attempts) {
+            const div = document.getElementById('subjectBreakdown');
+            const data = SUBJECTS.map(subject => {
+                const sub = attempts.filter(a => a.subject === subject);
+                const avg = sub.length > 0 ? Math.round(sub.reduce((s, a) => s + a.percentage, 0) / sub.length) : 0;
+                return { subject, avg, count: sub.length };
+            }).filter(s => s.count > 0);
+
+            if (!data.length) { div.innerHTML = '<div class="empty-state">📊 No quiz data yet!</div>'; return; }
+            div.innerHTML = data.map(s => `
+                <div class="subject-item">
+                    <div class="subject-name">${SUBJECT_ICONS[s.subject] || '📚'} ${s.subject}</div>
+                    <div class="subject-bar">
+                        <div class="subject-fill" style="width: ${Math.max(s.avg, 5)}%">${s.avg > 10 ? s.avg + '%' : ''}</div>
                     </div>
-                `).join('');
-            } else {
-                breakdownDiv.innerHTML = '<div class="empty-state">📊 No quiz data yet. Create quizzes for students to take!</div>';
-            }
+                    <div class="subject-count">${s.count} attempt${s.count > 1 ? 's' : ''}</div>
+                </div>
+            `).join('');
         }
-        
-        function getSubjectIcon(subject) {
-            const icons = {
-                'Mathematics': '📐',
-                'Physics': '⚛️',
-                'Chemistry': '🧪',
-                'Biology': '🧬',
-                'History': '🌍',
-                'Literature': '📖'
-            };
-            return icons[subject] || '📚';
-        }
-        
-        function getCurrentUser() {
-            const userStr = localStorage.getItem('user');
-            return userStr ? JSON.parse(userStr) : null;
-        }
-        
-        function logout() {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            window.location.href = '/login.html';
-        }
-        
-        const currentUser = getCurrentUser();
-        if (!currentUser || currentUser.role !== 'admin') {
-            window.location.href = '/login.html';
-        }
-        
-        getAnalyticsData();
+
+        loadAnalytics();
     </script>
 </body>
 </html>
