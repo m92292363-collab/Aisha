@@ -176,15 +176,6 @@
             }
         }
 
-        async function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = e => resolve(e.target.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
-
         async function loadBooks() {
             try {
                 const res = await fetch('/api/books');
@@ -237,39 +228,59 @@
 
             try {
                 if (selectedFile) {
-                    // Upload file to Cloudinary via our function
+                    // Upload DIRECTLY to Cloudinary from browser (no size limit!)
                     btn.textContent = '📤 Uploading file...';
                     const progressWrap = document.getElementById('progressWrap');
                     const progressFill = document.getElementById('progressFill');
                     const progressLabel = document.getElementById('progressLabel');
                     progressWrap.style.display = 'block';
 
-                    // Animate progress
-                    let prog = 0;
-                    const interval = setInterval(() => {
-                        prog = Math.min(prog + 3, 80);
-                        progressFill.style.width = prog + '%';
-                    }, 150);
+                    // Use XMLHttpRequest to track real upload progress
+                    const fileUrl = await new Promise((resolve, reject) => {
+                        const formData = new FormData();
+                        formData.append('file', selectedFile);
+                        formData.append('upload_preset', 'aisha_books');
+                        formData.append('folder', 'aisha_books');
 
-                    const base64 = await fileToBase64(selectedFile);
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('POST', `https://api.cloudinary.com/v1_1/dgl6xo2zr/raw/upload`);
 
-                    const res = await fetch('/api/upload', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ ...payload, file: base64, fileName: selectedFile.name, fileType: selectedFile.type })
+                        xhr.upload.onprogress = (e) => {
+                            if (e.lengthComputable) {
+                                const pct = Math.round((e.loaded / e.total) * 100);
+                                progressFill.style.width = pct + '%';
+                                progressLabel.textContent = `⬆️ Uploading... ${pct}%`;
+                            }
+                        };
+
+                        xhr.onload = () => {
+                            const data = JSON.parse(xhr.responseText);
+                            if (data.secure_url) {
+                                progressFill.style.width = '100%';
+                                progressLabel.textContent = '✅ Upload complete!';
+                                resolve(data.secure_url);
+                            } else {
+                                reject(new Error(data.error?.message || 'Cloudinary upload failed'));
+                            }
+                        };
+
+                        xhr.onerror = () => reject(new Error('Network error during upload'));
+                        xhr.send(formData);
                     });
 
-                    clearInterval(interval);
-                    progressFill.style.width = '100%';
-                    progressLabel.textContent = '✅ Upload complete!';
-
+                    // Save book metadata + Cloudinary URL to our DB
+                    const res = await fetch('/api/books', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ...payload, content: fileUrl })
+                    });
                     const data = await res.json();
                     if (data.success) {
                         showToast('✨ Book uploaded successfully!');
                         closeAddBookModal();
                         loadBooks();
                     } else {
-                        showToast('❌ ' + (data.error || 'Upload failed'), '#ff4757');
+                        showToast('❌ ' + (data.error || 'Failed to save book'), '#ff4757');
                     }
                 } else {
                     // No file — save metadata only
