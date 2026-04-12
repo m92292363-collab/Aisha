@@ -21,29 +21,44 @@
         .admin-header h1 { color: #ffd700; }
         .add-book-btn { background: linear-gradient(135deg, #ffd700, #ffed4e); color: #0f3460; border: none; padding: 0.8rem 1.5rem; border-radius: 50px; font-size: 1rem; font-weight: bold; cursor: pointer; font-family: inherit; transition: all 0.3s; }
         .add-book-btn:hover { transform: scale(1.05); }
-        .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+        .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
         .book-card { background: rgba(255,255,255,0.08); backdrop-filter: blur(10px); border-radius: 25px; padding: 1.5rem; transition: all 0.3s; border: 1px solid rgba(255,215,0,0.2); }
         .book-card:hover { transform: translateY(-5px); border-color: #ffd700; }
         .book-icon { font-size: 3rem; margin-bottom: 0.5rem; }
-        .book-title { color: #ffd700; font-size: 1.2rem; margin-bottom: 0.5rem; }
+        .book-title { color: #ffd700; font-size: 1.2rem; margin-bottom: 0.3rem; }
         .book-author { color: #8899aa; font-size: 0.9rem; margin-bottom: 0.5rem; }
-        .book-meta { display: flex; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
+        .book-desc { color: #aabbcc; font-size: 0.8rem; margin-bottom: 0.8rem; }
+        .book-meta { display: flex; gap: 0.5rem; margin: 0.8rem 0; flex-wrap: wrap; }
         .meta-tag { background: rgba(255,215,0,0.2); padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.8rem; color: #ffd700; }
-        .book-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
-        .delete-btn { background: #ff4757; color: white; border: none; padding: 0.5rem 1rem; border-radius: 50px; cursor: pointer; font-family: inherit; }
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; }
-        .modal-content { background: #16213e; border-radius: 30px; width: 90%; max-width: 500px; padding: 2rem; animation: modalPop 0.3s ease-out; border: 2px solid #ffd700; }
+        .meta-tag.file { background: rgba(76,175,80,0.2); color: #4caf50; }
+        .book-actions { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+        .delete-btn { background: #ff4757; color: white; border: none; padding: 0.5rem 1rem; border-radius: 50px; cursor: pointer; font-family: inherit; font-size: 0.85rem; }
+        .view-btn { background: #4caf50; color: white; border: none; padding: 0.5rem 1rem; border-radius: 50px; cursor: pointer; font-family: inherit; font-size: 0.85rem; text-decoration: none; display: inline-block; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; }
+        .modal-content { background: #16213e; border-radius: 30px; width: 90%; max-width: 520px; padding: 2rem; animation: modalPop 0.3s ease-out; border: 2px solid #ffd700; max-height: 90vh; overflow-y: auto; }
         @keyframes modalPop { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
         .modal-header h2 { color: #ffd700; }
         .close-modal { font-size: 2rem; cursor: pointer; color: #ffd700; }
-        .form-group { margin-bottom: 1.5rem; }
+        .form-group { margin-bottom: 1.2rem; }
         .form-group label { display: block; margin-bottom: 0.5rem; color: #ccddee; font-weight: bold; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.8rem; border: 1px solid rgba(255,215,0,0.3); border-radius: 15px; background: rgba(255,255,255,0.05); color: white; font-family: inherit; outline: none; }
-        .form-group input:focus, .form-group select:focus { border-color: #ffd700; }
-        .submit-btn { background: linear-gradient(135deg, #ffd700, #ffed4e); color: #0f3460; border: none; padding: 1rem; border-radius: 50px; font-size: 1rem; font-weight: bold; cursor: pointer; width: 100%; font-family: inherit; }
+        .form-group input:focus, .form-group textarea:focus { border-color: #ffd700; }
+        .form-group input::placeholder, .form-group textarea::placeholder { color: #8899aa; }
+        .file-upload-area { border: 2px dashed rgba(255,215,0,0.4); border-radius: 15px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden; }
+        .file-upload-area:hover { border-color: #ffd700; background: rgba(255,215,0,0.05); }
+        .file-upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+        .file-label { color: #8899aa; font-size: 0.9rem; pointer-events: none; }
+        .file-label .icon { font-size: 2.5rem; display: block; margin-bottom: 0.5rem; }
+        .file-selected-name { color: #ffd700; font-weight: bold; font-size: 0.9rem; margin-top: 0.5rem; }
+        .progress-wrap { margin-top: 1rem; display: none; }
+        .progress-bar { height: 10px; background: rgba(255,255,255,0.1); border-radius: 50px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #ffd700, #ffed4e); width: 0%; transition: width 0.3s; border-radius: 50px; }
+        .progress-label { color: #ffd700; font-size: 0.85rem; margin-bottom: 0.3rem; }
+        .submit-btn { background: linear-gradient(135deg, #ffd700, #ffed4e); color: #0f3460; border: none; padding: 1rem; border-radius: 50px; font-size: 1rem; font-weight: bold; cursor: pointer; width: 100%; font-family: inherit; margin-top: 0.5rem; }
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
         .empty-state { text-align: center; padding: 3rem; color: #8899aa; }
-        .toast { position: fixed; bottom: 2rem; right: 2rem; background: #4caf50; color: white; padding: 1rem 1.5rem; border-radius: 15px; display: none; z-index: 9999; font-family: inherit; }
+        .toast { position: fixed; bottom: 2rem; right: 2rem; padding: 1rem 1.5rem; border-radius: 15px; display: none; z-index: 9999; font-family: inherit; color: white; font-weight: bold; max-width: 300px; }
         @media (max-width: 768px) { .admin-container { flex-direction: column; } .admin-sidebar { width: 100%; border-radius: 0 0 30px 30px; } .books-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -72,6 +87,7 @@
         </main>
     </div>
 
+    <!-- Add Book Modal -->
     <div id="addBookModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -79,21 +95,45 @@
                 <span class="close-modal" onclick="closeAddBookModal()">&times;</span>
             </div>
             <form id="addBookForm" onsubmit="addBook(event)">
-                <div class="form-group"><label>📕 Book Title</label><input type="text" id="bookTitle" placeholder="e.g., Introduction to Physics" required></div>
-                <div class="form-group"><label>✍️ Author</label><input type="text" id="bookAuthor" placeholder="e.g., Dr. Sarah Smith"></div>
                 <div class="form-group">
-                    <label>📚 Subject / Category</label>
+                    <label>📕 Book Title *</label>
+                    <input type="text" id="bookTitle" placeholder="e.g., Introduction to Islamic Studies" required>
+                </div>
+                <div class="form-group">
+                    <label>✍️ Author</label>
+                    <input type="text" id="bookAuthor" placeholder="e.g., Sheikh Abdullah">
+                </div>
+                <div class="form-group">
+                    <label>📚 Subject / Category *</label>
                     <input type="text" id="bookSubject" placeholder="e.g., Islamic Studies, French, Coding..." required>
                 </div>
                 <div class="form-group">
                     <label>⭐ Difficulty</label>
                     <select id="bookDifficulty">
-                        <option value="1">🍭 Easy Peasy</option>
-                        <option value="2">📚 Medium</option>
-                        <option value="3">🔥 Challenge Mode</option>
+                        <option value="1">🍭 Easy</option>
+                        <option value="2" selected>📚 Medium</option>
+                        <option value="3">🔥 Hard</option>
                     </select>
                 </div>
-                <div class="form-group"><label>📄 Description</label><textarea id="bookDescription" rows="3" placeholder="What is this book about?"></textarea></div>
+                <div class="form-group">
+                    <label>📄 Description</label>
+                    <textarea id="bookDescription" rows="2" placeholder="What is this book about?"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>📁 Book File <span style="color:#8899aa; font-weight:normal;">(optional — PDF, EPUB, TXT, DOC)</span></label>
+                    <div class="file-upload-area" id="uploadArea">
+                        <input type="file" id="bookFile" accept=".pdf,.epub,.txt,.doc,.docx" onchange="handleFileSelect(this)">
+                        <div class="file-label">
+                            <span class="icon">📂</span>
+                            Click to browse or drag & drop your file here
+                        </div>
+                        <div class="file-selected-name" id="selectedFileName"></div>
+                    </div>
+                    <div class="progress-wrap" id="progressWrap">
+                        <div class="progress-label" id="progressLabel">⬆️ Uploading to cloud...</div>
+                        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                    </div>
+                </div>
                 <button type="submit" class="submit-btn" id="addBookBtn">✨ Add to AISHA's Brain ✨</button>
             </form>
         </div>
@@ -102,6 +142,8 @@
     <div id="toast" class="toast"></div>
 
     <script>
+        let selectedFile = null;
+
         function getCurrentUser() { return JSON.parse(localStorage.getItem('user') || 'null'); }
         function logout() { localStorage.removeItem('user'); window.location.href = '/login.html'; }
 
@@ -110,31 +152,44 @@
 
         function showToast(msg, color = '#4caf50') {
             const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.style.background = color;
-            t.style.display = 'block';
-            setTimeout(() => t.style.display = 'none', 3000);
+            t.textContent = msg; t.style.background = color; t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 4000);
         }
 
         function getBookIcon(subject) {
-            const icons = { Mathematics: '📐', Physics: '⚛️', Chemistry: '🧪', Biology: '🧬', History: '🌍', Literature: '📖', Science: '🔬', Geography: '🗺️', Religion: '🕌', Islamic: '🕌', French: '🇫🇷', Arabic: '📜', English: '📝', Computer: '💻', Coding: '💻', Art: '🎨', Music: '🎵', Sports: '⚽' };
             if (!subject) return '📚';
-            // Try exact match first, then partial match
+            const icons = { Mathematics: '📐', Physics: '⚛️', Chemistry: '🧪', Biology: '🧬', History: '🌍', Literature: '📖', Science: '🔬', Geography: '🗺️', Islamic: '🕌', Religion: '🕌', French: '🇫🇷', Arabic: '📜', English: '📝', Computer: '💻', Coding: '💻', Art: '🎨', Music: '🎵', Sports: '⚽' };
             if (icons[subject]) return icons[subject];
             const key = Object.keys(icons).find(k => subject.toLowerCase().includes(k.toLowerCase()));
             return key ? icons[key] : '📚';
         }
 
-        function getDifficultyIcon(level) {
+        function getDiffLabel(level) {
             return level == 1 ? '🍭 Easy' : level == 2 ? '📚 Medium' : '🔥 Hard';
+        }
+
+        function handleFileSelect(input) {
+            if (input.files && input.files[0]) {
+                selectedFile = input.files[0];
+                const sizeMB = (selectedFile.size / 1024 / 1024).toFixed(2);
+                document.getElementById('selectedFileName').textContent = `✅ ${selectedFile.name} (${sizeMB} MB)`;
+            }
+        }
+
+        async function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = e => resolve(e.target.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
         }
 
         async function loadBooks() {
             try {
                 const res = await fetch('/api/books');
                 const data = await res.json();
-                if (data.success) displayBooks(data.books);
-                else document.getElementById('booksGrid').innerHTML = '<div class="empty-state">📚 No books yet.</div>';
+                displayBooks(data.success ? data.books : []);
             } catch {
                 document.getElementById('booksGrid').innerHTML = '<div class="empty-state">⚠️ Could not load books.</div>';
             }
@@ -142,54 +197,104 @@
 
         function displayBooks(books) {
             const grid = document.getElementById('booksGrid');
-            if (!books.length) { grid.innerHTML = '<div class="empty-state">📚 No books yet. Click "Add New Book" to teach AISHA!</div>'; return; }
-            grid.innerHTML = books.map(book => `
+            if (!books.length) {
+                grid.innerHTML = '<div class="empty-state">📚 No books yet. Click "Add New Book" to get started!</div>';
+                return;
+            }
+            grid.innerHTML = books.map(book => {
+                const hasFile = book.content && book.content.startsWith('http');
+                return `
                 <div class="book-card">
                     <div class="book-icon">${getBookIcon(book.subject)}</div>
                     <div class="book-title">${book.title}</div>
-                    <div class="book-author">by ${book.author || 'Unknown'}</div>
+                    ${book.author ? `<div class="book-author">by ${book.author}</div>` : ''}
+                    ${book.description ? `<div class="book-desc">${book.description}</div>` : ''}
                     <div class="book-meta">
                         <span class="meta-tag">📚 ${book.subject}</span>
-                        <span class="meta-tag">${getDifficultyIcon(book.difficulty)}</span>
+                        <span class="meta-tag">${getDiffLabel(book.difficulty)}</span>
+                        ${hasFile ? '<span class="meta-tag file">📎 File uploaded</span>' : '<span class="meta-tag">📝 No file</span>'}
                     </div>
                     <div class="book-actions">
-                        <button class="delete-btn" onclick="deleteBook(${book.id})">🗑️ Delete</button>
+                        ${hasFile ? `<a href="${book.content}" target="_blank" class="view-btn">👁️ View File</a>` : ''}
+                        <button class="delete-btn" onclick="deleteBook('${book.id}')">🗑️ Delete</button>
                     </div>
-                </div>
-            `).join('');
+                </div>`;
+            }).join('');
         }
 
         async function addBook(e) {
             e.preventDefault();
             const btn = document.getElementById('addBookBtn');
             btn.disabled = true;
-            btn.textContent = 'Adding...';
+
+            const payload = {
+                title: document.getElementById('bookTitle').value.trim(),
+                author: document.getElementById('bookAuthor').value.trim(),
+                subject: document.getElementById('bookSubject').value.trim(),
+                difficulty: parseInt(document.getElementById('bookDifficulty').value),
+                description: document.getElementById('bookDescription').value.trim()
+            };
+
             try {
-                const res = await fetch('/api/books', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        title: document.getElementById('bookTitle').value,
-                        author: document.getElementById('bookAuthor').value,
-                        subject: document.getElementById('bookSubject').value,
-                        difficulty: parseInt(document.getElementById('bookDifficulty').value),
-                        description: document.getElementById('bookDescription').value
-                    })
-                });
-                const data = await res.json();
-                if (data.success) {
-                    closeAddBookModal();
-                    document.getElementById('addBookForm').reset();
-                    showToast('✨ Book added to AISHA\'s brain!');
-                    loadBooks();
+                if (selectedFile) {
+                    // Upload file to Cloudinary via our function
+                    btn.textContent = '📤 Uploading file...';
+                    const progressWrap = document.getElementById('progressWrap');
+                    const progressFill = document.getElementById('progressFill');
+                    const progressLabel = document.getElementById('progressLabel');
+                    progressWrap.style.display = 'block';
+
+                    // Animate progress
+                    let prog = 0;
+                    const interval = setInterval(() => {
+                        prog = Math.min(prog + 3, 80);
+                        progressFill.style.width = prog + '%';
+                    }, 150);
+
+                    const base64 = await fileToBase64(selectedFile);
+
+                    const res = await fetch('/api/upload', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ...payload, file: base64, fileName: selectedFile.name, fileType: selectedFile.type })
+                    });
+
+                    clearInterval(interval);
+                    progressFill.style.width = '100%';
+                    progressLabel.textContent = '✅ Upload complete!';
+
+                    const data = await res.json();
+                    if (data.success) {
+                        showToast('✨ Book uploaded successfully!');
+                        closeAddBookModal();
+                        loadBooks();
+                    } else {
+                        showToast('❌ ' + (data.error || 'Upload failed'), '#ff4757');
+                    }
                 } else {
-                    showToast('❌ ' + (data.error || 'Failed to add book'), '#ff4757');
+                    // No file — save metadata only
+                    btn.textContent = '💾 Saving...';
+                    const res = await fetch('/api/books', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        showToast('✨ Book added to AISHA\'s library!');
+                        closeAddBookModal();
+                        loadBooks();
+                    } else {
+                        showToast('❌ ' + (data.error || 'Failed'), '#ff4757');
+                    }
                 }
-            } catch {
-                showToast('❌ Connection error', '#ff4757');
+            } catch (err) {
+                showToast('❌ ' + err.message, '#ff4757');
             } finally {
                 btn.disabled = false;
                 btn.textContent = '✨ Add to AISHA\'s Brain ✨';
+                document.getElementById('progressWrap').style.display = 'none';
+                document.getElementById('progressFill').style.width = '0%';
             }
         }
 
@@ -200,15 +305,23 @@
                 const data = await res.json();
                 if (data.success) { showToast('📖 Book removed'); loadBooks(); }
                 else showToast('❌ Failed to delete', '#ff4757');
-            } catch {
-                showToast('❌ Connection error', '#ff4757');
-            }
+            } catch { showToast('❌ Connection error', '#ff4757'); }
         }
 
-        function showAddBookModal() { document.getElementById('addBookModal').style.display = 'flex'; }
-        function closeAddBookModal() { document.getElementById('addBookModal').style.display = 'none'; }
-        window.onclick = e => { if (e.target === document.getElementById('addBookModal')) closeAddBookModal(); };
+        function showAddBookModal() {
+            selectedFile = null;
+            document.getElementById('selectedFileName').textContent = '';
+            document.getElementById('addBookModal').style.display = 'flex';
+        }
 
+        function closeAddBookModal() {
+            document.getElementById('addBookModal').style.display = 'none';
+            document.getElementById('addBookForm').reset();
+            document.getElementById('selectedFileName').textContent = '';
+            selectedFile = null;
+        }
+
+        window.onclick = e => { if (e.target === document.getElementById('addBookModal')) closeAddBookModal(); };
         loadBooks();
     </script>
 </body>
