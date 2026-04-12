@@ -120,18 +120,13 @@
                     <textarea id="bookDescription" rows="2" placeholder="What is this book about?"></textarea>
                 </div>
                 <div class="form-group">
-                    <label>📁 Book File <span style="color:#8899aa; font-weight:normal;">(optional — PDF, EPUB, TXT, DOC)</span></label>
-                    <div class="file-upload-area" id="uploadArea">
-                        <input type="file" id="bookFile" accept=".pdf,.epub,.txt,.doc,.docx" onchange="handleFileSelect(this)">
-                        <div class="file-label">
-                            <span class="icon">📂</span>
-                            Click to browse or drag & drop your file here
-                        </div>
-                        <div class="file-selected-name" id="selectedFileName"></div>
-                    </div>
-                    <div class="progress-wrap" id="progressWrap">
-                        <div class="progress-label" id="progressLabel">⬆️ Uploading to cloud...</div>
-                        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                    <label>🔗 Book File URL <span style="color:#8899aa; font-weight:normal;">(optional — Google Drive, Dropbox, any link)</span></label>
+                    <input type="url" id="bookFileUrl" placeholder="Paste your Google Drive / Dropbox link here...">
+                    <div style="margin-top:0.5rem; background:rgba(255,215,0,0.1); border-radius:10px; padding:0.8rem; font-size:0.8rem; color:#8899aa;">
+                        📌 <strong style="color:#ffd700;">How to get Google Drive link:</strong><br>
+                        1. Upload PDF to Google Drive<br>
+                        2. Right-click → Share → "Anyone with the link"<br>
+                        3. Copy link and paste above
                     </div>
                 </div>
                 <button type="submit" class="submit-btn" id="addBookBtn">✨ Add to AISHA's Brain ✨</button>
@@ -142,8 +137,6 @@
     <div id="toast" class="toast"></div>
 
     <script>
-        let selectedFile = null;
-
         function getCurrentUser() { return JSON.parse(localStorage.getItem('user') || 'null'); }
         function logout() { localStorage.removeItem('user'); window.location.href = '/login.html'; }
 
@@ -203,10 +196,10 @@
                     <div class="book-meta">
                         <span class="meta-tag">📚 ${book.subject}</span>
                         <span class="meta-tag">${getDiffLabel(book.difficulty)}</span>
-                        ${hasFile ? '<span class="meta-tag file">📎 File uploaded</span>' : '<span class="meta-tag">📝 No file</span>'}
+                        ${hasFile ? '<span class="meta-tag file">🔗 Link attached</span>' : '<span class="meta-tag">📝 No file</span>'}
                     </div>
                     <div class="book-actions">
-                        ${hasFile ? `<a href="${book.content}" target="_blank" class="view-btn">👁️ View File</a>` : ''}
+                        ${hasFile ? `<a href="${book.content}" target="_blank" class="view-btn">👁️ Open File</a>` : ''}
                         <button class="delete-btn" onclick="deleteBook(${book.id})">🗑️ Delete</button>
                     </div>
                 </div>`;
@@ -227,78 +220,31 @@
             };
 
             try {
-                if (selectedFile) {
-                    // Upload DIRECTLY to Cloudinary from browser (no size limit!)
-                    btn.textContent = '📤 Uploading file...';
-                    const progressWrap = document.getElementById('progressWrap');
-                    const progressFill = document.getElementById('progressFill');
-                    const progressLabel = document.getElementById('progressLabel');
-                    progressWrap.style.display = 'block';
+            const fileUrl = document.getElementById('bookFileUrl').value.trim();
 
-                    // Use XMLHttpRequest to track real upload progress
-                    const fileUrl = await new Promise((resolve, reject) => {
-                        const formData = new FormData();
-                        formData.append('file', selectedFile);
-                        formData.append('upload_preset', 'aisha_books');
-                        formData.append('folder', 'aisha_books');
-
-                        const xhr = new XMLHttpRequest();
-                        xhr.open('POST', `https://api.cloudinary.com/v1_1/dgl6xo2zr/raw/upload`);
-
-                        xhr.upload.onprogress = (e) => {
-                            if (e.lengthComputable) {
-                                const pct = Math.round((e.loaded / e.total) * 100);
-                                progressFill.style.width = pct + '%';
-                                progressLabel.textContent = `⬆️ Uploading... ${pct}%`;
-                            }
-                        };
-
-                        xhr.onload = () => {
-                            const data = JSON.parse(xhr.responseText);
-                            if (data.secure_url) {
-                                progressFill.style.width = '100%';
-                                progressLabel.textContent = '✅ Upload complete!';
-                                resolve(data.secure_url);
-                            } else {
-                                reject(new Error(data.error?.message || 'Cloudinary upload failed'));
-                            }
-                        };
-
-                        xhr.onerror = () => reject(new Error('Network error during upload'));
-                        xhr.send(formData);
-                    });
-
-                    // Save book metadata + Cloudinary URL to our DB
-                    const res = await fetch('/api/books', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ ...payload, content: fileUrl })
-                    });
-                    const data = await res.json();
-                    if (data.success) {
-                        showToast('✨ Book uploaded successfully!');
-                        closeAddBookModal();
-                        loadBooks();
-                    } else {
-                        showToast('❌ ' + (data.error || 'Failed to save book'), '#ff4757');
-                    }
-                } else {
-                    // No file — save metadata only
-                    btn.textContent = '💾 Saving...';
-                    const res = await fetch('/api/books', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    const data = await res.json();
-                    if (data.success) {
-                        showToast('✨ Book added to AISHA\'s library!');
-                        closeAddBookModal();
-                        loadBooks();
-                    } else {
-                        showToast('❌ ' + (data.error || 'Failed'), '#ff4757');
-                    }
+            // Convert Google Drive share URL to direct view URL if needed
+            let contentUrl = fileUrl;
+            if (fileUrl.includes('drive.google.com/file/d/')) {
+                const match = fileUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+                if (match) {
+                    contentUrl = `https://drive.google.com/file/d/${match[1]}/preview`;
                 }
+            }
+
+            btn.textContent = '💾 Saving...';
+            const res = await fetch('/api/books', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...payload, content: contentUrl || '' })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast('✨ Book added to AISHA\'s library!');
+                closeAddBookModal();
+                loadBooks();
+            } else {
+                showToast('❌ ' + (data.error || 'Failed'), '#ff4757');
+            }
             } catch (err) {
                 showToast('❌ ' + err.message, '#ff4757');
             } finally {
@@ -319,16 +265,12 @@
             } catch { showToast('❌ Connection error', '#ff4757'); }
         }
         function showAddBookModal() {
-            selectedFile = null;
-            document.getElementById('selectedFileName').textContent = '';
             document.getElementById('addBookModal').style.display = 'flex';
         }
 
         function closeAddBookModal() {
             document.getElementById('addBookModal').style.display = 'none';
             document.getElementById('addBookForm').reset();
-            document.getElementById('selectedFileName').textContent = '';
-            selectedFile = null;
         }
 
         window.onclick = e => { if (e.target === document.getElementById('addBookModal')) closeAddBookModal(); };
