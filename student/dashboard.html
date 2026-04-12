@@ -155,7 +155,11 @@
         }
 
         function getSubjectIcon(subject) {
-            return { Mathematics: '📐', Physics: '⚛️', Chemistry: '🧪', Biology: '🧬', History: '🌍', Literature: '📖' }[subject] || '📚';
+            const icons = { Mathematics: '📐', Physics: '⚛️', Chemistry: '🧪', Biology: '🧬', History: '🌍', Literature: '📖', Science: '🔬', Geography: '🗺️', Religion: '🕌', Islamic: '🕌', French: '🇫🇷', Arabic: '📜', English: '📝', Computer: '💻', Coding: '💻', Art: '🎨', Music: '🎵', Sports: '⚽' };
+            if (!subject) return '📚';
+            if (icons[subject]) return icons[subject];
+            const key = Object.keys(icons).find(k => subject.toLowerCase().includes(k.toLowerCase()));
+            return key ? icons[key] : '📚';
         }
 
         function getDiffLabel(d) {
