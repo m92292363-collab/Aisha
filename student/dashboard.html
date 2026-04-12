@@ -3,181 +3,250 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AISHA - Your Cartoon AI Tutor</title>
+    <title>AISHA - Student Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --pink: #ff4d8d;
+            --pink-light: #ff85b3;
+            --yellow: #ffd700;
+            --dark: #1a1035;
+            --card: #ffffff;
+            --bg: #f5f0ff;
+            --text: #2d1b69;
+            --muted: #9b8ec4;
+            --green: #00c896;
+            --radius: 20px;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Comic Neue', 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
-            background: linear-gradient(135deg, #ffe6f0 0%, #ffe0f5 50%, #ffd9e8 100%);
+        body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100vh; display: flex; }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 260px;
+            background: var(--dark);
             min-height: 100vh;
+            padding: 2rem 1.2rem;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            left: 0; top: 0; bottom: 0;
+            z-index: 100;
         }
-        .cartoon-container { display: flex; min-height: 100vh; }
-        .cartoon-sidebar {
-            width: 280px;
-            background: linear-gradient(180deg, #ff6b9d 0%, #ff85b3 100%);
-            padding: 2rem 1rem;
-            border-radius: 0 30px 30px 0;
-            box-shadow: 10px 0 20px rgba(0,0,0,0.1);
-        }
-        .aisha-avatar { text-align: center; margin-bottom: 2rem; }
-        .avatar-icon { font-size: 5rem; animation: bounce 2s ease-in-out infinite; display: inline-block; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        .aisha-avatar h2 { color: white; font-size: 2rem; text-shadow: 3px 3px 0 #ff4081; }
-        .aisha-avatar p { color: #fff0f5; font-size: 0.9rem; }
-        .nav-cartoon-item { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; margin: 0.5rem 0; background: rgba(255,255,255,0.2); border-radius: 50px; color: white; text-decoration: none; font-weight: bold; transition: all 0.3s; font-size: 1.1rem; }
-        .nav-cartoon-item:hover { background: rgba(255,255,255,0.4); transform: scale(1.05); }
-        .nav-cartoon-item.active { background: #ffd700; color: #ff6b9d; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .logout-cartoon { background: #ff4757; color: white; border: none; padding: 0.8rem; border-radius: 50px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 2rem; width: 100%; transition: all 0.3s; font-family: inherit; }
-        .logout-cartoon:hover { background: #ff6b81; transform: scale(1.05); }
-        .cartoon-main { flex: 1; padding: 2rem; overflow-y: auto; }
-        .welcome-banner { background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); border-radius: 30px; padding: 2rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .welcome-text h1 { font-size: 2rem; color: #ff6b9d; margin-bottom: 0.5rem; }
-        .welcome-text p { color: #cc5500; font-size: 1.1rem; }
-        .welcome-emoji { font-size: 4rem; animation: wave 2s ease-in-out infinite; }
-        @keyframes wave { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(20deg); } 75% { transform: rotate(-10deg); } }
-        .stats-cartoon { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
-        .stat-cartoon-card { background: white; border-radius: 20px; padding: 1.5rem; text-align: center; box-shadow: 0 8px 0 #ffb3c6; transition: all 0.3s; cursor: pointer; }
-        .stat-cartoon-card:hover { transform: translateY(-5px); box-shadow: 0 13px 0 #ffb3c6; }
-        .stat-emoji { font-size: 3rem; margin-bottom: 0.5rem; }
-        .stat-number { font-size: 2.5rem; font-weight: bold; color: #ff6b9d; }
-        .stat-label { color: #666; font-size: 0.9rem; }
-        .cartoon-section { background: white; border-radius: 30px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 5px 15px rgba(0,0,0,0.08); border: 2px solid #ffe0e8; }
-        .section-title { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; font-size: 1.3rem; color: #ff6b9d; border-left: 5px solid #ffd700; padding-left: 1rem; }
+        .logo { text-align: center; margin-bottom: 2.5rem; }
+        .logo-avatar { width: 70px; height: 70px; background: linear-gradient(135deg, var(--pink), var(--yellow)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 0.8rem; animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        .logo h2 { color: white; font-size: 1.5rem; font-weight: 900; }
+        .logo p { color: var(--muted); font-size: 0.8rem; }
+        .user-card { background: rgba(255,255,255,0.07); border-radius: 14px; padding: 0.8rem 1rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.8rem; }
+        .user-avatar { width: 38px; height: 38px; background: linear-gradient(135deg, var(--pink), var(--pink-light)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+        .user-name { color: white; font-weight: 700; font-size: 0.9rem; }
+        .user-role { color: var(--muted); font-size: 0.75rem; }
+        nav { flex: 1; display: flex; flex-direction: column; gap: 0.4rem; }
+        .nav-item { display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1rem; border-radius: 12px; color: var(--muted); text-decoration: none; font-weight: 700; font-size: 0.95rem; transition: all 0.2s; }
+        .nav-item:hover { background: rgba(255,255,255,0.07); color: white; }
+        .nav-item.active { background: linear-gradient(135deg, var(--pink), var(--pink-light)); color: white; box-shadow: 0 4px 15px rgba(255,77,141,0.4); }
+        .nav-item .icon { font-size: 1.2rem; width: 24px; text-align: center; }
+        .logout-btn { margin-top: auto; display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1rem; border-radius: 12px; color: #ff6b6b; background: rgba(255,107,107,0.1); border: none; font-family: inherit; font-weight: 700; font-size: 0.95rem; cursor: pointer; width: 100%; transition: all 0.2s; }
+        .logout-btn:hover { background: rgba(255,107,107,0.2); }
 
-        /* Books grid */
-        .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
-        .book-card { background: linear-gradient(135deg, #fff5f8, #ffe0e8); border-radius: 20px; padding: 1.2rem; border: 2px solid #ffd700; transition: all 0.3s; cursor: pointer; }
-        .book-card:hover { transform: scale(1.02); box-shadow: 0 8px 15px rgba(255,107,157,0.2); }
-        .book-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
-        .book-title { font-weight: bold; color: #ff6b9d; font-size: 1rem; margin-bottom: 0.3rem; }
-        .book-author { color: #999; font-size: 0.8rem; margin-bottom: 0.5rem; }
-        .book-subject { display: inline-block; background: white; padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.75rem; color: #ff6b9d; border: 1px solid #ffd700; }
+        /* MAIN */
+        .main { margin-left: 260px; flex: 1; padding: 2rem; min-height: 100vh; }
 
-        /* Quiz cards */
-        .quiz-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
-        .quiz-cartoon-item { background: linear-gradient(135deg, #fff5f8, #ffe0e8); border-radius: 20px; padding: 1rem; cursor: pointer; transition: all 0.3s; border: 2px solid #ffd700; }
-        .quiz-cartoon-item:hover { transform: scale(1.02); box-shadow: 0 8px 15px rgba(255,107,157,0.2); }
-        .quiz-title { font-weight: bold; color: #ff6b9d; margin-bottom: 0.5rem; font-size: 1rem; }
-        .quiz-info { font-size: 0.85rem; color: #666; margin-bottom: 0.5rem; }
-        .quiz-meta { display: flex; gap: 1rem; font-size: 0.8rem; color: #999; }
-        .diff-badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.75rem; font-weight: bold; }
-        .diff-1 { background: #c8e6e0; color: #2d6a4f; }
-        .diff-2 { background: #ffe0b5; color: #e67e22; }
-        .diff-3 { background: #ffcccc; color: #c0392b; }
+        /* HEADER */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .header-text h1 { font-size: 1.8rem; font-weight: 900; color: var(--text); }
+        .header-text p { color: var(--muted); font-size: 0.95rem; margin-top: 0.2rem; }
+        .header-time { background: white; border-radius: 12px; padding: 0.6rem 1.2rem; color: var(--muted); font-size: 0.85rem; font-weight: 600; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
 
-        /* Activity */
+        /* STATS */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-bottom: 2rem; }
+        .stat-card { background: white; border-radius: var(--radius); padding: 1.4rem; box-shadow: 0 2px 15px rgba(0,0,0,0.06); position: relative; overflow: hidden; transition: transform 0.2s; }
+        .stat-card:hover { transform: translateY(-4px); }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+        .stat-card:nth-child(1)::before { background: var(--pink); }
+        .stat-card:nth-child(2)::before { background: var(--yellow); }
+        .stat-card:nth-child(3)::before { background: var(--green); }
+        .stat-card:nth-child(4)::before { background: #a78bfa; }
+        .stat-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+        .stat-value { font-size: 2rem; font-weight: 900; color: var(--text); }
+        .stat-label { color: var(--muted); font-size: 0.85rem; font-weight: 600; margin-top: 0.2rem; }
+
+        /* CONTENT GRID */
+        .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .full-width { grid-column: 1 / -1; }
+
+        /* SECTION CARD */
+        .section-card { background: white; border-radius: var(--radius); padding: 1.5rem; box-shadow: 0 2px 15px rgba(0,0,0,0.06); }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; }
+        .section-title { font-size: 1.1rem; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 0.5rem; }
+        .see-all { color: var(--pink); font-size: 0.85rem; font-weight: 700; text-decoration: none; }
+        .see-all:hover { text-decoration: underline; }
+
+        /* BOOKS */
+        .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; }
+        .book-card { background: var(--bg); border-radius: 14px; padding: 1.2rem; cursor: pointer; transition: all 0.2s; border: 2px solid transparent; }
+        .book-card:hover { border-color: var(--pink); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(255,77,141,0.15); }
+        .book-emoji { font-size: 2.5rem; margin-bottom: 0.6rem; }
+        .book-title { font-weight: 800; color: var(--text); font-size: 0.85rem; margin-bottom: 0.3rem; line-height: 1.3; }
+        .book-author { color: var(--muted); font-size: 0.75rem; margin-bottom: 0.5rem; }
+        .book-tag { display: inline-block; background: rgba(255,77,141,0.1); color: var(--pink); padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.7rem; font-weight: 700; }
+        .book-link { display: block; margin-top: 0.5rem; color: var(--green); font-size: 0.75rem; font-weight: 700; text-decoration: none; }
+        .book-link:hover { text-decoration: underline; }
+
+        /* QUIZZES */
+        .quiz-list { display: flex; flex-direction: column; gap: 0.8rem; }
+        .quiz-item { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1rem; background: var(--bg); border-radius: 12px; cursor: pointer; transition: all 0.2s; border: 2px solid transparent; }
+        .quiz-item:hover { border-color: var(--yellow); background: #fffbeb; }
+        .quiz-icon { font-size: 1.8rem; flex-shrink: 0; }
+        .quiz-info { flex: 1; }
+        .quiz-name { font-weight: 800; color: var(--text); font-size: 0.9rem; }
+        .quiz-meta { color: var(--muted); font-size: 0.78rem; margin-top: 0.2rem; }
+        .diff-badge { padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.7rem; font-weight: 700; }
+        .diff-1 { background: #d1fae5; color: #065f46; }
+        .diff-2 { background: #fef3c7; color: #92400e; }
+        .diff-3 { background: #fee2e2; color: #991b1b; }
+        .start-btn { background: var(--pink); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; font-family: inherit; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+        .start-btn:hover { background: var(--pink-light); transform: scale(1.05); }
+
+        /* ACTIVITY */
         .activity-list { display: flex; flex-direction: column; gap: 0.8rem; }
-        .activity-item { display: flex; align-items: center; gap: 1rem; padding: 0.8rem; background: #fff5f8; border-radius: 15px; }
-        .activity-emoji { font-size: 2rem; }
-        .activity-details { flex: 1; }
-        .activity-details strong { color: #ff6b9d; }
-        .activity-score { font-weight: bold; font-size: 1.2rem; }
-        .score-pass { color: #4caf50; }
-        .score-fail { color: #ff6b9d; }
+        .activity-item { display: flex; align-items: center; gap: 1rem; padding: 0.8rem; background: var(--bg); border-radius: 12px; }
+        .activity-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .dot-pass { background: var(--green); }
+        .dot-fail { background: var(--pink); }
+        .activity-info { flex: 1; }
+        .activity-subject { font-weight: 700; color: var(--text); font-size: 0.88rem; }
+        .activity-date { color: var(--muted); font-size: 0.75rem; }
+        .activity-score { font-weight: 900; font-size: 1rem; }
+        .score-pass { color: var(--green); }
+        .score-fail { color: var(--pink); }
 
-        .empty-state { text-align: center; padding: 2rem; color: #999; font-size: 1rem; }
-        .loading { text-align: center; padding: 2rem; color: #ff85b3; }
+        /* EMPTY / LOADING */
+        .empty { text-align: center; padding: 2rem; color: var(--muted); }
+        .empty-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .loading { text-align: center; padding: 2rem; color: var(--muted); font-weight: 600; }
 
-        @media (max-width: 768px) {
-            .cartoon-container { flex-direction: column; }
-            .cartoon-sidebar { width: 100%; border-radius: 0 0 30px 30px; }
-            .stats-cartoon { grid-template-columns: 1fr 1fr; }
-        }
+        /* TOAST */
+        .toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--dark); color: white; padding: 1rem 1.5rem; border-radius: 14px; display: none; z-index: 9999; font-weight: 700; font-size: 0.9rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+
+        @media (max-width: 1024px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .content-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .sidebar { width: 100%; min-height: auto; position: relative; flex-direction: row; flex-wrap: wrap; padding: 1rem; } .main { margin-left: 0; } .stats-grid { grid-template-columns: repeat(2, 1fr); } }
     </style>
 </head>
 <body>
-    <div class="cartoon-container">
-        <aside class="cartoon-sidebar">
-            <div class="aisha-avatar">
-                <div class="avatar-icon">🤖💕</div>
-                <h2>AISHA</h2>
-                <p>Your AI Bestie & Tutor</p>
+    <aside class="sidebar">
+        <div class="logo">
+            <div class="logo-avatar">🤖</div>
+            <h2>AISHA</h2>
+            <p>Your AI Tutor</p>
+        </div>
+        <div class="user-card">
+            <div class="user-avatar">👤</div>
+            <div>
+                <div class="user-name" id="sidebarName">Student</div>
+                <div class="user-role">Learner</div>
             </div>
-            <nav class="cartoon-nav">
-                <a href="/student/dashboard.html" class="nav-cartoon-item active"><span>🏠</span> Home</a>
-                <a href="/student/chat.html" class="nav-cartoon-item"><span>💬</span> Chat with AISHA</a>
-                <a href="/student/quizzes.html" class="nav-cartoon-item"><span>📝</span> Quizzes</a>
-                <a href="/student/progress.html" class="nav-cartoon-item"><span>📈</span> My Progress</a>
-            </nav>
-            <button class="logout-cartoon" onclick="logout()">🚪 Goodbye for now!</button>
-        </aside>
+        </div>
+        <nav>
+            <a href="/student/dashboard.html" class="nav-item active"><span class="icon">🏠</span> Dashboard</a>
+            <a href="/student/chat.html" class="nav-item"><span class="icon">💬</span> Chat with AISHA</a>
+            <a href="/student/quizzes.html" class="nav-item"><span class="icon">📝</span> Quizzes</a>
+            <a href="/student/progress.html" class="nav-item"><span class="icon">📈</span> My Progress</a>
+        </nav>
+        <button class="logout-btn" onclick="logout()"><span>🚪</span> Logout</button>
+    </aside>
 
-        <main class="cartoon-main">
-            <div class="welcome-banner">
-                <div class="welcome-text">
-                    <h1>Hey there, <span id="studentName">Star Student</span>! 🌟</h1>
-                    <p>AISHA is ready to help you learn today! What shall we explore? 📚</p>
+    <main class="main">
+        <div class="header">
+            <div class="header-text">
+                <h1>Hey, <span id="headerName">there</span>! 👋</h1>
+                <p>Ready to learn something new today?</p>
+            </div>
+            <div class="header-time" id="headerTime"></div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-value" id="statQuizzes">-</div><div class="stat-label">Quizzes Taken</div></div>
+            <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-value" id="statAvg">-</div><div class="stat-label">Average Score</div></div>
+            <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-value" id="statBest">-</div><div class="stat-label">Best Score</div></div>
+            <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value" id="statPass">-</div><div class="stat-label">Pass Rate</div></div>
+        </div>
+
+        <div class="content-grid">
+            <!-- Books -->
+            <div class="section-card full-width">
+                <div class="section-header">
+                    <div class="section-title">📚 Your Books</div>
                 </div>
-                <div class="welcome-emoji">🎓✨</div>
+                <div id="booksGrid" class="books-grid"><div class="loading">Loading books...</div></div>
             </div>
 
-            <!-- Stats -->
-            <div class="stats-cartoon">
-                <div class="stat-cartoon-card"><div class="stat-emoji">📚</div><div class="stat-number" id="totalQuizzes">-</div><div class="stat-label">Quizzes Taken</div></div>
-                <div class="stat-cartoon-card"><div class="stat-emoji">⭐</div><div class="stat-number" id="avgScore">-</div><div class="stat-label">Average Score</div></div>
-                <div class="stat-cartoon-card"><div class="stat-emoji">🎯</div><div class="stat-number" id="passRate">-</div><div class="stat-label">Pass Rate</div></div>
-                <div class="stat-cartoon-card"><div class="stat-emoji">🏆</div><div class="stat-number" id="bestScore">-</div><div class="stat-label">Best Score</div></div>
-            </div>
-
-            <!-- Books from admin -->
-            <div class="cartoon-section">
-                <div class="section-title"><span>📚</span><span>AISHA's Library — Your Books</span></div>
-                <div id="booksGrid" class="books-grid">
-                    <div class="loading">📖 Loading your books...</div>
+            <!-- Quizzes -->
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-title">📝 Available Quizzes</div>
+                    <a href="/student/quizzes.html" class="see-all">See all →</a>
                 </div>
-            </div>
-
-            <!-- Available Quizzes -->
-            <div class="cartoon-section">
-                <div class="section-title"><span>✨</span><span>Available Quizzes For You</span></div>
-                <div id="quizzesList" class="quiz-list">
-                    <div class="loading">🎲 Loading quizzes...</div>
-                </div>
+                <div id="quizList" class="quiz-list"><div class="loading">Loading quizzes...</div></div>
             </div>
 
             <!-- Recent Activity -->
-            <div class="cartoon-section">
-                <div class="section-title"><span>📅</span><span>Your Recent Activity</span></div>
-                <div id="recentActivity" class="activity-list">
-                    <div class="loading">📖 Loading your activity...</div>
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-title">📅 Recent Activity</div>
+                    <a href="/student/progress.html" class="see-all">View progress →</a>
                 </div>
+                <div id="activityList" class="activity-list"><div class="loading">Loading activity...</div></div>
             </div>
-        </main>
-    </div>
+        </div>
+    </main>
+
+    <div id="toast" class="toast"></div>
 
     <script>
         const currentUser = JSON.parse(localStorage.getItem('user') || 'null');
         if (!currentUser) window.location.href = '/login.html';
 
-        // Show name
-        if (currentUser?.full_name) {
-            document.getElementById('studentName').textContent = currentUser.full_name.split(' ')[0];
+        // Set name
+        const firstName = currentUser?.full_name?.split(' ')[0] || 'there';
+        document.getElementById('headerName').textContent = firstName;
+        document.getElementById('sidebarName').textContent = currentUser?.full_name || 'Student';
+
+        // Clock
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('headerTime').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' · ' + now.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
         }
+        updateTime();
+        setInterval(updateTime, 1000);
 
         function getSubjectIcon(subject) {
-            const icons = { Mathematics: '📐', Physics: '⚛️', Chemistry: '🧪', Biology: '🧬', History: '🌍', Literature: '📖', Science: '🔬', Geography: '🗺️', Religion: '🕌', Islamic: '🕌', French: '🇫🇷', Arabic: '📜', English: '📝', Computer: '💻', Coding: '💻', Art: '🎨', Music: '🎵', Sports: '⚽' };
             if (!subject) return '📚';
-            if (icons[subject]) return icons[subject];
-            const key = Object.keys(icons).find(k => subject.toLowerCase().includes(k.toLowerCase()));
-            return key ? icons[key] : '📚';
+            const map = { mathematics: '📐', physics: '⚛️', chemistry: '🧪', biology: '🧬', history: '🌍', literature: '📖', science: '🔬', geography: '🗺️', islamic: '🕌', religion: '🕌', french: '🇫🇷', arabic: '📜', english: '📝', computer: '💻', coding: '💻', art: '🎨', music: '🎵', sports: '⚽' };
+            const key = Object.keys(map).find(k => subject.toLowerCase().includes(k));
+            return key ? map[key] : '📚';
         }
 
         function getDiffLabel(d) {
-            return d == 1 ? '🍭 Easy' : d == 2 ? '📚 Medium' : '🔥 Hard';
+            return d == 1 ? ['🍭 Easy', 'diff-1'] : d == 2 ? ['📚 Medium', 'diff-2'] : ['🔥 Hard', 'diff-3'];
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg; t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 3000);
         }
 
         async function loadDashboard() {
             try {
-                // Load all data in parallel
                 const [booksRes, quizzesRes, attemptsRes] = await Promise.all([
                     fetch('/api/books'),
                     fetch('/api/quizzes'),
                     fetch(`/api/quizzes/attempts?userId=${currentUser.id}`)
                 ]);
-
-                const [booksData, quizzesData, attemptsData] = await Promise.all([
-                    booksRes.json(), quizzesRes.json(), attemptsRes.json()
-                ]);
+                const [booksData, quizzesData, attemptsData] = await Promise.all([booksRes.json(), quizzesRes.json(), attemptsRes.json()]);
 
                 const books = booksData.success ? booksData.books : [];
                 const quizzes = quizzesData.success ? quizzesData.quizzes : [];
@@ -187,84 +256,85 @@
                 renderBooks(books);
                 renderQuizzes(quizzes);
                 renderActivity(attempts);
-
             } catch (err) {
                 console.error(err);
-                document.getElementById('booksGrid').innerHTML = '<div class="empty-state">⚠️ Could not load data. Check your connection.</div>';
+                document.getElementById('booksGrid').innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div>Could not load data</div>';
             }
         }
 
         function renderStats(attempts) {
             const total = attempts.length;
             const avg = total > 0 ? Math.round(attempts.reduce((s, a) => s + a.percentage, 0) / total) : 0;
-            const passRate = total > 0 ? Math.round((attempts.filter(a => a.is_passed).length / total) * 100) : 0;
             const best = total > 0 ? Math.max(...attempts.map(a => a.percentage)) : 0;
-
-            document.getElementById('totalQuizzes').textContent = total;
-            document.getElementById('avgScore').textContent = avg + '%';
-            document.getElementById('passRate').textContent = passRate + '%';
-            document.getElementById('bestScore').textContent = best + '%';
+            const passRate = total > 0 ? Math.round((attempts.filter(a => a.is_passed).length / total) * 100) : 0;
+            document.getElementById('statQuizzes').textContent = total;
+            document.getElementById('statAvg').textContent = avg + '%';
+            document.getElementById('statBest').textContent = best + '%';
+            document.getElementById('statPass').textContent = passRate + '%';
         }
 
         function renderBooks(books) {
             const div = document.getElementById('booksGrid');
             if (!books.length) {
-                div.innerHTML = '<div class="empty-state">📚 No books yet. Your admin will add books soon!</div>';
+                div.innerHTML = '<div class="empty"><div class="empty-icon">📚</div>No books yet. Your teacher will add books soon!</div>';
                 return;
             }
-            div.innerHTML = books.map(book => `
-                <div class="book-card" onclick="chatAboutBook('${book.title}')">
-                    <div class="book-icon">${getSubjectIcon(book.subject)}</div>
+            div.innerHTML = books.map(book => {
+                const hasFile = book.content && book.content.startsWith('http');
+                return `
+                <div class="book-card" onclick="${hasFile ? `window.open('${book.content}','_blank')` : `chatAbout('${book.title}')`}">
+                    <div class="book-emoji">${getSubjectIcon(book.subject)}</div>
                     <div class="book-title">${book.title}</div>
-                    <div class="book-author">${book.author ? 'by ' + book.author : ''}</div>
-                    <span class="book-subject">${book.subject}</span>
-                    <div style="margin-top:0.5rem; font-size:0.75rem; color:#ff85b3;">💬 Click to ask AISHA about this book</div>
-                </div>
-            `).join('');
+                    ${book.author ? `<div class="book-author">by ${book.author}</div>` : ''}
+                    <span class="book-tag">${book.subject}</span>
+                    ${hasFile
+                        ? `<a href="${book.content}" target="_blank" class="book-link" onclick="event.stopPropagation()">📖 Open Book</a>`
+                        : `<div class="book-link" style="cursor:pointer;" onclick="chatAbout('${book.title}')">💬 Ask AISHA</div>`
+                    }
+                </div>`;
+            }).join('');
         }
 
         function renderQuizzes(quizzes) {
-            const div = document.getElementById('quizzesList');
+            const div = document.getElementById('quizList');
             if (!quizzes.length) {
-                div.innerHTML = '<div class="empty-state">📝 No quizzes available yet. Check back soon!</div>';
+                div.innerHTML = '<div class="empty"><div class="empty-icon">📝</div>No quizzes available yet</div>';
                 return;
             }
-            div.innerHTML = quizzes.slice(0, 6).map(quiz => {
-                const questions = typeof quiz.questions === 'string' ? JSON.parse(quiz.questions) : (quiz.questions || []);
+            div.innerHTML = quizzes.slice(0, 5).map(quiz => {
+                const questions = typeof quiz.questions === 'string' ? JSON.parse(quiz.questions || '[]') : (quiz.questions || []);
+                const [diffLabel, diffClass] = getDiffLabel(quiz.difficulty);
                 return `
-                <div class="quiz-cartoon-item" onclick="location.href='/student/quizzes.html'">
-                    <div class="quiz-title">${getSubjectIcon(quiz.subject)} ${quiz.title}</div>
-                    <div class="quiz-info">📝 ${questions.length} questions · ⏱️ ${quiz.time_limit} min</div>
-                    <div class="quiz-meta">
-                        <span class="diff-badge diff-${quiz.difficulty}">${getDiffLabel(quiz.difficulty)}</span>
-                        <span>📚 ${quiz.subject}</span>
+                <div class="quiz-item" onclick="location.href='/student/quizzes.html'">
+                    <div class="quiz-icon">${getSubjectIcon(quiz.subject)}</div>
+                    <div class="quiz-info">
+                        <div class="quiz-name">${quiz.title}</div>
+                        <div class="quiz-meta">${questions.length} questions · ${quiz.time_limit} min · <span class="diff-badge ${diffClass}">${diffLabel}</span></div>
                     </div>
-                </div>
-            `}).join('');
+                    <button class="start-btn">Start →</button>
+                </div>`;
+            }).join('');
         }
 
         function renderActivity(attempts) {
-            const div = document.getElementById('recentActivity');
+            const div = document.getElementById('activityList');
             if (!attempts.length) {
-                div.innerHTML = '<div class="empty-state">🌱 No activity yet. Take a quiz to get started!</div>';
+                div.innerHTML = '<div class="empty"><div class="empty-icon">🌱</div>No activity yet. Take a quiz to start!</div>';
                 return;
             }
-            div.innerHTML = attempts.slice(0, 5).map(a => `
+            div.innerHTML = attempts.slice(0, 6).map(a => `
                 <div class="activity-item">
-                    <div class="activity-emoji">📝</div>
-                    <div class="activity-details">
-                        <strong>${a.subject || 'Quiz'}</strong>
-                        <div style="font-size:0.8rem; color:#999;">${new Date(a.completed_at).toLocaleString()}</div>
+                    <div class="activity-dot ${a.is_passed ? 'dot-pass' : 'dot-fail'}"></div>
+                    <div class="activity-info">
+                        <div class="activity-subject">${getSubjectIcon(a.subject)} ${a.subject || 'Quiz'}</div>
+                        <div class="activity-date">${new Date(a.completed_at).toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
                     </div>
-                    <div class="activity-score ${a.is_passed ? 'score-pass' : 'score-fail'}">
-                        ${a.percentage}% ${a.is_passed ? '🎉' : '📚'}
-                    </div>
+                    <div class="activity-score ${a.is_passed ? 'score-pass' : 'score-fail'}">${a.percentage}%</div>
                 </div>
             `).join('');
         }
 
-        function chatAboutBook(title) {
-            // Store the book title and redirect to chat
+        function chatAbout(title) {
             localStorage.setItem('chatPrompt', `Tell me about the book "${title}" and help me understand it`);
             window.location.href = '/student/chat.html';
         }
