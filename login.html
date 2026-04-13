@@ -4,80 +4,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AISHA - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
+        :root { --pink: #ff4d8d; --purple: #7c3aed; --dark: #1a1035; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, #2d1b69 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 1rem;
         }
-        .login-container { width: 100%; max-width: 420px; padding: 1rem; }
-        .login-card { background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+        }
         .logo { text-align: center; margin-bottom: 2rem; }
-        .logo h1 { color: #667eea; font-size: 2rem; }
-        .tabs { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid #e0e0e0; }
-        .tab { flex: 1; padding: 0.8rem; background: none; border: none; font-size: 1rem; font-weight: 600; cursor: pointer; color: #666; }
-        .tab.active { color: #667eea; border-bottom: 2px solid #667eea; margin-bottom: -2px; }
+        .logo-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .logo h1 { color: var(--purple); font-size: 1.8rem; font-weight: 900; }
+        .logo p { color: #9b8ec4; font-size: 0.85rem; margin-top: 0.2rem; }
+        .tabs { display: flex; margin-bottom: 2rem; background: #f5f0ff; border-radius: 12px; padding: 0.3rem; }
+        .tab { flex: 1; padding: 0.7rem; background: none; border: none; font-family: inherit; font-size: 0.95rem; font-weight: 700; cursor: pointer; border-radius: 10px; color: #9b8ec4; transition: all 0.2s; }
+        .tab.active { background: white; color: var(--purple); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         .form { display: none; }
         .form.active { display: block; }
         .form-group { margin-bottom: 1.2rem; }
-        .form-group label { display: block; margin-bottom: 0.5rem; color: #333; font-weight: 500; }
-        .form-group input { width: 100%; padding: 0.8rem 1rem; border: 1px solid #e0e0e0; border-radius: 12px; font-size: 1rem; outline: none; transition: border-color 0.2s; }
-        .form-group input:focus { border-color: #667eea; }
-        .btn { width: 100%; padding: 0.9rem; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
-        .btn:hover { opacity: 0.9; }
-        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-        .error-message { background: #fee2e2; color: #dc2626; padding: 0.8rem; border-radius: 12px; margin-bottom: 1rem; display: none; text-align: center; font-size: 0.9rem; }
-        .success-message { background: #dcfce7; color: #16a34a; padding: 0.8rem; border-radius: 12px; margin-bottom: 1rem; display: none; text-align: center; font-size: 0.9rem; }
-        .demo-box { background: #f8f8f8; border-radius: 12px; padding: 1rem; margin-top: 1.5rem; text-align: center; }
-        .demo-box p { color: #666; font-size: 0.85rem; margin-bottom: 0.5rem; }
-        .demo-credentials { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
-        .demo-btn { background: white; border: 1px solid #667eea; padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.75rem; cursor: pointer; color: #667eea; transition: all 0.2s; }
-        .demo-btn:hover { background: #667eea; color: white; }
-        .admin-link { text-align: center; margin-top: 1rem; }
-        .admin-link a { color: #999; text-decoration: none; font-size: 0.8rem; }
-        .admin-link a:hover { color: #667eea; }
+        .form-group label { display: block; margin-bottom: 0.5rem; color: #2d1b69; font-weight: 700; font-size: 0.9rem; }
+        .form-group input {
+            width: 100%; padding: 0.9rem 1rem;
+            border: 2px solid #ede8ff;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            color: #2d1b69;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus { border-color: var(--purple); }
+        .form-group input::placeholder { color: #c4b5fd; }
+        .btn {
+            width: 100%; padding: 1rem;
+            background: linear-gradient(135deg, var(--pink), var(--purple));
+            color: white; border: none;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(124,58,237,0.3);
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(124,58,237,0.4); }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .error-msg { background: #fee2e2; color: #dc2626; padding: 0.8rem; border-radius: 10px; margin-bottom: 1rem; display: none; text-align: center; font-size: 0.88rem; font-weight: 600; }
+        .success-msg { background: #dcfce7; color: #16a34a; padding: 0.8rem; border-radius: 10px; margin-bottom: 1rem; display: none; text-align: center; font-size: 0.88rem; font-weight: 600; }
+        .footer-text { text-align: center; margin-top: 1.5rem; color: #c4b5fd; font-size: 0.8rem; }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-card">
-            <div class="logo"><h1>📚 AISHA</h1><p style="color:#999; font-size:0.9rem;">Your Personal AI Tutor</p></div>
-            <div class="tabs">
-                <button class="tab active" onclick="switchTab('login')">Login</button>
-                <button class="tab" onclick="switchTab('register')">Sign Up</button>
-            </div>
-            <div id="errorMessage" class="error-message"></div>
-            <div id="successMessage" class="success-message"></div>
-
-            <!-- Login Form -->
-            <form id="loginForm" class="form active" onsubmit="handleLogin(event)">
-                <div class="form-group"><label>Email</label><input type="email" id="loginEmail" required placeholder="your@email.com"></div>
-                <div class="form-group"><label>Password</label><input type="password" id="loginPassword" required placeholder="••••••••"></div>
-                <button type="submit" class="btn" id="loginBtn">Login →</button>
-            </form>
-
-            <!-- Register Form -->
-            <form id="registerForm" class="form" onsubmit="handleRegister(event)">
-                <div class="form-group"><label>Full Name</label><input type="text" id="regName" required placeholder="Your full name"></div>
-                <div class="form-group"><label>Email</label><input type="email" id="regEmail" required placeholder="your@email.com"></div>
-                <div class="form-group"><label>Password</label><input type="password" id="regPassword" required placeholder="Min 6 characters"></div>
-                <div class="form-group"><label>Confirm Password</label><input type="password" id="regConfirm" required placeholder="Repeat password"></div>
-                <button type="submit" class="btn" id="registerBtn">Create Account →</button>
-            </form>
-
-            <div class="demo-box">
-                <p>✨ Demo Accounts ✨</p>
-                <div class="demo-credentials">
-                    <button class="demo-btn" onclick="fillDemo('admin@aisha.com','admin123')">👑 Admin Demo</button>
-                    <button class="demo-btn" onclick="fillDemo('student@aisha.com','student123')">🎓 Student Demo</button>
-                </div>
-            </div>
-            <div class="admin-link"><a href="/admin-login.html">🔒 Admin Portal</a></div>
+    <div class="card">
+        <div class="logo">
+            <div class="logo-icon">🤖</div>
+            <h1>AISHA</h1>
+            <p>Your Personal AI Tutor</p>
         </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('login')">Login</button>
+            <button class="tab" onclick="switchTab('register')">Sign Up</button>
+        </div>
+
+        <div id="errorMsg" class="error-msg"></div>
+        <div id="successMsg" class="success-msg"></div>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="form active" onsubmit="handleLogin(event)">
+            <div class="form-group"><label>Email</label><input type="email" id="loginEmail" required></div>
+            <div class="form-group"><label>Password</label><input type="password" id="loginPassword" required></div>
+            <button type="submit" class="btn" id="loginBtn">Login →</button>
+        </form>
+
+        <!-- Register Form -->
+        <form id="registerForm" class="form" onsubmit="handleRegister(event)">
+            <div class="form-group"><label>Full Name</label><input type="text" id="regName" required></div>
+            <div class="form-group"><label>Email</label><input type="email" id="regEmail" required></div>
+            <div class="form-group"><label>Password</label><input type="password" id="regPassword" required></div>
+            <div class="form-group"><label>Confirm Password</label><input type="password" id="regConfirm" required></div>
+            <button type="submit" class="btn" id="registerBtn">Create Account →</button>
+        </form>
+
+        <div class="footer-text">Learn smarter with AI 🚀</div>
     </div>
 
     <script>
@@ -91,89 +113,60 @@
         }
 
         function showError(msg) {
-            const el = document.getElementById('errorMessage');
-            el.textContent = msg;
-            el.style.display = 'block';
-            document.getElementById('successMessage').style.display = 'none';
+            const el = document.getElementById('errorMsg');
+            el.textContent = msg; el.style.display = 'block';
+            document.getElementById('successMsg').style.display = 'none';
         }
 
         function showSuccess(msg) {
-            const el = document.getElementById('successMessage');
-            el.textContent = msg;
-            el.style.display = 'block';
-            document.getElementById('errorMessage').style.display = 'none';
+            const el = document.getElementById('successMsg');
+            el.textContent = msg; el.style.display = 'block';
+            document.getElementById('errorMsg').style.display = 'none';
         }
 
         function hideMessages() {
-            document.getElementById('errorMessage').style.display = 'none';
-            document.getElementById('successMessage').style.display = 'none';
-        }
-
-        function fillDemo(email, password) {
-            switchTab('login');
-            document.getElementById('loginEmail').value = email;
-            document.getElementById('loginPassword').value = password;
+            document.getElementById('errorMsg').style.display = 'none';
+            document.getElementById('successMsg').style.display = 'none';
         }
 
         async function handleLogin(e) {
             e.preventDefault();
             const btn = document.getElementById('loginBtn');
-            btn.disabled = true;
-            btn.textContent = 'Logging in...';
+            btn.disabled = true; btn.textContent = 'Logging in...';
             hideMessages();
-
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value;
-
             try {
                 const res = await fetch('/api/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
+                    body: JSON.stringify({ email: document.getElementById('loginEmail').value.trim(), password: document.getElementById('loginPassword').value })
                 });
                 const data = await res.json();
-
                 if (data.success && data.user) {
-                    // Store with consistent key "user"
                     localStorage.setItem('user', JSON.stringify(data.user));
-                    showSuccess('Welcome back! Redirecting...');
-                    setTimeout(() => {
-                        window.location.href = data.user.role === 'admin' ? '/admin/dashboard.html' : '/student/dashboard.html';
-                    }, 500);
+                    window.location.href = data.user.role === 'admin' ? '/admin/dashboard.html' : '/student/dashboard.html';
                 } else {
                     showError(data.error || 'Invalid email or password');
                 }
-            } catch (err) {
-                showError('Connection error. Please try again.');
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Login →';
-            }
+            } catch { showError('Connection error. Please try again.'); }
+            finally { btn.disabled = false; btn.textContent = 'Login →'; }
         }
 
         async function handleRegister(e) {
             e.preventDefault();
             const btn = document.getElementById('registerBtn');
-            btn.disabled = true;
-            btn.textContent = 'Creating account...';
-            hideMessages();
-
-            const name = document.getElementById('regName').value.trim();
-            const email = document.getElementById('regEmail').value.trim();
             const password = document.getElementById('regPassword').value;
             const confirm = document.getElementById('regConfirm').value;
-
-            if (password.length < 6) { showError('Password must be at least 6 characters'); btn.disabled = false; btn.textContent = 'Create Account →'; return; }
-            if (password !== confirm) { showError('Passwords do not match'); btn.disabled = false; btn.textContent = 'Create Account →'; return; }
-
+            if (password.length < 6) { showError('Password must be at least 6 characters'); return; }
+            if (password !== confirm) { showError('Passwords do not match'); return; }
+            btn.disabled = true; btn.textContent = 'Creating account...';
+            hideMessages();
             try {
                 const res = await fetch('/api/auth/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password, full_name: name })
+                    body: JSON.stringify({ email: document.getElementById('regEmail').value.trim(), password, full_name: document.getElementById('regName').value.trim() })
                 });
                 const data = await res.json();
-
                 if (data.success) {
                     showSuccess('Account created! Please log in.');
                     setTimeout(() => switchTab('login'), 1500);
@@ -181,19 +174,13 @@
                 } else {
                     showError(data.error || 'Registration failed');
                 }
-            } catch (err) {
-                showError('Connection error. Please try again.');
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Create Account →';
-            }
+            } catch { showError('Connection error. Please try again.'); }
+            finally { btn.disabled = false; btn.textContent = 'Create Account →'; }
         }
 
-        // Already logged in? Redirect.
+        // Already logged in?
         const user = JSON.parse(localStorage.getItem('user') || 'null');
-        if (user && user.id) {
-            window.location.href = user.role === 'admin' ? '/admin/dashboard.html' : '/student/dashboard.html';
-        }
+        if (user) window.location.href = user.role === 'admin' ? '/admin/dashboard.html' : '/student/dashboard.html';
     </script>
 </body>
 </html>
