@@ -6,67 +6,82 @@ exports.handler = async (event) => {
         'Access-Control-Allow-Headers': 'Content-Type',
         'Content-Type': 'application/json'
     };
-
-    if (event.httpMethod === 'OPTIONS') {
-        return { statusCode: 204, headers, body: '' };
-    }
-
-    if (event.httpMethod !== 'POST') {
-        return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
-    }
+    if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers, body: '' };
+    if (event.httpMethod !== 'POST') return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
 
     try {
         const { message, userId, history = [] } = JSON.parse(event.body);
+        if (!message) return { statusCode: 400, headers, body: JSON.stringify({ error: 'Message required' }) };
 
-        if (!message) {
-            return { statusCode: 400, headers, body: JSON.stringify({ error: 'Message is required' }) };
+        // Load books from DB to make AISHA aware of them
+        let booksContext = '';
+        if (process.env.DATABASE_URL) {
+            try {
+                const sql = neon(process.env.DATABASE_URL);
+                const books = await sql`SELECT title, author, subject, description FROM books`;
+                if (books.length > 0) {
+                    booksContext = `\n\nBooks available in the library:\n${books.map(b => `- "${b.title}" by ${b.author || 'Unknown'} (Subject: ${b.subject})${b.description ? ': ' + b.description : ''}`).join('\n')}`;
+                }
+            } catch (e) { /* skip if DB fails */ }
         }
 
-        // Build messages array for Claude
-        const messages = [
-            ...history.map(h => ({ role: h.role, content: h.content })),
-            { role: 'user', content: message }
-        ];
+        const systemPrompt = `You are AISHA, a friendly, smart, and encouraging AI tutor for students. You speak in a warm, supportive, and engaging tone.
 
-        // Call Claude API
-        const claudeRes = await fetch('https://api.anthropic.com/v1/messages', {
+Your capabilities:
+1. TEACH any subject clearly with simple explanations and real examples
+2. QUIZ students interactively - when asked, give one question at a time, wait for their answer, then give feedback and the next question
+3. DISCUSS books - you know all the books in the library and can help students understand them
+4. TRACK topics - remember what was discussed in this conversation and build on it
+5. SUGGEST topics - if a student doesn't know what to study, ask them what subject or book they want to explore
+
+How to give quizzes:
+- Ask "What subject or topic do you want to be quizzed on?"
+- Give ONE question at a time (multiple choice or short answer)
+- After their answer, say if it's correct, explain why, then ask the next question
+- Keep score and tell them at the end
+- Make it fun and encouraging!
+
+Rules:
+- Always be positive and encouraging, never discouraging
+- If a student is struggling, simplify your explanation
+- Use emojis occasionally to keep things fun 😊
+- Keep responses clear and not too long
+- If asked about a book, reference the actual books in the library${booksContext}`;
+
+        // Call Groq API
+        const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'x-api-key': process.env.ANTHROPIC_API_KEY,
-                'anthropic-version': '2023-06-01'
+                'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
             },
             body: JSON.stringify({
-                model: 'claude-haiku-4-5-20251001',
+                model: 'llama-3.3-70b-versatile',
                 max_tokens: 1024,
-                system: `You are AISHA, a friendly, encouraging, and fun AI tutor for students. 
-You speak in a warm, enthusiastic, and supportive tone. You use emojis occasionally to make learning fun. 
-You help students understand subjects like Math, Physics, Chemistry, Biology, History, and Literature.
-You explain concepts clearly with simple analogies, and you always encourage students.
-When asked about quizzes, suggest they visit the Quizzes page to practice.
-Keep responses concise but helpful - usually 2-4 paragraphs max.`,
-                messages
+                temperature: 0.7,
+                messages: [
+                    { role: 'system', content: systemPrompt },
+                    ...history.map(h => ({ role: h.role, content: h.content })),
+                    { role: 'user', content: message }
+                ]
             })
         });
 
-        if (!claudeRes.ok) {
-            const errText = await claudeRes.text();
-            throw new Error(`Claude API error: ${errText}`);
+        if (!groqRes.ok) {
+            const err = await groqRes.text();
+            throw new Error(`Groq API error: ${err}`);
         }
 
-        const claudeData = await claudeRes.json();
-        const response = claudeData.content[0].text;
+        const groqData = await groqRes.json();
+        const response = groqData.choices[0].message.content;
 
         // Save to DB if userId provided
         if (userId && process.env.DATABASE_URL) {
             try {
                 const sql = neon(process.env.DATABASE_URL);
-                await sql`INSERT INTO chat_messages (user_id, role, content) VALUES (${userId}, 'user', ${message})`;
-                await sql`INSERT INTO chat_messages (user_id, role, content) VALUES (${userId}, 'assistant', ${response})`;
-            } catch (dbErr) {
-                console.error('DB save error:', dbErr.message);
-                // Don't fail the request if DB save fails
-            }
+                await sql`INSERT INTO chat_messages (user_id, role, content) VALUES (${userId}::uuid, 'user', ${message})`;
+                await sql`INSERT INTO chat_messages (user_id, role, content) VALUES (${userId}::uuid, 'assistant', ${response})`;
+            } catch (e) { /* skip if DB fails */ }
         }
 
         return { statusCode: 200, headers, body: JSON.stringify({ success: true, response }) };
