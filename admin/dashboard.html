@@ -3,445 +3,417 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AISHA Admin - Manage Your AI Tutor</title>
+    <title>AISHA Admin - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Comic Neue', 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            min-height: 100vh;
-        }
-        
-        /* Admin Container */
-        .admin-container {
-            display: flex;
-            min-height: 100vh;
-        }
-        
-        /* Sidebar - Professional but Fun */
-        .admin-sidebar {
-            width: 280px;
-            background: linear-gradient(180deg, #0f3460 0%, #16213e 100%);
-            padding: 2rem 1rem;
-            border-radius: 0 30px 30px 0;
-            box-shadow: 10px 0 20px rgba(0,0,0,0.2);
-        }
-        
-        .admin-logo {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .admin-logo .logo-icon {
-            font-size: 3rem;
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        .admin-logo h2 {
-            color: #ffd700;
-            font-size: 1.5rem;
-            margin-top: 0.5rem;
-        }
-        
-        .admin-logo p {
-            color: #8899aa;
-            font-size: 0.8rem;
-        }
-        
-        .admin-nav {
-            margin-top: 2rem;
-        }
-        
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem 1.5rem;
-            margin: 0.5rem 0;
-            background: rgba(255,255,255,0.05);
-            border-radius: 50px;
-            color: #ccddee;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-        
-        .nav-item:hover, .nav-item.active {
-            background: #ffd700;
-            color: #0f3460;
-            transform: translateX(5px);
-        }
-        
-        .logout-btn {
-            background: #ff4757;
-            color: white;
-            border: none;
-            padding: 0.8rem;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 2rem;
-            width: 100%;
-            font-family: inherit;
-            transition: all 0.3s;
-        }
-        
-        .logout-btn:hover {
-            background: #ff6b81;
-            transform: scale(1.02);
-        }
-        
-        /* Main Content */
-        .admin-main {
-            flex: 1;
-            padding: 2rem;
-            overflow-y: auto;
-        }
-        
-        /* Header */
-        .admin-header {
-            background: rgba(255,255,255,0.05);
-            border-radius: 30px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            backdrop-filter: blur(10px);
-        }
-        
-        .admin-header h1 {
-            color: #ffd700;
-            font-size: 1.8rem;
-        }
-        
-        .admin-header p {
-            color: #8899aa;
-            margin-top: 0.5rem;
-        }
-        
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .stat-card {
-            background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s;
-            border: 1px solid rgba(255,215,0,0.2);
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: #ffd700;
-        }
-        
-        .stat-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #ffd700;
-        }
-        
-        .stat-label {
-            color: #8899aa;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-        }
-        
-        /* Quick Actions */
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .action-card {
-            background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
-            padding: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-            border: 1px solid rgba(255,215,0,0.2);
-        }
-        
-        .action-card:hover {
-            background: rgba(255,215,0,0.1);
-            transform: translateY(-5px);
-            border-color: #ffd700;
-        }
-        
-        .action-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .action-title {
-            color: #ffd700;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-        
-        .action-desc {
-            color: #8899aa;
-            font-size: 0.8rem;
-        }
-        
-        /* Recent Activity */
-        .recent-section {
-            background: rgba(255,255,255,0.05);
-            border-radius: 25px;
-            padding: 1.5rem;
-            backdrop-filter: blur(10px);
-        }
-        
-        .section-title {
-            color: #ffd700;
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .activity-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-        
-        .activity-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.8rem;
-            background: rgba(255,255,255,0.03);
-            border-radius: 15px;
-            transition: all 0.3s;
-        }
-        
-        .activity-item:hover {
-            background: rgba(255,215,0,0.1);
-        }
-        
-        .activity-icon {
-            font-size: 1.5rem;
-        }
-        
-        .activity-details {
-            flex: 1;
-        }
-        
-        .activity-text {
-            color: #ccddee;
-        }
-        
-        .activity-time {
-            font-size: 0.7rem;
-            color: #8899aa;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .admin-container {
-                flex-direction: column;
-            }
-            
-            .admin-sidebar {
-                width: 100%;
-                border-radius: 0 0 30px 30px;
-            }
-            
-            .stats-grid, .quick-actions {
-                grid-template-columns: 1fr;
-            }
-        }
+        :root { --pink: #ff4d8d; --yellow: #ffd700; --dark: #1a1035; --darker: #120b28; --card: rgba(255,255,255,0.05); --border: rgba(255,255,255,0.08); --muted: #9b8ec4; --green: #00c896; --red: #ff4757; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Nunito', sans-serif; background: var(--dark); color: white; min-height: 100vh; display: flex; }
+        .sidebar { width: 260px; background: var(--darker); min-height: 100vh; padding: 2rem 1.2rem; display: flex; flex-direction: column; position: fixed; left: 0; top: 0; bottom: 0; border-right: 1px solid var(--border); }
+        .logo { text-align: center; margin-bottom: 2rem; }
+        .logo-icon { font-size: 2.5rem; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .logo h2 { color: var(--yellow); font-size: 1.3rem; font-weight: 900; margin-top: 0.5rem; }
+        .logo p { color: var(--muted); font-size: 0.75rem; }
+        .admin-badge { background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.2); border-radius: 12px; padding: 0.8rem 1rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.8rem; }
+        .admin-avatar { width: 36px; height: 36px; background: linear-gradient(135deg, var(--yellow), #ff8c00); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+        .admin-name { font-weight: 700; font-size: 0.9rem; color: var(--yellow); }
+        .admin-role { font-size: 0.7rem; color: var(--muted); }
+        nav { flex: 1; display: flex; flex-direction: column; gap: 0.3rem; }
+        .nav-item { display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1rem; border-radius: 12px; color: var(--muted); text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: all 0.2s; }
+        .nav-item:hover { background: var(--card); color: white; }
+        .nav-item.active { background: linear-gradient(135deg, rgba(255,77,141,0.2), rgba(255,77,141,0.1)); color: var(--pink); border: 1px solid rgba(255,77,141,0.2); }
+        .logout-btn { margin-top: auto; display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1rem; border-radius: 12px; color: var(--red); background: rgba(255,71,87,0.1); border: none; font-family: inherit; font-weight: 700; font-size: 0.9rem; cursor: pointer; width: 100%; }
+        .logout-btn:hover { background: rgba(255,71,87,0.2); }
+        .main { margin-left: 260px; flex: 1; padding: 2rem; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+        .page-header h1 { font-size: 1.8rem; font-weight: 900; }
+        .page-header p { color: var(--muted); font-size: 0.9rem; margin-top: 0.2rem; }
+        .live-badge { display: flex; align-items: center; gap: 0.5rem; background: rgba(0,200,150,0.1); border: 1px solid rgba(0,200,150,0.3); padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.85rem; color: var(--green); font-weight: 700; }
+        .live-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; animation: blink 1.5s infinite; }
+        @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-bottom: 2rem; }
+        .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 1.5rem; transition: all 0.3s; }
+        .stat-card:hover { border-color: rgba(255,77,141,0.3); transform: translateY(-3px); }
+        .stat-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .stat-icon { font-size: 1.5rem; }
+        .stat-change { font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 50px; }
+        .change-up { background: rgba(0,200,150,0.15); color: var(--green); }
+        .stat-value { font-size: 2rem; font-weight: 900; color: var(--yellow); }
+        .stat-label { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+        .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+        .full { grid-column: 1 / -1; }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 1.5rem; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; }
+        .card-title { font-size: 1rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; }
+        .refresh-btn { background: none; border: 1px solid var(--border); color: var(--muted); padding: 0.3rem 0.8rem; border-radius: 8px; font-family: inherit; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; }
+        .refresh-btn:hover { border-color: var(--pink); color: var(--pink); }
+
+        /* USERS TABLE */
+        .users-table { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th { padding: 0.8rem 1rem; text-align: left; color: var(--muted); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border); }
+        td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.88rem; }
+        tr:hover td { background: rgba(255,255,255,0.02); }
+        tr:last-child td { border-bottom: none; }
+        .user-cell { display: flex; align-items: center; gap: 0.8rem; }
+        .user-av { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.9rem; flex-shrink: 0; }
+        .user-av-name { font-weight: 700; font-size: 0.88rem; }
+        .user-av-email { color: var(--muted); font-size: 0.75rem; }
+        .status-dot { display: inline-flex; align-items: center; gap: 0.4rem; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot-active { background: var(--green); }
+        .dot-inactive { background: var(--muted); }
+        .score-bar { display: flex; align-items: center; gap: 0.8rem; }
+        .mini-bar { flex: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 50px; overflow: hidden; min-width: 80px; }
+        .mini-fill { height: 100%; border-radius: 50px; background: linear-gradient(90deg, var(--pink), var(--yellow)); }
+        .score-num { font-weight: 800; font-size: 0.88rem; min-width: 35px; }
+        .action-btn { background: none; border: 1px solid var(--border); color: var(--muted); padding: 0.3rem 0.7rem; border-radius: 8px; font-family: inherit; font-size: 0.75rem; cursor: pointer; transition: all 0.2s; }
+        .action-btn:hover { border-color: var(--pink); color: var(--pink); }
+        .action-btn.danger:hover { border-color: var(--red); color: var(--red); }
+        .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; }
+        .badge-admin { background: rgba(255,215,0,0.15); color: var(--yellow); }
+        .badge-student { background: rgba(255,77,141,0.15); color: var(--pink); }
+
+        /* ACTIVITY FEED */
+        .activity-feed { display: flex; flex-direction: column; gap: 0.8rem; max-height: 400px; overflow-y: auto; }
+        .activity-feed::-webkit-scrollbar { width: 4px; }
+        .activity-feed::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .feed-item { display: flex; align-items: center; gap: 1rem; padding: 0.8rem; background: rgba(255,255,255,0.03); border-radius: 12px; }
+        .feed-icon { font-size: 1.5rem; flex-shrink: 0; }
+        .feed-info { flex: 1; }
+        .feed-text { font-size: 0.88rem; font-weight: 600; }
+        .feed-text span { color: var(--pink); }
+        .feed-time { color: var(--muted); font-size: 0.75rem; margin-top: 0.2rem; }
+        .feed-score { font-weight: 900; font-size: 0.9rem; }
+
+        /* SUBJECT BREAKDOWN */
+        .subject-list { display: flex; flex-direction: column; gap: 0.8rem; }
+        .subject-row { display: flex; align-items: center; gap: 1rem; }
+        .subject-name { width: 120px; font-size: 0.85rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
+        .subject-bar { flex: 1; height: 8px; background: rgba(255,255,255,0.08); border-radius: 50px; overflow: hidden; }
+        .subject-fill { height: 100%; border-radius: 50px; background: linear-gradient(90deg, var(--pink), var(--yellow)); transition: width 1s ease; }
+        .subject-pct { font-size: 0.8rem; font-weight: 700; color: var(--yellow); min-width: 40px; text-align: right; }
+        .subject-count { font-size: 0.75rem; color: var(--muted); min-width: 60px; text-align: right; }
+
+        /* MODAL */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; padding: 1rem; }
+        .modal-box { background: #1e1040; border: 1px solid var(--border); border-radius: 24px; width: 100%; max-width: 600px; max-height: 85vh; overflow-y: auto; padding: 2rem; animation: popIn 0.3s ease-out; }
+        @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .modal-header h2 { font-size: 1.2rem; font-weight: 900; }
+        .close-modal { background: none; border: none; color: var(--muted); font-size: 1.5rem; cursor: pointer; }
+        .close-modal:hover { color: white; }
+        .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+        .detail-item { background: rgba(255,255,255,0.04); border-radius: 12px; padding: 1rem; }
+        .detail-label { color: var(--muted); font-size: 0.75rem; font-weight: 700; margin-bottom: 0.3rem; }
+        .detail-value { font-weight: 800; font-size: 1rem; }
+        .attempts-list { display: flex; flex-direction: column; gap: 0.6rem; max-height: 250px; overflow-y: auto; }
+        .attempt-row { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem; background: rgba(255,255,255,0.03); border-radius: 10px; font-size: 0.85rem; }
+        .attempt-pass { color: var(--green); font-weight: 800; }
+        .attempt-fail { color: var(--red); font-weight: 800; }
+
+        .toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--green); color: white; padding: 1rem 1.5rem; border-radius: 14px; display: none; z-index: 9999; font-weight: 700; }
+        .empty { text-align: center; padding: 2rem; color: var(--muted); }
+
+        @media (max-width: 1024px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .content-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } }
     </style>
 </head>
 <body>
-    <div class="admin-container">
-        <!-- Sidebar -->
-        <aside class="admin-sidebar">
-            <div class="admin-logo">
-                <div class="logo-icon">🤖📚</div>
-                <h2>AISHA Admin</h2>
-                <p>AI Tutor Management</p>
+    <aside class="sidebar">
+        <div class="logo">
+            <div class="logo-icon">🤖📚</div>
+            <h2>AISHA Admin</h2>
+            <p>Management Portal</p>
+        </div>
+        <div class="admin-badge">
+            <div class="admin-avatar">👑</div>
+            <div>
+                <div class="admin-name" id="adminName">Admin</div>
+                <div class="admin-role">Administrator</div>
             </div>
-            
-            <nav class="admin-nav">
-                <a href="/admin/dashboard.html" class="nav-item active">
-                    <span>📊</span> Dashboard
-                </a>
-                <a href="/admin/books.html" class="nav-item">
-                    <span>📖</span> Manage Books
-                </a>
-                <a href="/admin/quizzes.html" class="nav-item">
-                    <span>📝</span> Manage Quizzes
-                </a>
-                <a href="/admin/users.html" class="nav-item">
-                    <span>👥</span> Manage Students
-                </a>
-                <a href="/admin/analytics.html" class="nav-item">
-                    <span>📈</span> Analytics
-                </a>
-            </nav>
-            
-            <button class="logout-btn" onclick="logout()">
-                🚪 Logout
-            </button>
-        </aside>
-        
-        <!-- Main Content -->
-        <main class="admin-main">
-            <div class="admin-header">
-                <h1>Welcome back, <span id="adminName">Admin</span>! 👋</h1>
-                <p>AISHA is ready to help you manage the learning platform</p>
+        </div>
+        <nav>
+            <a href="/admin/dashboard.html" class="nav-item active">📊 Dashboard</a>
+            <a href="/admin/books.html" class="nav-item">📖 Manage Books</a>
+            <a href="/admin/quizzes.html" class="nav-item">📝 Manage Quizzes</a>
+            <a href="/admin/users.html" class="nav-item">👥 Manage Students</a>
+            <a href="/admin/analytics.html" class="nav-item">📈 Analytics</a>
+        </nav>
+        <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+    </aside>
+
+    <main class="main">
+        <div class="page-header">
+            <div>
+                <h1>Dashboard 📊</h1>
+                <p>Welcome back! Here's what's happening with your students.</p>
             </div>
-            
-            <!-- Stats -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon">👨‍🎓</div>
-                    <div class="stat-number" id="totalStudents">24</div>
-                    <div class="stat-label">Active Students</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">📖</div>
-                    <div class="stat-number" id="totalBooks">8</div>
-                    <div class="stat-label">Books in Library</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">📝</div>
-                    <div class="stat-number" id="totalQuizzes">15</div>
-                    <div class="stat-label">Quizzes Created</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">✅</div>
-                    <div class="stat-number" id="totalAttempts">127</div>
-                    <div class="stat-label">Quiz Attempts</div>
-                </div>
+            <div class="live-badge"><div class="live-dot"></div> Live Data</div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-top"><div class="stat-icon">👨‍🎓</div><span class="stat-change change-up">Active</span></div>
+                <div class="stat-value" id="statStudents">-</div>
+                <div class="stat-label">Total Students</div>
             </div>
-            
-            <!-- Quick Actions -->
-            <div class="quick-actions">
-                <div class="action-card" onclick="location.href='/admin/books.html'">
-                    <div class="action-icon">📖✨</div>
-                    <div class="action-title">Upload New Book</div>
-                    <div class="action-desc">Add a book to AISHA's brain</div>
+            <div class="stat-card">
+                <div class="stat-top"><div class="stat-icon">📝</div></div>
+                <div class="stat-value" id="statAttempts">-</div>
+                <div class="stat-label">Quiz Attempts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-top"><div class="stat-icon">⭐</div></div>
+                <div class="stat-value" id="statAvg">-</div>
+                <div class="stat-label">Average Score</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-top"><div class="stat-icon">📚</div></div>
+                <div class="stat-value" id="statBooks">-</div>
+                <div class="stat-label">Books in Library</div>
+            </div>
+        </div>
+
+        <!-- Users Table + Activity -->
+        <div class="content-grid">
+            <!-- Live Users -->
+            <div class="card full">
+                <div class="card-header">
+                    <div class="card-title">👥 All Students — Live Info</div>
+                    <button class="refresh-btn" onclick="loadData()">🔄 Refresh</button>
                 </div>
-                <div class="action-card" onclick="location.href='/admin/quizzes.html'">
-                    <div class="action-icon">📝🎯</div>
-                    <div class="action-title">Create New Quiz</div>
-                    <div class="action-desc">Design engaging quizzes for students</div>
-                </div>
-                <div class="action-card" onclick="location.href='/admin/users.html'">
-                    <div class="action-icon">👥➕</div>
-                    <div class="action-title">Add New Student</div>
-                    <div class="action-desc">Invite learners to AISHA</div>
-                </div>
-                <div class="action-card" onclick="location.href='/admin/analytics.html'">
-                    <div class="action-icon">📊🌟</div>
-                    <div class="action-title">View Analytics</div>
-                    <div class="action-desc">See how students are progressing</div>
+                <div class="users-table">
+                    <div id="usersTable"><div class="empty">Loading students...</div></div>
                 </div>
             </div>
-            
+
             <!-- Recent Activity -->
-            <div class="recent-section">
-                <div class="section-title">
-                    <span>🔄</span>
-                    <span>Recent Activity</span>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">📅 Recent Quiz Activity</div>
                 </div>
-                <div class="activity-list" id="recentActivity">
-                    <div class="activity-item">
-                        <div class="activity-icon">📖</div>
-                        <div class="activity-details">
-                            <div class="activity-text">New book uploaded: "Introduction to Physics"</div>
-                            <div class="activity-time">2 hours ago</div>
-                        </div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-icon">📝</div>
-                        <div class="activity-details">
-                            <div class="activity-text">New quiz created: "Algebra Basics"</div>
-                            <div class="activity-time">Yesterday</div>
-                        </div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-icon">👨‍🎓</div>
-                        <div class="activity-details">
-                            <div class="activity-text">New student registered: Sarah Johnson</div>
-                            <div class="activity-time">2 days ago</div>
-                        </div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-icon">✅</div>
-                        <div class="activity-details">
-                            <div class="activity-text">Student completed "Biology Blast" quiz with 92%</div>
-                            <div class="activity-time">3 days ago</div>
-                        </div>
-                    </div>
-                </div>
+                <div id="activityFeed" class="activity-feed"><div class="empty">Loading...</div></div>
             </div>
-        </main>
+
+            <!-- Subject Breakdown -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">📊 Performance by Subject</div>
+                </div>
+                <div id="subjectBreakdown" class="subject-list"><div class="empty">Loading...</div></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Student Detail Modal -->
+    <div id="studentModal" class="modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2 id="modalName">Student Details</h2>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalContent"></div>
+        </div>
     </div>
-    
+
+    <div id="toast" class="toast"></div>
+
     <script>
-        function getCurrentUser() {
-            const userStr = localStorage.getItem('user');
-            return userStr ? JSON.parse(userStr) : null;
+        let allStudents = [];
+        let allAttempts = [];
+
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (!user || user.role !== 'admin') window.location.href = '/login.html';
+        document.getElementById('adminName').textContent = user.full_name || 'Admin';
+
+        function showToast(msg, color = '#00c896') {
+            const t = document.getElementById('toast');
+            t.textContent = msg; t.style.background = color; t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 3000);
         }
-        
-        function logout() {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            window.location.href = '/login.html';
+
+        function getAvgScore(userId) {
+            const userAttempts = allAttempts.filter(a => a.user_id === userId);
+            if (!userAttempts.length) return 0;
+            return Math.round(userAttempts.reduce((s, a) => s + a.percentage, 0) / userAttempts.length);
         }
-        
-        // Check if admin is logged in
-        const user = getCurrentUser();
-        if (!user || user.role !== 'admin') {
-            window.location.href = '/login.html';
-        } else {
-            document.getElementById('adminName').textContent = user.full_name || 'Admin';
+
+        function getAvatarColor(name) {
+            const colors = ['#ff4d8d', '#7c3aed', '#00c896', '#ff8c00', '#3b82f6', '#ec4899'];
+            let hash = 0;
+            for (let c of (name || 'A')) hash = c.charCodeAt(0) + hash;
+            return colors[hash % colors.length];
         }
-        
-        // Load stats from localStorage or use defaults
-        function loadStats() {
-            const books = JSON.parse(localStorage.getItem('aisha_books') || '[]');
-            const quizzes = JSON.parse(localStorage.getItem('aisha_quizzes') || '[]');
-            const users = JSON.parse(localStorage.getItem('aisha_users') || '[]');
-            const attempts = JSON.parse(localStorage.getItem('aisha_attempts') || '[]');
-            
-            document.getElementById('totalBooks').textContent = books.length || 8;
-            document.getElementById('totalQuizzes').textContent = quizzes.length || 15;
-            document.getElementById('totalStudents').textContent = users.filter(u => u.role !== 'admin').length || 24;
-            document.getElementById('totalAttempts').textContent = attempts.length || 127;
+
+        async function loadData() {
+            try {
+                const [usersRes, attemptsRes, booksRes] = await Promise.all([
+                    fetch('/api/db/users'),
+                    fetch('/api/quizzes/attempts'),
+                    fetch('/api/books')
+                ]);
+                const [usersData, attemptsData, booksData] = await Promise.all([usersRes.json(), attemptsRes.json(), booksRes.json()]);
+
+                allStudents = usersData.success ? usersData.users : [];
+                allAttempts = attemptsData.success ? attemptsData.attempts : [];
+                const books = booksData.success ? booksData.books : [];
+
+                // Stats
+                const avg = allAttempts.length > 0 ? Math.round(allAttempts.reduce((s, a) => s + a.percentage, 0) / allAttempts.length) : 0;
+                document.getElementById('statStudents').textContent = allStudents.length;
+                document.getElementById('statAttempts').textContent = allAttempts.length;
+                document.getElementById('statAvg').textContent = avg + '%';
+                document.getElementById('statBooks').textContent = books.length;
+
+                renderUsersTable();
+                renderActivityFeed();
+                renderSubjectBreakdown();
+            } catch (err) {
+                console.error(err);
+            }
         }
-        
-        loadStats();
+
+        function renderUsersTable() {
+            const div = document.getElementById('usersTable');
+            if (!allStudents.length) {
+                div.innerHTML = '<div class="empty">No students yet</div>';
+                return;
+            }
+            const rows = allStudents.map(s => {
+                const avg = getAvgScore(s.id);
+                const attempts = allAttempts.filter(a => a.user_id === s.id).length;
+                const initials = (s.full_name || 'S').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+                const color = getAvatarColor(s.full_name);
+                const lastAttempt = allAttempts.filter(a => a.user_id === s.id).sort((a, b) => new Date(b.completed_at) - new Date(a.completed_at))[0];
+                return `
+                <tr>
+                    <td>
+                        <div class="user-cell">
+                            <div class="user-av" style="background:${color};">${initials}</div>
+                            <div>
+                                <div class="user-av-name">${s.full_name || 'Unknown'}</div>
+                                <div class="user-av-email">${s.email}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="status-dot"><span class="dot ${s.is_active ? 'dot-active' : 'dot-inactive'}"></span>${s.is_active ? 'Active' : 'Inactive'}</span></td>
+                    <td>${attempts} quiz${attempts !== 1 ? 'zes' : ''}</td>
+                    <td>
+                        <div class="score-bar">
+                            <div class="mini-bar"><div class="mini-fill" style="width:${avg}%"></div></div>
+                            <div class="score-num">${avg}%</div>
+                        </div>
+                    </td>
+                    <td>${lastAttempt ? new Date(lastAttempt.completed_at).toLocaleDateString() : 'Never'}</td>
+                    <td>${new Date(s.created_at).toLocaleDateString()}</td>
+                    <td>
+                        <button class="action-btn" onclick="viewStudent('${s.id}')">👁️ View</button>
+                        <button class="action-btn danger" onclick="toggleStudent('${s.id}', ${!s.is_active})">${s.is_active ? 'Deactivate' : 'Activate'}</button>
+                    </td>
+                </tr>`;
+            }).join('');
+
+            div.innerHTML = `
+                <table>
+                    <thead><tr><th>Student</th><th>Status</th><th>Quizzes</th><th>Avg Score</th><th>Last Active</th><th>Joined</th><th>Actions</th></tr></thead>
+                    <tbody>${rows}</tbody>
+                </table>`;
+        }
+
+        function renderActivityFeed() {
+            const div = document.getElementById('activityFeed');
+            const recent = [...allAttempts].sort((a, b) => new Date(b.completed_at) - new Date(a.completed_at)).slice(0, 15);
+            if (!recent.length) { div.innerHTML = '<div class="empty">No activity yet</div>'; return; }
+            div.innerHTML = recent.map(a => {
+                const student = allStudents.find(s => s.id === a.user_id);
+                const name = student?.full_name || 'A student';
+                const time = new Date(a.completed_at).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                return `
+                <div class="feed-item">
+                    <div class="feed-icon">${a.is_passed ? '🏆' : '📚'}</div>
+                    <div class="feed-info">
+                        <div class="feed-text"><span>${name}</span> took a ${a.subject || 'quiz'} quiz</div>
+                        <div class="feed-time">${time}</div>
+                    </div>
+                    <div class="feed-score" style="color:${a.is_passed ? 'var(--green)' : 'var(--red)'}">${a.percentage}%</div>
+                </div>`;
+            }).join('');
+        }
+
+        function renderSubjectBreakdown() {
+            const div = document.getElementById('subjectBreakdown');
+            const subjects = {};
+            allAttempts.forEach(a => {
+                if (!a.subject) return;
+                if (!subjects[a.subject]) subjects[a.subject] = { total: 0, sum: 0 };
+                subjects[a.subject].total++;
+                subjects[a.subject].sum += a.percentage;
+            });
+            const data = Object.entries(subjects).map(([s, d]) => ({ subject: s, avg: Math.round(d.sum / d.total), count: d.total })).sort((a, b) => b.avg - a.avg);
+            if (!data.length) { div.innerHTML = '<div class="empty">No quiz data yet</div>'; return; }
+            div.innerHTML = data.map(d => `
+                <div class="subject-row">
+                    <div class="subject-name">${d.subject}</div>
+                    <div class="subject-bar"><div class="subject-fill" style="width:${d.avg}%"></div></div>
+                    <div class="subject-pct">${d.avg}%</div>
+                    <div class="subject-count">${d.count} tries</div>
+                </div>`).join('');
+        }
+
+        function viewStudent(userId) {
+            const student = allStudents.find(s => s.id === userId);
+            if (!student) return;
+            const attempts = allAttempts.filter(a => a.user_id === userId);
+            const avg = attempts.length > 0 ? Math.round(attempts.reduce((s, a) => s + a.percentage, 0) / attempts.length) : 0;
+            const best = attempts.length > 0 ? Math.max(...attempts.map(a => a.percentage)) : 0;
+            const passed = attempts.filter(a => a.is_passed).length;
+            const passRate = attempts.length > 0 ? Math.round((passed / attempts.length) * 100) : 0;
+
+            document.getElementById('modalName').textContent = `${student.full_name || 'Student'} — Full Profile`;
+            document.getElementById('modalContent').innerHTML = `
+                <div class="detail-grid">
+                    <div class="detail-item"><div class="detail-label">EMAIL</div><div class="detail-value" style="font-size:0.85rem;">${student.email}</div></div>
+                    <div class="detail-item"><div class="detail-label">STATUS</div><div class="detail-value" style="color:${student.is_active ? 'var(--green)' : 'var(--red)'}">${student.is_active ? '✅ Active' : '❌ Inactive'}</div></div>
+                    <div class="detail-item"><div class="detail-label">QUIZZES TAKEN</div><div class="detail-value">${attempts.length}</div></div>
+                    <div class="detail-item"><div class="detail-label">AVERAGE SCORE</div><div class="detail-value" style="color:var(--yellow)">${avg}%</div></div>
+                    <div class="detail-item"><div class="detail-label">BEST SCORE</div><div class="detail-value" style="color:var(--green)">${best}%</div></div>
+                    <div class="detail-item"><div class="detail-label">PASS RATE</div><div class="detail-value">${passRate}%</div></div>
+                    <div class="detail-item"><div class="detail-label">JOINED</div><div class="detail-value" style="font-size:0.85rem;">${new Date(student.created_at).toLocaleDateString()}</div></div>
+                    <div class="detail-item"><div class="detail-label">ROLE</div><div class="detail-value"><span class="badge badge-student">Student</span></div></div>
+                </div>
+                <div class="card-title" style="margin-bottom:1rem;">📜 Quiz History</div>
+                <div class="attempts-list">
+                    ${attempts.length === 0 ? '<div class="empty">No quiz attempts yet</div>' :
+                    [...attempts].sort((a, b) => new Date(b.completed_at) - new Date(a.completed_at)).map(a => `
+                        <div class="attempt-row">
+                            <span>${a.subject || 'Unknown'}</span>
+                            <span>${new Date(a.completed_at).toLocaleDateString()}</span>
+                            <span>${a.score}/${a.total} questions</span>
+                            <span class="${a.is_passed ? 'attempt-pass' : 'attempt-fail'}">${a.percentage}% ${a.is_passed ? '✅' : '❌'}</span>
+                        </div>`).join('')}
+                </div>`;
+            document.getElementById('studentModal').style.display = 'flex';
+        }
+
+        async function toggleStudent(userId, isActive) {
+            try {
+                await fetch(`/api/db/${userId}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ is_active: isActive }) });
+                showToast(isActive ? '✅ Student activated' : '❌ Student deactivated', isActive ? '#00c896' : '#ff4757');
+                loadData();
+            } catch { showToast('Error updating student', '#ff4757'); }
+        }
+
+        function closeModal() { document.getElementById('studentModal').style.display = 'none'; }
+        window.onclick = e => { if (e.target === document.getElementById('studentModal')) closeModal(); };
+
+        function logout() { localStorage.removeItem('user'); window.location.href = '/login.html'; }
+
+        // Auto refresh every 30 seconds
+        loadData();
+        setInterval(loadData, 30000);
     </script>
 </body>
 </html>
