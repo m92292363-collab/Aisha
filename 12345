@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Al-Huda Admin Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: #FF5A5F;
+    --primary-dark: #E04E52;
+    --blue: #4FB3E8;
+    --blue-soft: #EBF6FD;
+    --dark: #0F172A;
+    --dark2: #1E293B;
+    --dark3: #334155;
+    --text: #E2E8F0;
+    --text-muted: #94A3B8;
+    --success: #10B981;
+    --warning: #F59E0B;
+    --card-bg: #1E293B;
+    --input-bg: #0F172A;
+    --border: #334155;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--dark);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* LOGIN SCREEN */
+  #loginScreen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at 60% 40%, #1a2a4a 0%, #0F172A 70%);
+  }
+
+  .login-box {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 3rem 2.5rem;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+  }
+
+  .login-logo {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, var(--primary), #FF8589);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2rem;
+  }
+
+  .login-box h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+
+  .login-box p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.2rem;
+    text-align: left;
+  }
+
+  .form-group label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-size: 0.95rem;
+    font-family: 'Inter', sans-serif;
+    transition: border 0.2s;
+  }
+
+  .form-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(255,90,95,0.15);
+  }
+
+  .login-btn {
+    width: 100%;
+    padding: 13px;
+    background: var(--primary);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-top: 0.5rem;
+  }
+
+  .login-btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+  .login-error {
+    background: rgba(255,90,95,0.15);
+    border: 1px solid rgba(255,90,95,0.4);
+    color: #FF8589;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    display: none;
+  }
+
+  /* DASHBOARD */
+  #dashboard { display: none; }
+
+  .topbar {
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .topbar-left i {
+    color: var(--primary);
+    font-size: 1.4rem;
+  }
+
+  .topbar-left h1 {
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .topbar-left span {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    background: var(--dark3);
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .logout-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 7px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .logout-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+  .main-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* STATS ROW */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .stat-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .stat-icon.red { background: rgba(255,90,95,0.15); color: var(--primary); }
+  .stat-icon.blue { background: rgba(79,179,232,0.15); color: var(--blue); }
+  .stat-icon.green { background: rgba(16,185,129,0.15); color: var(--success); }
+  .stat-icon.yellow { background: rgba(245,158,11,0.15); color: var(--warning); }
+
+  .stat-info h4 { font-size: 1.4rem; font-weight: 800; }
+  .stat-info p { font-size: 0.75rem; color: var(--text-muted); }
+
+  /* SECTION CARDS */
+  .section-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-header-left i {
+    font-size: 1.2rem;
+    color: var(--primary);
+  }
+
+  .section-header h2 {
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+
+  .section-header p {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* FLIGHT PRICE EDITOR */
+  .flights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  .flight-edit-card {
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.2rem;
+    transition: border 0.2s;
+  }
+
+  .flight-edit-card:hover { border-color: var(--primary); }
+
+  .flight-edit-card .route-label {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .flight-edit-card .airline-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .price-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .currency-tag {
+    background: var(--dark3);
+    color: var(--text-muted);
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .price-input {
+    flex: 1;
+    padding: 9px 12px;
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .price-input:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  .badge-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .badge-row label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  .badge-input {
+    flex: 1;
+    padding: 6px 10px;
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--primary);
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .badge-input:focus { outline: none; border-color: var(--primary); }
+
+  /* NEWS EDITOR */
+  .news-list { display: flex; flex-direction: column; gap: 1rem; }
+
+  .news-item {
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.2rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .news-number {
+    width: 28px;
+    height: 28px;
+    background: rgba(255,90,95,0.15);
+    color: var(--primary);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .news-fields { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+
+  .news-fields input, .news-fields textarea, .news-fields select {
+    width: 100%;
+    padding: 10px 14px;
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 0.88rem;
+    font-family: 'Inter', sans-serif;
+    resize: none;
+  }
+
+  .news-fields input:focus, .news-fields textarea:focus, .news-fields select:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  .news-fields textarea { min-height: 70px; }
+
+  .delete-btn {
+    background: rgba(255,90,95,0.1);
+    border: 1px solid rgba(255,90,95,0.2);
+    color: var(--primary);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: 0.2s;
+  }
+
+  .delete-btn:hover { background: rgba(255,90,95,0.25); }
+
+  .add-news-btn {
+    background: transparent;
+    border: 1px dashed var(--border);
+    color: var(--text-muted);
+    padding: 12px;
+    border-radius: 14px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 0.88rem;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 0.5rem;
+  }
+
+  .add-news-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+  /* ANNOUNCEMENT BANNER EDITOR */
+  .banner-preview {
+    background: linear-gradient(110deg, var(--primary), #FF8589);
+    border-radius: 12px;
+    padding: 14px 20px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* SAVE BUTTON */
+  .save-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .save-bar p { font-size: 0.85rem; color: var(--text-muted); }
+  .save-bar p span { color: var(--text); font-weight: 600; }
+
+  .save-btn {
+    background: var(--primary);
+    border: none;
+    padding: 11px 28px;
+    border-radius: 40px;
+    color: white;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .save-btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+  .save-success {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    color: var(--success);
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  /* TOGGLE */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .toggle-row:last-child { border-bottom: none; }
+
+  .toggle-row label { font-size: 0.88rem; }
+  .toggle-row p { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+
+  .toggle {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  .toggle input { opacity: 0; width: 0; height: 0; }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: var(--dark3);
+    border-radius: 24px;
+    transition: 0.3s;
+  }
+
+  .slider:before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.3s;
+  }
+
+  .toggle input:checked + .slider { background: var(--primary); }
+  .toggle input:checked + .slider:before { transform: translateX(20px); }
+
+  @media (max-width: 600px) {
+    .main-content { padding: 1rem; }
+    .topbar { padding: 1rem; }
+    .flights-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">✈️</div>
+    <h2>Admin Portal</h2>
+    <p>Al-Huda Travel Agency — Gambia</p>
+    <div class="login-error" id="loginError"><i class="fas fa-exclamation-circle"></i> Incorrect username or password</div>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="loginUser" placeholder="Enter username" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="Enter password" onkeydown="if(event.key==='Enter') doLogin()">
+    </div>
+    <button class="login-btn" onclick="doLogin()"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+    <p style="margin-top:1.2rem; font-size:0.72rem; color:var(--text-muted);">Default: admin / alhuda2025</p>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <i class="fas fa-kaaba"></i>
+      <div>
+        <h1>Al-Huda Admin</h1>
+      </div>
+      <span>Control Panel</span>
+    </div>
+    <button class="logout-btn" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+  </div>
+
+  <div class="main-content">
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon red"><i class="fas fa-plane"></i></div>
+        <div class="stat-info"><h4>4</h4><p>Active Routes</p></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon blue"><i class="fas fa-newspaper"></i></div>
+        <div class="stat-info"><h4 id="newsCount">0</h4><p>News Items</p></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
+        <div class="stat-info"><h4 id="lastSaved">Never</h4><p>Last Saved</p></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon yellow"><i class="fas fa-eye"></i></div>
+        <div class="stat-info"><h4>Live</h4><p>Site Status</p></div>
+      </div>
+    </div>
+
+    <!-- SAVE BAR -->
+    <div class="save-bar">
+      <div>
+        <p>Make your changes below, then click <span>Save All Changes</span> to update the website.</p>
+      </div>
+      <div style="display:flex; align-items:center; gap:1rem;">
+        <div class="save-success" id="saveSuccess"><i class="fas fa-check-circle"></i> Saved successfully!</div>
+        <button class="save-btn" onclick="saveAll()"><i class="fas fa-save"></i> Save All Changes</button>
+      </div>
+    </div>
+
+    <!-- ANNOUNCEMENT BANNER -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-header-left">
+          <i class="fas fa-bullhorn"></i>
+          <div>
+            <h2>Homepage Announcement</h2>
+            <p>Shown as a banner at the top of the website</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="banner-preview" id="bannerPreview">
+        <i class="fas fa-star"></i>
+        <span id="bannerPreviewText">Your announcement will appear here</span>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div class="form-group" style="margin:0;">
+          <label style="font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:6px;">Announcement Text</label>
+          <input type="text" id="bannerText" placeholder="e.g. 🕋 Hajj 2025 packages now available — limited seats!" style="width:100%; padding:11px 14px; background:var(--input-bg); border:1px solid var(--border); border-radius:10px; color:var(--text); font-size:0.9rem; font-family:'Inter',sans-serif;" oninput="updateBannerPreview()">
+        </div>
+        <div class="toggle-row">
+          <div>
+            <label>Show announcement banner</label>
+            <p>Toggle to show or hide the banner on the homepage</p>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="bannerActive" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLIGHT PRICES -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-header-left">
+          <i class="fas fa-tags"></i>
+          <div>
+            <h2>Flight Prices</h2>
+            <p>Update prices and discount badges shown on the homepage cards</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flights-grid">
+        <div class="flight-edit-card">
+          <div class="route-label">✈ Banjul → London</div>
+          <div class="airline-label">British Airways</div>
+          <div class="price-row">
+            <span class="currency-tag">D</span>
+            <input class="price-input" type="text" id="price1" value="48,500" placeholder="48,500">
+          </div>
+          <div class="badge-row">
+            <label>Badge:</label>
+            <input class="badge-input" type="text" id="badge1" value="-23%" placeholder="-23%">
+          </div>
+        </div>
+
+        <div class="flight-edit-card">
+          <div class="route-label">✈ Banjul → Mecca</div>
+          <div class="airline-label">Emirates</div>
+          <div class="price-row">
+            <span class="currency-tag">D</span>
+            <input class="price-input" type="text" id="price2" value="52,200" placeholder="52,200">
+          </div>
+          <div class="badge-row">
+            <label>Badge:</label>
+            <input class="badge-input" type="text" id="badge2" value="-30%" placeholder="-30%">
+          </div>
+        </div>
+
+        <div class="flight-edit-card">
+          <div class="route-label">✈ Banjul → Istanbul</div>
+          <div class="airline-label">Turkish Airlines</div>
+          <div class="price-row">
+            <span class="currency-tag">D</span>
+            <input class="price-input" type="text" id="price3" value="41,900" placeholder="41,900">
+          </div>
+          <div class="badge-row">
+            <label>Badge:</label>
+            <input class="badge-input" type="text" id="badge3" value="-18%" placeholder="-18%">
+          </div>
+        </div>
+
+        <div class="flight-edit-card">
+          <div class="route-label">✈ Banjul → New York</div>
+          <div class="airline-label">Delta</div>
+          <div class="price-row">
+            <span class="currency-tag">D</span>
+            <input class="price-input" type="text" id="price4" value="122,000" placeholder="122,000">
+          </div>
+          <div class="badge-row">
+            <label>Badge:</label>
+            <input class="badge-input" type="text" id="badge4" value="-27%" placeholder="-27%">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEWS / ANNOUNCEMENTS -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-header-left">
+          <i class="fas fa-newspaper"></i>
+          <div>
+            <h2>Daily News & Updates</h2>
+            <p>Shown in the news section on the homepage</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="news-list" id="newsList"></div>
+      <button class="add-news-btn" onclick="addNews()">
+        <i class="fas fa-plus-circle"></i> Add News Item
+      </button>
+    </div>
+
+    <!-- SITE SETTINGS -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-header-left">
+          <i class="fas fa-cog"></i>
+          <div>
+            <h2>Site Settings</h2>
+            <p>Toggle homepage sections on or off</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="toggle-row">
+        <div><label>Show Flight Deals section</label><p>Display the 4 flight cards on the homepage</p></div>
+        <label class="toggle"><input type="checkbox" id="toggleDeals" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div><label>Show Testimonials section</label><p>Display customer reviews</p></div>
+        <label class="toggle"><input type="checkbox" id="toggleTestimonials" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div><label>Show Newsletter section</label><p>Display email subscription form</p></div>
+        <label class="toggle"><input type="checkbox" id="toggleNewsletter" checked><span class="slider"></span></label>
+      </div>
+    </div>
+
+    <!-- CHANGE PASSWORD -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-header-left">
+          <i class="fas fa-lock"></i>
+          <div>
+            <h2>Change Password</h2>
+            <p>Update your admin login credentials</p>
+          </div>
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:1rem;">
+        <div class="form-group" style="margin:0;">
+          <label style="font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:6px;">New Username</label>
+          <input type="text" id="newUser" placeholder="New username" style="width:100%; padding:11px 14px; background:var(--input-bg); border:1px solid var(--border); border-radius:10px; color:var(--text); font-size:0.9rem; font-family:'Inter',sans-serif;">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label style="font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:6px;">New Password</label>
+          <input type="password" id="newPass" placeholder="New password" style="width:100%; padding:11px 14px; background:var(--input-bg); border:1px solid var(--border); border-radius:10px; color:var(--text); font-size:0.9rem; font-family:'Inter',sans-serif;">
+        </div>
+        <div style="display:flex; align-items:flex-end;">
+          <button class="save-btn" style="width:100%;" onclick="changePassword()"><i class="fas fa-key"></i> Update Credentials</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center; color:var(--text-muted); font-size:0.75rem; padding: 2rem 0;">
+      Al-Huda Travel Agency Admin Portal © 2025 — Serekunda, Gambia
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const DEFAULT_USER = 'admin';
+  const DEFAULT_PASS = 'alhuda2025';
+
+  let newsItems = [];
+
+  function getCredentials() {
+    return {
+      user: localStorage.getItem('alhuda_admin_user') || DEFAULT_USER,
+      pass: localStorage.getItem('alhuda_admin_pass') || DEFAULT_PASS
+    };
+  }
+
+  function doLogin() {
+    const u = document.getElementById('loginUser').value.trim();
+    const p = document.getElementById('loginPass').value;
+    const creds = getCredentials();
+    if (u === creds.user && p === creds.pass) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      loadData();
+    } else {
+      document.getElementById('loginError').style.display = 'block';
+    }
+  }
+
+  function doLogout() {
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('loginUser').value = '';
+    document.getElementById('loginPass').value = '';
+  }
+
+  function changePassword() {
+    const u = document.getElementById('newUser').value.trim();
+    const p = document.getElementById('newPass').value;
+    if (!u || !p) { alert('Please fill in both fields.'); return; }
+    localStorage.setItem('alhuda_admin_user', u);
+    localStorage.setItem('alhuda_admin_pass', p);
+    alert('✅ Credentials updated! Use new login next time.');
+    document.getElementById('newUser').value = '';
+    document.getElementById('newPass').value = '';
+  }
+
+  function updateBannerPreview() {
+    const txt = document.getElementById('bannerText').value;
+    document.getElementById('bannerPreviewText').textContent = txt || 'Your announcement will appear here';
+  }
+
+  function addNews(data) {
+    const id = Date.now();
+    const item = data || { id, title: '', body: '', type: 'info' };
+    newsItems.push(item);
+    renderNewsList();
+  }
+
+  function removeNews(id) {
+    newsItems = newsItems.filter(n => n.id !== id);
+    renderNewsList();
+  }
+
+  function renderNewsList() {
+    const list = document.getElementById('newsList');
+    list.innerHTML = '';
+    document.getElementById('newsCount').textContent = newsItems.length;
+
+    if (newsItems.length === 0) {
+      list.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem; text-align:center; padding:1rem;">No news items yet. Click "Add News Item" below.</p>';
+      return;
+    }
+
+    newsItems.forEach((item, i) => {
+      const div = document.createElement('div');
+      div.className = 'news-item';
+      div.innerHTML = `
+        <div class="news-number">${i + 1}</div>
+        <div class="news-fields">
+          <input type="text" placeholder="Headline (e.g. Hajj 2025 seats now open!)" value="${item.title || ''}" onchange="newsItems[${i}].title = this.value">
+          <textarea placeholder="Details (e.g. Book now to secure your spot. Call +220 999 1234)" onchange="newsItems[${i}].body = this.value">${item.body || ''}</textarea>
+          <select onchange="newsItems[${i}].type = this.value">
+            <option value="info" ${item.type === 'info' ? 'selected' : ''}>ℹ️ Info</option>
+            <option value="promo" ${item.type === 'promo' ? 'selected' : ''}>🎉 Promotion</option>
+            <option value="urgent" ${item.type === 'urgent' ? 'selected' : ''}>🔥 Urgent / Limited</option>
+            <option value="hajj" ${item.type === 'hajj' ? 'selected' : ''}>🕋 Hajj & Umrah</option>
+          </select>
+        </div>
+        <button class="delete-btn" onclick="removeNews(${item.id})" title="Delete"><i class="fas fa-trash"></i></button>
+      `;
+      list.appendChild(div);
+    });
+  }
+
+  function saveAll() {
+    const data = {
+      prices: {
+        p1: document.getElementById('price1').value,
+        p2: document.getElementById('price2').value,
+        p3: document.getElementById('price3').value,
+        p4: document.getElementById('price4').value,
+        b1: document.getElementById('badge1').value,
+        b2: document.getElementById('badge2').value,
+        b3: document.getElementById('badge3').value,
+        b4: document.getElementById('badge4').value,
+      },
+      banner: {
+        text: document.getElementById('bannerText').value,
+        active: document.getElementById('bannerActive').checked,
+      },
+      news: newsItems,
+      settings: {
+        deals: document.getElementById('toggleDeals').checked,
+        testimonials: document.getElementById('toggleTestimonials').checked,
+        newsletter: document.getElementById('toggleNewsletter').checked,
+      },
+      savedAt: new Date().toLocaleTimeString()
+    };
+
+    localStorage.setItem('alhuda_site_data', JSON.stringify(data));
+    document.getElementById('lastSaved').textContent = data.savedAt;
+
+    const s = document.getElementById('saveSuccess');
+    s.style.display = 'flex';
+    setTimeout(() => s.style.display = 'none', 3000);
+  }
+
+  function loadData() {
+    const raw = localStorage.getItem('alhuda_site_data');
+    if (!raw) { renderNewsList(); return; }
+    try {
+      const data = JSON.parse(raw);
+      if (data.prices) {
+        document.getElementById('price1').value = data.prices.p1 || '';
+        document.getElementById('price2').value = data.prices.p2 || '';
+        document.getElementById('price3').value = data.prices.p3 || '';
+        document.getElementById('price4').value = data.prices.p4 || '';
+        document.getElementById('badge1').value = data.prices.b1 || '';
+        document.getElementById('badge2').value = data.prices.b2 || '';
+        document.getElementById('badge3').value = data.prices.b3 || '';
+        document.getElementById('badge4').value = data.prices.b4 || '';
+      }
+      if (data.banner) {
+        document.getElementById('bannerText').value = data.banner.text || '';
+        document.getElementById('bannerActive').checked = data.banner.active !== false;
+        updateBannerPreview();
+      }
+      if (data.news) {
+        newsItems = data.news;
+      }
+      if (data.settings) {
+        document.getElementById('toggleDeals').checked = data.settings.deals !== false;
+        document.getElementById('toggleTestimonials').checked = data.settings.testimonials !== false;
+        document.getElementById('toggleNewsletter').checked = data.settings.newsletter !== false;
+      }
+      if (data.savedAt) {
+        document.getElementById('lastSaved').textContent = data.savedAt;
+      }
+    } catch(e) {}
+    renderNewsList();
+  }
+</script>
+</body>
+</html>
